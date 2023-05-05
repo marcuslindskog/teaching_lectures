@@ -1,0 +1,224 @@
+---
+title             : "Discrimination of Small Forms in a Deviant-Detection Paradigm by 10-month-old Infants"
+shorttitle        : "DISCRIMINATION OF SMALL FORMS BY INFANTS"
+
+author: 
+  - name          : "Marcus Lindskog"
+    affiliation   : "1"
+    corresponding : yes    # Define only one corresponding author
+    address       : "P.O. Box 1225, SE-751 42, Uppsala, Sweden"
+    email         : "marcus.lindskog@psyk.uu.se"
+  - name          : "Maria Rogell"
+    affiliation   : "1"
+  - name          : "Ben Kenward"
+    affiliation   : "1,2"
+  - name          : "Gustaf Gredebäck"
+    affiliation   : "1"
+
+
+affiliation:
+  - id            : "1"
+    institution   : "Uppsala University, Uppsala, Sweden"
+  - id            : "2"
+    institution   : "Oxford Brookes University, UK"
+
+authornote: |
+   The project was funded by grants to GG (Wallenberg Fellowship: KAW 2012.0120) and ML (Riksbankens Jubileumsfond: P15-0430:1). We would like to thank Claire Almer and Anna Sewall for valuable help with the data collection and Mari Fransson and Carin Marciszko for valuable comments on earlier drafts of the manuscript.
+
+abstract: |
+  Using eye tracking, we investigated if 10-month-old infants could discriminate between members of a set of small forms based on geometric properties in a deviant-detection paradigm, as suggested by the idea of a core cognitive system for Euclidian geometry. We also investigated the precision of infants' ability to discriminate as well as how the discrimination process unfolds over time. Our results show that infants can discriminate between small forms based on geometrical properties, but only when the difference is sufficiently large. Furthermore, our results also show that it takes infants, on average, less than 3.5 seconds to detect a deviant form. Our findings extend previous research in three ways: by showing that infants can make similar discriminative judgments as children and adults with respect to geometric properties; by providing a first crude estimate on the limit of the discriminative abilities in infants, and finally; by providing a first demonstration of how the discrimination process unfolds over time.
+  
+keywords          : "Geometry, Eye-tracking, Infant"
+
+bibliography      : ["Small_Forms_MS.bib"]
+csl               : frontiers-in-psychology.csl
+
+floatsintext      : no
+figurelist        : no
+tablelist         : no
+footnotelist      : no
+linenumbers       : yes
+mask              : no
+draft             : no
+
+documentclass     : "apa6"
+classoption       : "man"
+output            : papaja::apa6_pdf
+
+header-includes   :
+  - \usepackage{color}
+---
+
+```{r setup, include = FALSE}
+library("papaja")
+library(ggplot2)
+```
+
+```{r analysis-preferences}
+# Seed for random number generation
+set.seed(42)
+knitr::opts_chunk$set(cache.extra = knitr::rand_seed)
+```
+People process geometric information in a variety of situations in their day-to-day lives. It is used intuitively in such diverse situations as navigating a new city or identifying objects. Geometry is also taught already in the first years of school. The formal mathematical system of geometry that children first encounter is Euclidian geometry, which is an axiomatic system where theorems about two-dimensional (planar geometry) and three-dimensional (solid geometry) objects are derived from a small set of axioms. The intuitive use of Euclidian geometry is also found in cultures where it is not formally taught [@Izard2011] and even in non-human animals [@Spelke2012]. The universal use of Euclidian geometry and the ease with which its general concepts are understood has lead philosophers and mathematicians to suggest that it comes naturally to the mind [see, e.g., @Spelke2010]. More recently, cognitive scientists have even suggested that Euclidian geometry as a mathematical system might have emerged as a result of evolutionary ancient core systems that capture fundamental Euclidian concepts [@Dehaene2006]. The idea of a dedicated system for Euclidian geometry is appealing, and several studies support it [@Bonny2015; @Dehaene2006; @Dillon2013; @Spelke2010; @Izard2009]. There are still, however, several outstanding questions that could help us better understand the properties and processes of such a system. In the present study, we aim to bridge two previous lines of research conducted on preverbal infants and preschool children, respectively. More specifically, by using eye tracking, we present the first study assessing 10-month-old infants' ability to discriminate between small forms in a deviant-detection paradigm.
+
+Researchers have primarily relied on visual-form tasks to investigate a possible core system for geometry. In these tasks, participants are presented with small 2D visual forms (see Figure 1A for an example) and are expected to respond to or detect differences between them based on geometric properties. Early research combining visual-form tasks with habituation paradigms indicated that infants as young as a few days old form expectations about an invariant geometric property and dishabituate when these expectations are violated [@Cohen1984; @Lourenco2008; @Schwartz1979; @Slater1991; @Younger1988]. Cohen and Younger [-@Cohen1984], for example, habituated 6- and 14-week-old infants to small forms consisting of two lines making a single angle. More specifically, infants were habituated to either a form with an angle of 45 degrees or one with 135 degrees. The orientation of the two lines was constant during habituation but differed for the two forms. During the test trials, infants were shown forms that corresponded to the habituation stimuli either with respect to angle size or orientation. The results showed that 14-week-old infants dishabituated to a change in angle size but not to a change in orientation. In contrast, 6-week-old infants showed the opposite effect; they dishabituated to a change in orientation but not to one in angle size. The authors concluded that there is a developmental shift in perceptual ability between 6 and 14 weeks of age.
+
+```{r Figure1, fig.cap = "Panel A. Illustration of the organization of the array of four small forms presented on each trial with AOI:s superimposed as dashed rectangles. Panel B. Illustration of the small forms used in each of the four conditions.", fig.align = "center"}
+knitr::include_graphics("figs/Figure_1.jpg", dpi = 200)
+```
+
+Slater and colleagues [-@Slater1991] repeated the experiments of Cohen and Younger [-@Cohen1984] with 3-day-old infants. Their results indicated, similar to the 6-week-olds in Cohen and Younger [-@Cohen1984], that the infants dishabituated to orientation, but not to angle size when they were habituated with small forms of fixed orientation. Slater and colleagues [-@Slater1991] also made one important extension to the studies by Cohen and Younger [-@Cohen1984]. In addition to habituating infants to a form with a fixed orientation, they also carried out a condition where the angle size was fixed but where the orientation of the angle changed from trial-to-trial during habituation. When infants were habituated to these figures where the orientation also varied, they also dishabituated to angle size. Taken together, these findings indicate that infants can notice a change in an invariant geometric property that they have had the opportunity to extract over repeated presentations. That is, they can recognize which geometric property stays the same in a series of small forms. It should be noted that although both Cohen and Younger [-@Cohen1984] and Slater and colleagues [-@Slater1991] manipulated the difference between the forms in terms of angle size, angle size was confounded with other metric aspects of the stimuli (e.g., endpoint distance or line length depending on what other metric aspect was controlled for). Accordingly, from these studies it is not possible to conclude which geometric property infants used to discriminate between the small forms.
+
+While early studies on infants combined visual-form tasks with habituation paradigms, more recent research on older children and adults instead combines the idea of a visual-form task with a deviant-detection paradigm. In this paradigm [e.g., @Dehaene2006], participants are presented with an array of small forms. All but one of the forms share a common geometric feature, for example, angle size. Participants' task is to identify which form that deviates from the others. Research using this paradigm has shown that at least from the age of four years, children can reliably indicate which the deviant form is [@Bonny2015; @Dillon2013; @Izard2009]. The deviant-detection paradigm can give additional insights into participants' ability to discriminate based on geometric cues over and above those provided by habituation paradigms. First, it makes it possible to manipulate both on which cue the deviant form is different and the degree to which it deviates, within subjects. Second, because the task is a decision task, it could also potentially be used to study the process that leads up to discrimination. The deviant-detection paradigm, however, has limitations when studying infants. More specifically, in its current form the paradigm requires participants to choose actively (e.g., by pointing), which form deviates. Consequently, the paradigm imposes a lower limit on participants' age.
+
+## The Present Study
+Previous studies have thus indicated that infants as young as a few days old are sensitive to geometric properties and that children at least from the age of four can identify which object in a set of small forms has a deviant geometric property. Here, we aim to bridge these two findings to gain further insights into infants' ability to discriminate between small forms. More specifically, by using eye tracking, we assess 10-month-old infants' ability to discriminate between small forms based on geometric properties in a deviant-detection paradigm. In doing so, we extend previous research in two critical ways. First, although infants might be able to make such discriminations, it is possible that there is a limit to this ability concerning acuity. Here, we investigate this possibility by manipulating the difference between the presented small forms in terms of angle size. Second, by tracking gaze patterns throughout the stimulus presentation, we investigate how detection of a deviant visual form unfolds over time. To our knowledge, no previous study has examined the temporal structure or the limits of an ability to discriminate based on geometric properties.
+
+# Method
+## Participants
+Twenty full-term 10-month-old infants (12 females, $M_{age} = 309.1$ days, $SD = 6.6$) participated in the study, and all participating infants were included in the final analysis. All infants were recruited from a midsized Swedish town. All parents gave written informed consent before the study, and the families were given a 100 SEK (appr. 10 euros) gift certificate in exchange for their participation. The regional ethics committee approved the study according to the 1964 Declaration of Helsinki.
+
+## Apparatus and Stimuli
+Infants' gaze was recorded with a Tobii TX300 (Stockholm, Sweden) eye-tracker at 60Hz while the stimuli were presented on a 19-in. screen with resolution 1920x1080. The stimuli consisted of two sets of 8 images each, one set for each of the two conditions described below. Each image contained an array of 4 small forms arranged in a square pattern (see Figure 1A). The small-forms consisted of two connected lines, 6.2 cm in length (5.9 visual degrees), which formed an angle. Three of the forms were identical (base-line-forms) in terms of geometrical properties (angle, length, and/or enclosed area) while the fourth (target form) deviated. Each of the forms was placed in one of the quadrants, equidistant from the origin, in a Cartesian coordinate system. The orientation of each form in each image was set randomly. The entire image subtended 33x29 visual degrees and each angle subtended 11x11 visual degrees. Pilot data indicated that infants would not reliably attend to the stimuli for more than eight trials. To investigate a range of differences we, therefore, manipulated the difference between the target form and the base-line-forms, in terms of angle size, in a mixed design. Half of the participants saw *Large* angle differences that were manipulated within-subjects in two steps, 90 degrees (135 vs. 45) and 60 degrees (120 vs. 60). The other half saw *Small* angle differences, also manipulated within-subjects in two steps (40 degrees (110 vs. 70) and 10 degrees (95 vs. 85). The location of the target angle (quadrant 1-4) and whether the target angle or the base-line-angle was larger was counterbalanced over trials.
+
+Changing one geometric property, like angle size, inevitably leads to a change in other properties, such as the enclosed area and the distance between endpoints (see Table 1). The aim of the present study was not to determine which of these properties infants use to discriminate between small forms, but rather to investigate if they can discriminate at all between small forms that incorporate some of these aspects and how the discrimination process unfolds over time. Accordingly, to ease the presentation, we only present our manipulations in terms of angle size (see Figure 1B for an illustration).
+
+```{r Table1}
+condition <- c("Small – 10", "Small – 10", "Small – 40", "Small – 40", "Large – 60", "Large – 60","Large – 90", "Large – 90")
+angle <- c(85,95,110,70,120,60,135,45)
+enclosed_area <- c(19.15,19.15,18.06,18.06,16.65,16.65,13.59,13.59)
+endpoint_distance <- c(8.38,9.14,10.16,7.11,10.73,6.2,11.46,4.75)
+col_names <- c("Condition", "Angle (°)", "Enclosed Area (cm2)", "Endpoint distance (cm)")
+
+table1 <- data.frame(condition, angle, enclosed_area, endpoint_distance)
+knitr::kable(table1, col.names = col_names, align = c('c', 'c', 'c', 'c'),
+             caption = "Angle size, enclosed area and distance between endpoints for each of the small-forms displayed to the participants in each of the eight conditions", "latex", booktabs = T)
+```
+
+## Procedure
+Participants were seated approximately 60 cm in front of the eye-tracker in their caregiver's lap. The caregiver was instructed not to comment on anything presented on the screen. Following a standard 5-point calibration procedure [@Gredebaeck2009] infants were shown a five-minute long movie where the images described above were presented intermixed with various unrelated stimuli, not described here, that were part of other studies, and attention-grabbing movies. Participants were shown each of the four small-form images in a condition once, for a total of eight (8) trials (2 conditions x 4 images). The images were shown in a pseudo-random fixed order. Each small-form image was displayed for 5 seconds and was always preceded by an attention grabber shown in the center of the screen.
+
+## Data reduction and analysis
+Eye-tracking data was processed in MATLAB (MathWorks, Friedrichsdorf, Germany) using the open-source data analysis tool Timestudio [http://timestudioproject.com, @Nystroem2015], version 3.12. The settings and source code can be downloaded with uwid: ts-4af-d83 within the TimeStudio environment.
+
+Infants' gaze was analyzed in four areas of interest (AOI). Each centered over one of the small forms stimuli. AOIs subtended a visual angle of 22x16 degrees (see Figure 1A). We measured infants' looking-time in each AOIs. A minimum of 20% looking-time (1s) to the AOIs was required for a valid trial. A total of 67% of trials (107 out of 160) were included in the final analysis. The mean number of included trials per child in each of the four conditions was 2.7 (90-degrees), 2.8 (60-degrees), 2.4 (40-degrees), and 2.8 (10-degrees), respectively. For each valid trial, we calculated a proportion score as the proportion of looking-time in the target AOI to the total looking-time in all four AOIs. Thus, if infants' looking-times were equally distributed to all four AOIs we would expect a proportion score of .25.
+
+We evaluated infants' looking time within and between conditions by means of Bayesian *t*-tests. Although Bayesian and standard *t*-tests often agree on which hypothesis is better supported by the data, the former has the advantage of allowing for a quantification of the evidence from the data in support of an experimental effect [@Rouder2009; @Wetzels2011]. Our approach thus aligns with recent recommendations for psychological science to reduce the reliance on standard null-hypothesis testing and their accompanying *p*-values [@Cumming2008].  For each test we report a Bayes Factor ($BF_{10}$) for the alternative hypothesis ($H_1$) over the null hypothesis ($H_0$) together with an effect size ($\delta$)[^1] followed by a 95% confidence interval for the effect size in brackets. The Bayes Factor allows for the evaluation of the evidence for $H_1$ compared to $H_0$. If $BF_{10} = 1$ there is equal evidence for $H_1$ and $H_0$. A $BF_{10} > 1$  indicates more evidence for H1 than H0 while $BF_{10} < 1$  indicates the opposite.[^2] All reported tests were performed in JASP [@JASP2018] with the default Cauchy prior width of .707. We, however, verified that the same interpretation of the results held both with a wide (1) and an ultra-wide (1.5) width of the Cauchy prior.[^3]
+
+[^1]: We report the standardized effect size $\delta$, implemented in JASP and defined as $\delta =  (\mu-\mu_0)/\sigma$ and $\delta =  (\mu_2-\mu_1)/\sigma$ for one-sample and two-sample tests, respectively [@Rouder2009].
+[^2]: One convention for how to interpret the support for the alternative hypothesis provided by $BF_{10}$ is given by [@Wagenmakers2017]. This convention suggests that a Bayes factor offers "extreme" ($BF>100$), "very strong" ($30<BF\leq100$), "strong" ($10<BF\leq30$), "moderate" ($3<BF\leq10$), "anecdotal" ($1<BF\leq3$), or "none" ($BF=1$) evidence. 
+[^3]: We also verified that applying standard *t*-test with an alpha level of .05 did not change the interpretation of the reported results.
+
+# Results
+## Discrimination
+We evaluated infants' ability to discriminate between the four small forms by testing if the proportion score for their looking time differed from chance ($H_0 = .25$). The results showed that participants in the *Large* condition could reliably identify the target angle above chance for both the 90-degree ($M = .46, SD = .14$; $BF_{10} = 30.7, \delta = 1.2 [.35, 2.18]$) and 60-degree ($M = .36, SD = .13$; $BF_{10} = 2.6,  \delta = .70 [.01, 1.45]$) angle difference. Participants in the *Small* condition, however, failed to identify the target angle for both the 40-degree ($M = .23, SD = .12$; $BF_{10} = .36,  \delta = -.14 [-.73, .42]$) and the 10-degree condition ($M = .23, SD = .10$; $BF_{10} = .37, \delta = -.17 [-.74, .39]$). In the *Large* condition 90% and 89% of participants had proportion scores larger than .25 for the 90- and 60-degree angle difference, respectively. In the *Small* condition the corresponding proportions were 40% and 30% for the 40- and 10-degree angle differences, respectively. These results are summarized in Figure 2.
+
+```{r Figure2, fig.cap= "Mean proportion score in the four conditions. Angles show the two to-be-compared angles in each condition. Horizontal line denotes chance level. Vertical bars denote 95\\% BCa bootstrapped confidence intervals for the mean.", width = 14}
+
+myCond <- c(10,40,60,90)
+myDiff <- c(.24, .21, .36, .44)*100 #Mean proportion score
+mySplit <- factor(c(1,1,2,2))
+myCiHi <- c(.32, .28, .43, .54)*100
+myCiLo <- c(.17, .14, .27, .34)*100
+myData <- data.frame(myCond,myDiff,mySplit,myCiHi, myCiLo)
+rad_conv <- 0.0174532925
+
+fig2 <- ggplot(myData,aes(x = myCond, y = myDiff, shape = mySplit)) + 
+  geom_errorbar(aes(ymin=myCiLo, ymax=myCiHi), colour="black", width=1.5) +
+  geom_point(size=5, fill= "white") + # 21 is filled circle
+  xlab("Angle difference (degrees)") +
+  ylab("Proportion Score") +
+  scale_shape(name="Angle difference condition", # Legend label, use darker colors
+              labels=c("Small", "Large")) +                  # Use darker colors, lightness=40
+  scale_y_continuous(limits=c(0,55), breaks = c(0, 10, 20, 30, 40, 50), labels = c(0, .1, .2, .3, .4, .5)) + 
+  scale_x_continuous(breaks=myCond, labels=myCond, limits = c(0,100)) + theme_bw() + 
+  theme(legend.justification=c(0,1), legend.position=c(0.05,.95),legend.text = element_text(size=14),
+        legend.title = element_text(size=14), axis.title = element_text(size=16),
+        axis.text = element_text(size=14), panel.grid = element_blank()) + geom_abline(intercept = 25, slope = 0, colour="black") +
+  annotate("text", x = c(10, 40, 60,90), y = c(10, 10, 22, 30), label = c("95 vs. 85", "110 vs. 70","120 vs. 60","135 vs. 45")) +
+  annotate("spoke", x= c(1, 1, 15, 15, 31, 31, 45, 45, 51, 51, 65, 65, 81, 81, 95, 95), 
+                    y = c(9, 9, 9, 9, 9 , 9, 9, 9, 21, 21, 21, 21, 29, 29, 29, 29), 
+                angle = c(0, 95*rad_conv, 0, 85*rad_conv, 0, 110*rad_conv, 0, 70*rad_conv, 0, 120*rad_conv, 
+                          0, 60*rad_conv, 0, 135*rad_conv, 0, 45*rad_conv), 
+               radius = c(4,3.5, 4, 3.5, 4, 3.5,4, 3.5, 4, 3.5, 4, 3.5, 4, 3.5, 4, 3.5))
+
+
+ggsave(filename = 'figs/Fig2.png', fig2, dpi = 300, width = 9, height = 6.5 )
+knitr::include_graphics("figs/Fig2.png", dpi = 400)
+```
+
+On average infants spent 3.0 seconds ($SD = .91$) looking at the four AOIs on each trial. There was no difference in looking times between the *Large* and *Small* conditions ($BF_{10}  = 1.2,  \delta  = -.57 [-1.47, .18]$).
+
+## Discrimination Over Time
+To gain further insight into how the discrimination process unfolds over time, we analyzed which AOI infants looked towards first and how their preference for the deviant form evolved during the stimulus presentation. We analyzed which form infants directed their first gaze towards to investigate if infants have a very early preferences for the deviant form already at stimulus onset. This analysis showed that the proportion of first gazes towards the target form did not differ from .25 in any of the four conditions (BCa bootstrapped CIs overlapped .25 in all conditions). Thus, infants had no strong initial preference for the target form.
+
+To investigate the temporal dynamics of the preference formation for the target form, we divided each trial into ten segments of 500 ms each. Because infants in the 40- and 10-degree conditions never formed a preference for the deviant form, we only included the 90- and 60-degree conditions in the analysis. We investigated how long it took infants to form a stable preferences for the deviant form by running separate Bayesian t-tests for each of the ten intervals in each of the 60- and 90-degree conditions. In contrast to classical frequentist statistics, there is no commonly agreed upon cutoff for when the size of a Bayes factor should indicate that an effect is present. However, using the 95% confidence interval for the posterior distribution of the effect size it is possible to determine when it is highly likely than an effect is present (i.e., $\delta > 0$). We therefore considered a preference to have been formed from the first interval for which the confidence interval of the effect size did not include zero. In the 90-degree condition this occurred in the 0.5-1.0 s interval ($BF_{10} = 2.3, \delta   = .63 [.003, 1.35]$) while infants in the 60-degree condition required an additional 2.5s (3.0-3.5 s interval; $BF_{10} = 2.5, \delta = .69 [.01, 1.45]$). Figure 3 illustrates these results.
+
+```{r Figure3, fig.cap="Median cumulative effect size as a function of time interval for the 60- and 90-degree conditions. Vertical bars denote 95\\% confidence intervals of the effect size."}
+median_90 <- c(.25, .64, .81, 1.02, 1.06, .98, 1.02, 1.1, 1.2, 1.2)
+CILo_90 <- c(-.31, .03, .07, .27, .16, .19, .14, .40, .26, .39)
+CIHi_90 <- c(.81, 1.36, 1.58,1.88, 2.03, 1.82, 1.95, 1.97, 2.08, 2.12)
+
+median_60 <- c(.35, .11, .41, .58, .63, .66, .69, .82, .83, .70)
+CILo_60 <- c(-.26, -.45, -.21, -.06, -.01, .03, .03, .09, .11, .02)
+CIHi_60 <- c(1.0, .69, 1.07, 1.32, 1.40, 1.48, 1.47, 1.63, 1.67, 1.47)
+
+
+myCond <- factor(c("0-0.5","0.5-1.0","1.0-1.5","1.5-2.0", "2.0-2.5", "2.5-3.0", "3.0-3.5", "3.5-4.0", "4.0-4.5", "4.5-5.0"))
+myDiff <- c(median_90, median_60)
+mySplit <- factor(rep(c(1,2), each=10))
+Size <- factor(rep(c(90, 60), each = 10))
+myCiHi <- c(CIHi_90, CIHi_60)
+myCiLo <- c(CILo_90, CILo_60)
+myData <- data.frame(myCond,myDiff,mySplit,myCiHi, myCiLo, Int = rep(1:10,2), Size)
+
+
+fig3 <- ggplot(myData,aes(x = myCond, y = myDiff, shape = mySplit, group=mySplit)) + 
+  geom_point(size=5, fill= "white", position = position_dodge(width=.5)) + # 21 is filled circle
+  geom_errorbar(aes(ymin=myCiLo, ymax=myCiHi), colour="black", width=.1, position = position_dodge(width=.5)) +
+  xlab("Time interval (s)") +
+  ylab(expression("Cummulative Effect Size "~(delta))) +
+  scale_shape(name="Angle difference condition", # Legend label, use darker colors
+              labels=c("90-deg", "60-deg")) +                  # Use darker colors, lightness=40
+  scale_y_continuous(limits=c(-1.5,2.50)) + scale_x_discrete(breaks=myCond, 
+                                                            labels=myCond) + theme_bw() + 
+  theme(legend.justification=c(-0.05,1.05), legend.position=c(0,1),legend.text = element_text(size=14),
+        legend.title = element_text(size=14), axis.title = element_text(size=16),
+        axis.text = element_text(size=14), panel.grid = element_blank(),
+        axis.text.x = element_text(angle = 45, hjust = 1)) + geom_abline(intercept = 0, slope = 0, colour="black")
+
+ggsave(filename = 'figs/Fig3.png', fig3, dpi = 300, width = 9, height = 6.5 )
+knitr::include_graphics("figs/Fig3.png", dpi = 400)
+```
+
+# General Discussion
+In the present study, we aimed to bridge two lines of previous research that have evaluated infants' and children's ability, respectively, to discriminate between small forms based on geometric properties. Using eye-tracking, we investigated if 10-month-olds could discriminate between a set of small forms based on geometric properties in a deviant-detection paradigm and analyzed how the discrimination process unfolded over time. By manipulating the difficulty of the discrimination task, we also investigated the limit of this ability.
+
+Our participants had a preference for the target form when the difference in angle size was 90 and 60 degrees but not when the difference was 40 and 10 degrees. These results suggest that infants, similar to young children and adults, can discriminate between small forms based on geometric properties in a deviant-detection paradigm, but only when the difference on a given property is sufficiently large. We thus extend prior findings showing that infants can extract an invariant geometric property over repeated presentations [@Cohen1984; @Slater1991] to show that they can also discriminate in a deviant-detection paradigm using the same type of information. 
+
+For the core cognitive system argument, it is important to show both that an ability to use geometric information is universal and that infants, children, and adults alike can solve similar geometric tasks. Previous studies have demonstrated that adults from cultures with no formal education in geometry - the Munduruk, living in the Amazon - and children as young as four years of age can make discriminations in the same paradigm, albeit somewhat less accurate than adults from western cultures [@Dehaene2006; @Izard2011]. The demonstration in the present study that 10-month-olds can make the same type of discrimination as adults and children is thus consistent with, and provides further circumstantial evidence for, the idea of a core system of geometry [@Dehaene2006]. To further extend what we know about the ontogenesis of a core system of geometry, it will be an important task to map out the developmental trajectory, from early infancy into adulthood, for this ability. By showing that the same type of paradigm, a deviant-detection task, can be used similarly at all ages, our study provides the means to conduct such an investigation. Note that although we have reasons to believe that infants in our study indeed respond to geometric information specifically, our effects are similar to results shown for other quantitative dimensions [e.g., numerosity and object size, @Brannon2006; @Libertus2010]. Some researchers have argued that such similarities over various types of magnitudes are indicative of a more general analog magnitude system [e.g., @Lourenco2010; @Walsh2003]. Our study was not designed to discriminate between these two possibilities, but it is an essential question for future research to investigate if a core cognitive system for geometry is indeed a separate system or a feature of a general magnitude system.
+
+It is reasonable to assume that an ability to discriminate between small forms has a limit on its acuity. In fact, previous research [@Bonny2015] has shown that by four years of age, there is individual variability in geometric deviant-detection paradigms that correlate with the estimation of area. Thus even in infants, detecting a difference between two small forms might require a minimum difference on a geometric property. It was not a priori evident if, or when, infants could no longer discriminate between target form and the deviant form because no other study has manipulated the difference in this manner. While the infants' in the present study could reliably detect differences in the 60-degree condition, they failed to do so in the 40-degree condition. In terms of a difference in angle, our results thus indicate that the limit of 10-month-old infants' ability to discriminate is to be found somewhere between 60 and 40 degrees (or a corresponding difference in the distance between endpoints that lies between 4.53 cm [4.32 visual degrees] and 3.05 cm [2.9 visual degrees]). A caveat to this conclusion is that discrimination of small forms might be subject to hysteresis effects similarly to numerosity discrimination [cf., @Odic2014]. In that case, presenting an easier item first (e.g., 90-degrees) might also allow infants to discriminate an even more difficult item (e.g., 40-degrees) than the 60-degrees items presented in the present experiment. The eye-tracking method developed here gives ample opportunity for future research to investigate this limit in greater detail at various points during development.
+
+To our knowledge, no previous study has investigated how the process of discriminating small forms unfolds over time. Our data indicated that infants had no strong initial preference for the deviant form, as noted in the proportion of first gaze shifts towards the target form not differing from chance in any of the four conditions. Instead, it took infants 1 to 3.5 seconds depending on condition before a stable preference was formed. As illustrated in Figure 3, and by our analysis, a stable preference was, on average, formed well within 3.5 seconds in the 60 degrees condition and within 1.0 second in the 90-degree condition. Note, however, that there was no difference betwen the two conditions at any time point (all $BF_{10}\leq1$). Accordingly, it is possible that the difference in the time it took for the preference to become stable in the 60- and 90-degree conditions, respectively, is due to more noisy data in the former than the latter condition. Future studies, will need to examine these differences in greater detail.
+
+What might be the underlying psychological process that infants are engaged in during the discrimination process? We speculate that the process may take one of two general forms. One possibility is that the deviant form acts as a perceptual pop-out that drives attention [@Adler2006]. Another option is a process that accumulates evidence over time, similar to what is suggested by the drift-diffusion model [DDM, @Ratcliff1998]. The DDM is originally a model of two-alternative forced-choice tasks that assumes a decision between two choices is made by accumulating evidence for one or the other of the alternatives over time until the evidence in favor of one of the options exceeds a threshold. In adults, this model has been able to predict the relationship between visual fixations and choice for multialternative choice situations [@Krajbich2011]. Although the design of our study does not allow for any definite conclusions about which process infants are engaged in there is some evidence indicative of an accumulation process. More specifically, in contrast to what would be expected from a pop-out mechanism, infants' first gaze was not reliably directed towards the deviant form. Importantly, our eye-tracking paradigm makes it possible for future studies to tease these possibilities apart by, for example, investigating infants' gaze behavior as the number of distractors in the task increase.
+
+We manipulated the difference between forms in terms of angle size. This manipulation, of course, simultaneously changes other properties of the forms (summarized in Table 1). Although this feature of the task makes it difficult to ascertain which dimension infants are discriminating on, two pieces of evidence indicate that they might indeed use differences in angle size. First, we can rule out that infants are using the enclosed area because this dimension is not discriminative between the target-form and the deviant form in any condition. Second, both previous research [e.g., @Slater1991] and pilot data from our lab shows that when endpoint distance is controlled to be incongruent with angle size (by changing the length of the rays), infants still respond to angle size. We note, however, that controlling for one property (e.g., endpoint distance) often confounds another property (e.g., line length) with angle size [see also; @Cohen1984; @Slater1991]. It is, therefore, an important task for future research to further disentangle exactly what property infants use to discriminate.
+
+# Conclusions
+Using eye-tracking, we investigated 10-months-old infants' ability to discriminate between small forms based on geometric properties in a deviant-detection paradigm. By investigating the possible presence of such abilities in infancy the present study extended previous research in three ways. First, we showed that infants could make similar discriminative judgments as children and adults, which is consistent with the idea of a core cognitive system for geometry. Second, by manipulating the differences between the to-be-discriminated forms, we were able to give a first crude estimate on the limit, in terms of acuity, on infants' ability to discriminate between small forms. Finally, we provided the first demonstration of how the discrimination process unfolds over time.
+
+\newpage
+
+# References
+```{r create_r-references}
+r_refs(file = "Small_Forms_MS.bib")
+```
+
+\begingroup
+\setlength{\parindent}{-0.5in}
+\setlength{\leftskip}{0.5in}
+
+<div id = "refs"></div>
+\endgroup

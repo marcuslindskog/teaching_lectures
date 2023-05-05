@@ -1,0 +1,467 @@
+--- 
+title: "Statistics for Psychology 2" 
+subtitle: R for Psychology Research 
+author: "Marcus Lindskog, Docent"
+date: "2019-10-14"
+output:
+  xaringan::moon_reader:
+    lib_dir: libs
+    css: ["rutgers", "marcus_uu.css"]
+    nature:
+      highlightStyle: github
+      highlightLines: true
+      countIncrementalSlides: false
+      beforeInit: "../templates/macros.js"
+--- 
+```{r setup, include=FALSE}
+options(htmltools.dir.version = FALSE)
+knitr::opts_chunk$set(fig.dim=c(6, 6))
+library(tidyverse)
+library(knitr)
+library(DT)
+library(kableExtra)
+library(psych)
+library(broom)
+library(DescTools)
+library(sjstats)
+library(modelr)
+```
+
+# Overview
+1. A note on the formula (`~`) notation.
+1. Linear regression
+1. Logistic regression
+1. ANOVA
+1. Repeated measures ANOVA
+
+---
+class: inverted, middle, center 
+# A note on the formula (`~`) notation
+---
+# Formula notation
+
+* Many packages in R make use of formulas.
+--
+
+* Formulas aRe a general purpose tool that allows you to capture i) an unevaluated expression, and ii) the context in which the expression was created.
+
+--
+
+* The majority of modeling functions in R use a standard conversion from formulas to functions.
+
+--
+
+* E.g.: `y~x` is translated to $y = a_1 + a_2*x$ 
+
+---
+# A few examples
+```{r}
+library(modelr)
+df <- tibble(y= c(4,5), x1 = c(2,1), x2 =  c(5,6))
+```
+--
+```{r}
+model_matrix(df, y~x1)
+```
+--
+```{r}
+model_matrix(df, y~x1+x2)
+```
+---
+# A few more examples
+```{r}
+model_matrix(df, y~x1 - 1)
+```
+--
+```{r}
+model_matrix(df, y~x1*x2)
+```
+---
+# A final example
+```{r}
+model_matrix(df, y~x1 + x2 + x1:x2)
+```
+---
+class: inverted, middle, center 
+# Linear Regression
+---
+# Simple linear regression
+
+```{r, eval = FALSE}
+lm(formula, data, subset, weights, na.action,
+   method = "qr", model = TRUE, x = FALSE, y = FALSE, qr = TRUE,
+   singular.ok = TRUE, contrasts = NULL, offset, ...)
+```
+--
+* Data
+```{r}
+lm_data <- cars
+```
+
+--
+* Fit the model
+```{r}
+simple_lm <- lm(speed~dist, data = lm_data)
+```
+---
+# Get summary 1
+```{r}
+simple_lm
+```
+
+---
+# Get summary 2
+```{r}
+summary(simple_lm)
+```
+---
+# Multiple regression
+* Data
+```{r}
+multiple_lm_data <- diamonds
+```
+--
+* Fit the model
+```{r}
+multiple_lm_model <- lm(price~carat + depth + table,
+                        data = multiple_lm_data)
+```
+
+---
+# Get summary
+```{r}
+summary(multiple_lm_model)
+```
+---
+# Get `tidy` summary
+```{r}
+tidy(multiple_lm_model)
+```
+
+---
+# Hierarchical Linear Regression
+
+```{r}
+# Model 1
+hier_lm_model_one <- lm(price~carat,
+                        data = multiple_lm_data)
+# Model 2
+
+hier_lm_model_two <- update(hier_lm_model_one, .~. + depth)
+
+# Model 3
+hier_lm_model_three <- update(hier_lm_model_two, .~. + table)
+```
+---
+# Compare models
+
+```{r}
+# Model 1
+anova(hier_lm_model_one, hier_lm_model_two, hier_lm_model_three)
+```
+
+---
+class: inverted, middle, center 
+# Logistic Regression
+
+---
+# More complex models
+
+* It is, of course, possible to fit more complex models with R.
+
+--
+* For example, if our data requires something more than a linear model, we can choose to model it with a *generalized linear model*.
+
+--
+* In base R, this can be done using `glm()`
+
+--
+
+```{r, eval = FALSE}
+lm(formula, 
+   family = gaussian, #<<
+   data, weights, subset,    na.action, start = NULL, 
+   etastart, mustart, offset,
+    control = list(...), model = TRUE, method = "glm.fit",
+    x = FALSE, y = TRUE, singular.ok = TRUE, contrasts = NULL, ...)
+```
+---
+# Example 1 
+
+```{r}
+lm_data <- cars
+
+simple_lm <- glm(speed~dist, data = lm_data, 
+                 family = "gaussian")
+```
+---
+# Example 1 
+```{r}
+summary(simple_lm)
+```
+---
+# Example 2
+
+```{r}
+logit_lm_data <- mtcars
+
+simple_logit <- glm(vs~mpg+wt, data = logit_lm_data,
+                    family = "binomial")
+```
+---
+# Example 2
+
+```{r}
+summary(simple_logit)
+```
+---
+class: inverted, middle, center 
+# More information about models
+---
+# Confidence intervals
+```{r}
+confint(multiple_lm_model)
+```
+---
+# Standardized coefficients (beta weights)
+```{r, eval = FALSE}
+install.packages("sjstats")
+library(sjstats)
+```
+--
+
+```{r}
+ std_beta(multiple_lm_model)
+```
+---
+class: inverted, middle, center 
+# ANOVA
+---
+class: inverted, middle, center 
+# One-Way ANOVA
+---
+# Some data
+```{r}
+
+DV <- rnorm(120, 100, 10)
+IV <- factor(rep(c("A", "B", "C"), each = 40))
+
+one_way_data <- tibble(IV, DV)
+```
+---
+# The one-way ANOVA
+```{r, eval = FALSE}
+aov(formula, data = NULL, projections = FALSE, qr = TRUE,
+    contrasts = NULL, ...)
+```
+
+--
+* Fit the model
+```{r}
+one_way_aov <- aov(DV~IV, data = one_way_data)
+```
+
+---
+# Get the summary
+```{r}
+one_way_aov
+```
+---
+# Get the F-table
+```{r}
+summary(one_way_aov)
+```
+---
+# Make the summary `tidy`
+
+```{r}
+tidy_one_way_aov <- tidy(one_way_aov) #From the `broom` package
+tidy_one_way_aov
+tidy_one_way_aov$p.value[1]
+```
+---
+# Post-hoc tests - Option 1
+```{r}
+TukeyHSD(one_way_aov)
+```
+---
+# Post-hoc tests - Option 2
+```{r, eval = FALSE}
+library(DescTools)
+PostHocTest(x, which = NULL, 
+            method = c("hsd", "bonferroni", "lsd",
+                       "scheffe", "newmankeuls",  "duncan"),
+            conf.level = 0.95, ordered = FALSE, ...)
+```
+```{r}
+PostHocTest(one_way_aov, method = "lsd")
+```
+
+---
+# Non-parametric one-way ANOVA
+
+```{r, eval = FALSE}
+kruskal.test(formula, data, subset, na.action, ...)
+```
+--
+
+```{r}
+kruskal_test <- kruskal.test(DV~IV, data = one_way_data)
+```
+---
+# Get summary
+
+```{r}
+kruskal_test
+```
+--
+```{r}
+summary(kruskal_test)
+```
+---
+class: inverted, middle, center 
+# Two-Way ANOVA
+---
+# A new data set
+```{r}
+
+DV <- rnorm(120, 100, 10)
+IV1 <- factor(rep(c("A", "B"), each = 60))
+IV2 <- factor(rep(rep(c("C", "D"), each = 30), 2))
+
+two_way_data <- tibble(DV, IV1, IV2)
+```
+---
+# The two-way ANOVA
+```{r, eval = FALSE}
+aov(formula, data = NULL, projections = FALSE, qr = TRUE,
+    contrasts = NULL, ...)
+```
+
+--
+* Fit the model
+```{r}
+two_way_aov_v1 <- aov(DV~IV1*IV2, data = two_way_data)
+
+two_way_aov_v2 <- aov(DV~IV1 + IV2 + IV1:IV2, data = two_way_data)
+```
+---
+# Get the summary V1
+```{r}
+two_way_aov_v1
+```
+---
+# Get the summary V2
+```{r}
+two_way_aov_v2
+```
+---
+# Get the F-table 
+```{r}
+summary(two_way_aov_v1) #DV~IV1*IV2
+summary(two_way_aov_v2) #DV~IV1 + IV2 + IV1:IV2
+```
+---
+# Just the main effects
+```{r}
+two_way_aov_main <- aov(DV~IV1 + IV2, data = two_way_data)
+
+summary(two_way_aov_main)
+```
+---
+# Post hoc test
+
+```{r}
+PostHocTest(two_way_aov_v1, which = "IV2", method = "scheffe")
+```
+
+---
+class: inverted, middle, center 
+# Repeated measures ANOVA
+---
+# The biggest difference
+
+* We need to help R specify how to adjust the error term.
+
+--
+* And we need to tell R what how to figure out which observations belong together.
+--
+
+```{r}
+DV <- rnorm(120, 100, 10)
+IV <- factor(rep(c("A", "B", "C"), each = 40))
+ID <- factor(rep(1:40, 3)) #<<
+
+one_way_rep_data <- tibble(ID, DV, IV)
+```
+---
+# The one-way repeated measures ANOVA
+```{r, eval = FALSE}
+aov(formula, data = NULL, projections = FALSE, qr = TRUE,
+    contrasts = NULL, ...)
+```
+--
+* Fit the model
+```{r}
+one_way_rep_aov <- aov(DV~IV + Error(ID/IV), 
+                       data = one_way_rep_data)
+
+```
+---
+# Get the F-table
+```{r}
+summary(one_way_rep_aov)
+```
+---
+# Two-Way repeated measures ANOVA
+
+```{r}
+
+DV <- rnorm(120, 100, 10)
+IV1 <- factor(rep(c("A", "B"), each = 60))
+IV2 <- factor(rep(rep(c("C", "D"), each = 30), 2))
+ID <- factor(rep(1:60, 2))
+
+two_way_rep_data <- tibble(ID, DV, IV1, IV2)
+```
+---
+
+# Fit the model
+```{r}
+two_way_rep_aov <- aov(DV~IV1*IV2 + Error(ID/IV1), 
+                       data = two_way_rep_data)
+
+```
+---
+# Get the F-table
+```{r}
+summary(two_way_rep_aov)
+```
+---
+# Two-Way repeated measures ANOVA
+
+```{r}
+
+DV <- rnorm(120, 100, 10)
+IV1 <- factor(rep(c("A", "B"), each = 60))
+IV2 <- factor(rep(rep(c("C", "D"), each = 30), 2))
+ID <- factor(rep(1:30, 4)) #<<
+
+two_way_rep_data_2 <- tibble(ID, DV, IV1, IV2)
+```
+---
+
+# Fit the model
+```{r}
+two_way_rep_aov_2 <- aov(DV~IV1*IV2 + Error(ID/(IV1*IV2)), 
+                       data = two_way_rep_data_2)
+
+```
+---
+# Get the F-table
+```{r}
+summary(two_way_rep_aov_2)
+```
+---
+class: inverted, middle, center
+# That's all folks!

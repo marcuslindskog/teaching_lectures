@@ -1,0 +1,827 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml" lang="" xml:lang="">
+  <head>
+    <title>Introduction to Data Visualization with ggplot2</title>
+    <meta charset="utf-8" />
+    <meta name="author" content="Marcus Lindskog, Docent" />
+    <meta name="date" content="2019-09-23" />
+    <link href="libs/remark-css/rutgers.css" rel="stylesheet" />
+    <script src="libs/htmlwidgets/htmlwidgets.js"></script>
+    <script src="libs/jquery/jquery.min.js"></script>
+    <link href="libs/datatables-css/datatables-crosstalk.css" rel="stylesheet" />
+    <script src="libs/datatables-binding/datatables.js"></script>
+    <link href="libs/dt-core/css/jquery.dataTables.min.css" rel="stylesheet" />
+    <link href="libs/dt-core/css/jquery.dataTables.extra.css" rel="stylesheet" />
+    <script src="libs/dt-core/js/jquery.dataTables.min.js"></script>
+    <link href="libs/crosstalk/css/crosstalk.css" rel="stylesheet" />
+    <script src="libs/crosstalk/js/crosstalk.min.js"></script>
+    <link rel="stylesheet" href="marcus_uu.css" type="text/css" />
+  </head>
+  <body>
+    <textarea id="source">
+class: center, middle, inverse, title-slide
+
+# Introduction to Data Visualization with <code>ggplot2</code>
+## R for Psychology Research
+### Marcus Lindskog, Docent
+### 2019-09-23
+
+---
+
+
+
+# Overview
+1. A note on Data Viz in R
+
+1. A brief intro to Layered Grammar of Graphics
+
+1. The data of the day
+
+1. Creating a simple plot with `ggplot2`
+
+1. Aesthetics
+
+1. Facets
+
+1. Geoms
+
+1. Stats
+
+1. Coordinate systems
+
+1. Customizing plots
+
+1. Week 5 - Exercises
+---
+class: inverted, middle, center
+# A note on Data Viz in R
+---
+
+# A note on Data Viz in R
+
+* A lot of the hype around R comes from the possibility to create nice looking graphs.
+--
+
+* There are many systems for making graphs in R.
+--
+
+* `ggplot2` is a very versatile system that will get you far.
+--
+
+* `ggplot2` also uses a coherent system that plays well with the rest of the `tidyverse`.
+--
+
+* A powerful system for Data Viz **cannot** make up for bad choices.
+--
+
+* A copy-paste approach will only get you so far.
+
+---
+class: inverted, middle, center
+# Layered Grammar of Graphics
+---
+
+# `ggplot2` and the Grammar of Graphics
+
+* `ggplot2` implements the *grammar of graphics (GoG)*
+
+--
+
+* GoG is a coherent system for describing and building graphs.
+
+--
+
+* In GoG, a plot is built out of one or more **layers**.
+--
+
+* Each layer consists of one or more components:
+  * data and aesthetic mappings.
+  * geometric objects
+  * scales
+  * facet specifications
+  * statistical transformations
+  * coordinate system.
+--
+
+* `ggplot2` makes it easy to build graphs with these components.
+
+---
+class: inverted, middle, center
+# The data of the day
+---
+# The data of the day
+
+* For the data viz examples that we will work with, we need a data set.
+--
+
+* I will use the `diamonds` data set that is included in the `ggplot2` package.
+--
+
+* An example of the data is shown in the table below.
+--
+
+<div id="htmlwidget-36fa2b2209cc6d8f3e83" style="width:100%;height:auto;" class="datatables html-widget"></div>
+<script type="application/json" data-for="htmlwidget-36fa2b2209cc6d8f3e83">{"x":{"filter":"none","fillContainer":false,"data":[["1","2","3","4","5","6"],[0.23,0.21,0.23,0.29,0.31,0.24],["Ideal","Premium","Good","Premium","Good","Very Good"],["E","E","E","I","J","J"],["SI2","SI1","VS1","VS2","SI2","VVS2"],[61.5,59.8,56.9,62.4,63.3,62.8],[55,61,65,58,58,57],[326,326,327,334,335,336]],"container":"<table class=\"display\">\n  <thead>\n    <tr>\n      <th> <\/th>\n      <th>carat<\/th>\n      <th>cut<\/th>\n      <th>color<\/th>\n      <th>clarity<\/th>\n      <th>depth<\/th>\n      <th>table<\/th>\n      <th>price<\/th>\n    <\/tr>\n  <\/thead>\n<\/table>","options":{"pageLength":10,"columnDefs":[{"className":"dt-right","targets":[1,5,6,7]},{"orderable":false,"targets":0}],"order":[],"autoWidth":false,"orderClasses":false}},"evals":[],"jsHooks":[]}</script>
+
+---
+class: inverted, middle, center
+# A simple plot with `ggplot2`
+---
+# Creating a ggplot
+
+```r
+# code chunk here
+ggplot(data = diamonds) +
+  geom_point(mapping = aes(x = carat, y = price))
+```
+
+---
+# Creating a ggplot
+
+```r
+# code chunk here
+ggplot(data = diamonds) +
+  geom_point(mapping = aes(x = carat, y = price))
+```
+
+![](Lecture5_files/figure-html/unnamed-chunk-3-1.png)&lt;!-- --&gt;
+---
+# What did the code do?
+
+
+```r
+# code chunk here
+ggplot(data = diamonds) +
+  geom_point(mapping = aes(x = carat, y = price))
+```
+--
+
+* `ggplot()` - Created a coordinate system that we can draw layers to. This actually creates an empty graph.
+--
+
+* The first argument to `ggplot(data = diamonds)` is the data that we want to draw.
+--
+
+* The second row adds a layer to the plot. In this case a layer of *points*.
+--
+
+* The `geom_point()` function takes a **mapping** argument that defines how variables in the data set are mapped to visual properties in the layer.
+
+--
+
+* In our example, the visual properties are the x- and y-coordinates.
+
+---
+class: inverted, middle, center
+# Aesthetics
+---
+# Aesthetics mappings
+
+* An aesthetic is a visual property of the objects in the plot.
+--
+
+* There are several aesthetics available in `ggplot2` and which are available also depends on the object you are trying to plot.
+  * Size
+  * Shape
+  * Color
+  * Alpha
+  
+--
+
+* `ggplot2` will automatically assign a unique level of the aesthetic to each unique value of a variable (**scaling**)
+
+--
+
+* `ggplot2` will also add a legend to explain which level corresponds to which value.
+
+
+---
+# Example - color
+
+```r
+# code chunk here
+ggplot(data = diamonds) +
+  geom_point(mapping = aes(x = carat, y = price, color = cut))
+```
+
+![](Lecture5_files/figure-html/unnamed-chunk-5-1.png)&lt;!-- --&gt;
+---
+# Example - shape
+
+```r
+# code chunk here
+ggplot(data = diamonds) +
+  geom_point(mapping = aes(x = carat, y = price, shape = cut))
+```
+
+```
+## Warning: Using shapes for an ordinal variable is not advised
+```
+
+![](Lecture5_files/figure-html/unnamed-chunk-6-1.png)&lt;!-- --&gt;
+---
+# Example - alpha
+
+```r
+# code chunk here
+ggplot(data = diamonds) +
+  geom_point(mapping = aes(x = carat, y = price, alpha = cut))
+```
+
+![](Lecture5_files/figure-html/unnamed-chunk-7-1.png)&lt;!-- --&gt;
+---
+# Setting aesthetics explicitly
+
+* It is also possible to set an aesthetic for an object explicitly. 
+--
+
+* This is then done **outside** of the `aes()` function.
+
+--
+
+```r
+# code chunk here
+ggplot(data = diamonds) +
+  geom_point(mapping = aes(x = carat, y = price), color = "blue")
+```
+
+![](Lecture5_files/figure-html/unnamed-chunk-8-1.png)&lt;!-- --&gt;
+
+---
+class: inverted, middle, center
+# Facets
+---
+# Facets
+
+* Using aesthetics, we can add variables to our plot.
+--
+
+* Another way to add variables, particularly categorical ones, is to use **facets**.
+
+--
+
+* Facets is a way to split the data into subgroups, and plot each subgroup in a separate graph.
+
+--
+
+* Importantly, using facets keeps the scaling the same in all graphs, which helps when comparing data.
+
+---
+
+# Facet - `facet_wrap()`
+
+```r
+# code chunk here
+ggplot(data = diamonds) +
+  geom_point(mapping = aes(x = carat, y = price)) + 
+  facet_wrap(~cut, nrow = 3)
+```
+
+![](Lecture5_files/figure-html/unnamed-chunk-9-1.png)&lt;!-- --&gt;
+---
+# Facet - `facet_grid()`
+
+```r
+# code chunk here
+ggplot(data = diamonds) +
+  geom_point(mapping = aes(x = carat, y = price)) + 
+  facet_wrap(color~cut)
+```
+
+![](Lecture5_files/figure-html/unnamed-chunk-10-1.png)&lt;!-- --&gt;
+
+---
+# Facet - `facet_grid()`
+
+```r
+# code chunk here
+ggplot(data = diamonds) +
+  geom_point(mapping = aes(x = carat, y = price)) + 
+  facet_wrap(.~cut)
+```
+
+![](Lecture5_files/figure-html/unnamed-chunk-11-1.png)&lt;!-- --&gt;
+
+---
+class: inverted, middle, center
+# Geoms
+---
+# Geometric objects - Plot 1
+
+```r
+# code chunk here
+ggplot(data = diamonds) +
+  geom_point(mapping = aes(x = carat, y = price))
+```
+
+![](Lecture5_files/figure-html/unnamed-chunk-12-1.png)&lt;!-- --&gt;
+
+---
+# Geometric objects - Plot 2
+
+```r
+# code chunk here
+ggplot(data = diamonds) +
+  geom_smooth(mapping = aes(x = carat, y = price))
+```
+
+```
+## `geom_smooth()` using method = 'gam' and formula 'y ~ s(x, bs = "cs")'
+```
+
+![](Lecture5_files/figure-html/unnamed-chunk-13-1.png)&lt;!-- --&gt;
+---
+# Geometric objects
+
+* Plot 1 and 2 describe the same data, but they are not identical.
+--
+
+* They use different **visual objects** to represent the data.
+--
+
+* In `ggplot2` visual objects are referred to as **geoms**.
+--
+
+* A geom is a geometrical object that the plot uses to represent the data.
+
+--
+
+* We change the geom(s) that we want to display by calling different geom functions.
+
+--
+
+* Every geom function takes a mapping argument. But not every aesthetic works with every geom.
+
+---
+# Geom functions - Examples
+
+* `geom_histogram()`
+* `geom_point()`
+* `geom_boxplot()`
+* `geom_smooth()` 
+* `geom_bar()` 
+* `geom_errorbar()`
+* `geom_pointrange()`
+* `geom_rect()`
+* `geom_hline()`
+* `geom_vline()`
+* `geom_violin()`
+* `geom_text()`
+
+* See also https://www.ggplot2-exts.org for extension packages.
+
+---
+
+# Multiple geoms in the same plot
+
+```r
+# code chunk here
+ggplot(data = diamonds) +
+  geom_point(mapping = aes(x = carat, y = price)) +
+  geom_smooth(mapping = aes(x = carat, y = price))
+```
+
+```
+## `geom_smooth()` using method = 'gam' and formula 'y ~ s(x, bs = "cs")'
+```
+
+![](Lecture5_files/figure-html/unnamed-chunk-14-1.png)&lt;!-- --&gt;
+
+---
+# Geoms can share data and mapping
+
+```r
+# code chunk here
+ggplot(data = diamonds, mapping = aes(x = carat, y = price)) +
+  geom_point() +
+  geom_smooth()
+```
+
+```
+## `geom_smooth()` using method = 'gam' and formula 'y ~ s(x, bs = "cs")'
+```
+
+![](Lecture5_files/figure-html/unnamed-chunk-15-1.png)&lt;!-- --&gt;
+
+---
+# And they can have their own
+
+```r
+# code chunk here
+ggplot(data = diamonds, mapping = aes(x = carat, y = price)) +
+  geom_point(aes(color = color)) +
+  geom_smooth(aes(linetype = cut))
+```
+
+```
+## `geom_smooth()` using method = 'gam' and formula 'y ~ s(x, bs = "cs")'
+```
+
+![](Lecture5_files/figure-html/unnamed-chunk-16-1.png)&lt;!-- --&gt;
+
+---
+# Geoms do not have to plot the same data
+
+```r
+# code chunk here
+ggplot(data = diamonds, mapping = aes(x = carat, y = price)) +
+   geom_point(aes(color = color)) +
+   geom_smooth(data = filter(diamonds, cut == "Fair"), se = FALSE)
+```
+
+```
+## `geom_smooth()` using method = 'gam' and formula 'y ~ s(x, bs = "cs")'
+```
+
+![](Lecture5_files/figure-html/unnamed-chunk-17-1.png)&lt;!-- --&gt;
+
+---
+class: inverted, middle, center
+# Stats
+---
+# Statistical transformations
+
+```r
+# code chunk here
+ggplot(data = diamonds) +
+   geom_bar(aes(x = cut))
+```
+
+![](Lecture5_files/figure-html/unnamed-chunk-18-1.png)&lt;!-- --&gt;
+
+---
+# Statistical transformations
+
+* Some graphs, like scatter plots, plot the raw data from the data frame you pass to it.
+--
+
+* Other graphs, like bar graphs, calculate new values that are plotted. E.g.:
+  * Bar charts, histograms, and frequency polygons bin the data and plot counts in each bin.
+  * Smoothers, fit a model to the data and plot predictions from the model. 
+  * Box plots compute robust summary statistics that are displayed.
+--
+
+* In `ggplot2` vocabulary, the algorithm that transforms raw data to the new values that are plotted is called a **stat**. 
+
+--
+
+* Every geom has a default stat. Conversely, every stat has a default geom.
+
+--
+
+* Hence, we can use geoms and stats interchangeably.
+
+---
+# Example 
+
+```r
+# code chunk here
+ggplot(data = diamonds) +
+   stat_count(aes(x = cut))
+```
+
+![](Lecture5_files/figure-html/unnamed-chunk-19-1.png)&lt;!-- --&gt;
+
+---
+# Override the default stat
+
+```r
+# code chunk here
+ggplot(data = diamonds) +
+   geom_bar(mapping = aes(x = cut, y = ..prop.., group = 1))
+```
+
+![](Lecture5_files/figure-html/unnamed-chunk-20-1.png)&lt;!-- --&gt;
+---
+class: inverted, middle, center
+# Coordinate Systems
+---
+# Coordinate Systems
+
+* `ggplot2` uses a Cartesian coordinate system by default.
+--
+
+* Most often, it is not necessary to change this default behavior. But sometimes it can be useful.
+--
+
+* We can also change the scale on which x, y are plotted.
+
+---
+# Coordinate system example
+
+
+```r
+# code chunk here
+ggplot(data = diamonds) +
+   geom_bar(aes(x = cut)) + 
+  coord_flip()
+```
+
+![](Lecture5_files/figure-html/unnamed-chunk-21-1.png)&lt;!-- --&gt;
+---
+# Coordinate system example - 2
+
+
+```r
+# code chunk here
+ggplot(data = diamonds) +
+   geom_bar(aes(x = cut)) + 
+  coord_flip() + 
+  coord_polar()
+```
+
+```
+## Coordinate system already present. Adding new coordinate system, which will replace the existing one.
+```
+
+![](Lecture5_files/figure-html/unnamed-chunk-22-1.png)&lt;!-- --&gt;
+---
+# Scale example
+
+
+```r
+# code chunk here
+ggplot(data = diamonds) +
+   geom_point(aes(x = carat, y = price)) + 
+   scale_y_log10()
+```
+
+![](Lecture5_files/figure-html/unnamed-chunk-23-1.png)&lt;!-- --&gt;
+---
+class: inverted, middle, center
+# Customizing plots
+---
+# Positioning
+
+```r
+# code chunk here
+ggplot(data = diamonds) +
+   geom_bar(aes(x = cut, fill = cut)) 
+```
+
+![](Lecture5_files/figure-html/unnamed-chunk-24-1.png)&lt;!-- --&gt;
+---
+# Positioning continued
+
+```r
+# code chunk here
+ggplot(data = diamonds) +
+   geom_bar(aes(x = cut, fill = clarity)) 
+```
+
+![](Lecture5_files/figure-html/unnamed-chunk-25-1.png)&lt;!-- --&gt;
+---
+# Positioning continued further
+
+```r
+# code chunk here
+ggplot(data = diamonds) +
+   geom_bar(aes(x = cut, fill = clarity), position = "dodge") 
+```
+
+![](Lecture5_files/figure-html/unnamed-chunk-26-1.png)&lt;!-- --&gt;
+---
+# Positioning continued further still
+
+```r
+# code chunk here
+ggplot(data = diamonds) +
+   geom_bar(aes(x = cut, fill = clarity), position = "fill") 
+```
+
+![](Lecture5_files/figure-html/unnamed-chunk-27-1.png)&lt;!-- --&gt;
+---
+# Positioning - we need some more
+
+```r
+# code chunk here
+ggplot(data = mpg) +
+   geom_point(aes(x = displ, y = hwy)) 
+```
+
+![](Lecture5_files/figure-html/unnamed-chunk-28-1.png)&lt;!-- --&gt;
+
+---
+# Positioning - we need just a little more
+
+```r
+# code chunk here
+ggplot(data = mpg) +
+   geom_point(aes(x = displ, y = hwy), position = "jitter") 
+```
+
+![](Lecture5_files/figure-html/unnamed-chunk-29-1.png)&lt;!-- --&gt;
+---
+# Labels
+
+
+```r
+p &lt;- ggplot(data = mpg) +
+   geom_point(aes(x = displ, y = hwy), position = "jitter")
+
+p + labs(x = "New x label", y = "New y label",
+         title = "Add title above plot",
+         subtitle = "Add a subtitle below title",
+         caption = "Add a caption below plot") +
+  annotate(geom = "text", x = 5, y = 40, label  = "Look at me up here")
+```
+---
+# Labels
+
+![](Lecture5_files/figure-html/unnamed-chunk-31-1.png)&lt;!-- --&gt;
+---
+# Legends
+
+```r
+p &lt;- ggplot(data = diamonds, mapping = aes(x = carat, y = price)) +
+  geom_point(aes(color = color))
+
+p + theme(legend.position = "bottom",
+          axis.ticks.x = element_blank())
+```
+---
+# Legends
+![](Lecture5_files/figure-html/unnamed-chunk-33-1.png)&lt;!-- --&gt;
+---
+# Legends
+
+```r
+p &lt;- ggplot(data = diamonds, mapping = aes(x = carat, y = price)) +
+  geom_point(aes(color = color))
+
+p + guides(color = "none")
+```
+---
+# Legends
+![](Lecture5_files/figure-html/unnamed-chunk-35-1.png)&lt;!-- --&gt;
+---
+# Legends
+
+```r
+p &lt;- ggplot(data = diamonds, mapping = aes(x = carat, y = price)) +
+  geom_point(aes(color = color))
+
+p + scale_color_discrete(name = "New Legend Title",
+                        labels = c("AA", "BB", "CC",
+                                   "DD", "EE", "FF",
+                                   "GG"))
+```
+---
+# Legends
+![](Lecture5_files/figure-html/unnamed-chunk-37-1.png)&lt;!-- --&gt;
+---
+# Themes
+* The basic appearance of a plot can be changed using **themes**.
+--
+
+* There are a number of built in themes in `ggplot2`.
+
+--
+* Other themes are provided in various packages.
+
+--
+
+
+```r
+p &lt;- ggplot(data = diamonds, mapping = aes(x = carat, y = price)) +
+  geom_point(aes(color = color))
+
+p + theme_bw()
+```
+
+---
+# Themes 
+![](Lecture5_files/figure-html/unnamed-chunk-39-1.png)&lt;!-- --&gt;
+
+---
+# Themes 
+
+```r
+p &lt;- ggplot(data = diamonds, mapping = 
+              aes(x = carat, y = price)) +
+  geom_point(aes(color = color))
+
+p + theme_bw() + 
+   theme_bw()+
+  theme(panel.grid = element_blank(),
+        axis.ticks  = element_blank(),
+        panel.border = element_blank())
+```
+---
+# Themes 
+![](Lecture5_files/figure-html/unnamed-chunk-41-1.png)&lt;!-- --&gt;
+---
+# Week 5 - Exercises
+
+* Using the `diamonds` data set in `ggplot2` produce the following seven types of graphs using `ggplot2`.
+--
+
+* Scatter plot, Bar plot, Box plot, Density plot, Dot plot, Histogram, and Violin plot.
+--
+
+* For each graph, be creative with adding variables, changing positions, adding labels, adding legends and adding and customizing themes.
+--
+
+* As long as you produce the seven graphs in a meaningful way, there is no right or wrong. However, I want you to play with as many features of the plot as possible such that you get comfortable with manipulating various aspects of your graph.
+--
+
+* You get special extra points for being creative!!!! 
+--
+
+* If you produce boring graphs that don't explore the features of `ggplot2`, you will only be allowed to plot ugly graphs using SPSS for the rest of your life.
+
+---
+class: inverted, middle, center
+# That's all folks!
+    </textarea>
+<style data-target="print-only">@media screen {.remark-slide-container{display:block;}.remark-slide-scaler{box-shadow:none;}}</style>
+<script src="https://remarkjs.com/downloads/remark-latest.min.js"></script>
+<script src="../templates/macros.js"></script>
+<script>var slideshow = remark.create({
+"highlightStyle": "github",
+"highlightLines": true,
+"countIncrementalSlides": false
+});
+if (window.HTMLWidgets) slideshow.on('afterShowSlide', function (slide) {
+  window.dispatchEvent(new Event('resize'));
+});
+(function(d) {
+  var s = d.createElement("style"), r = d.querySelector(".remark-slide-scaler");
+  if (!r) return;
+  s.type = "text/css"; s.innerHTML = "@page {size: " + r.style.width + " " + r.style.height +"; }";
+  d.head.appendChild(s);
+})(document);
+
+(function(d) {
+  var el = d.getElementsByClassName("remark-slides-area");
+  if (!el) return;
+  var slide, slides = slideshow.getSlides(), els = el[0].children;
+  for (var i = 1; i < slides.length; i++) {
+    slide = slides[i];
+    if (slide.properties.continued === "true" || slide.properties.count === "false") {
+      els[i - 1].className += ' has-continuation';
+    }
+  }
+  var s = d.createElement("style");
+  s.type = "text/css"; s.innerHTML = "@media print { .has-continuation { display: none; } }";
+  d.head.appendChild(s);
+})(document);
+// delete the temporary CSS (for displaying all slides initially) when the user
+// starts to view slides
+(function() {
+  var deleted = false;
+  slideshow.on('beforeShowSlide', function(slide) {
+    if (deleted) return;
+    var sheets = document.styleSheets, node;
+    for (var i = 0; i < sheets.length; i++) {
+      node = sheets[i].ownerNode;
+      if (node.dataset["target"] !== "print-only") continue;
+      node.parentNode.removeChild(node);
+    }
+    deleted = true;
+  });
+})();</script>
+
+<script>
+(function() {
+  var links = document.getElementsByTagName('a');
+  for (var i = 0; i < links.length; i++) {
+    if (/^(https?:)?\/\//.test(links[i].getAttribute('href'))) {
+      links[i].target = '_blank';
+    }
+  }
+})();
+</script>
+
+<script>
+slideshow._releaseMath = function(el) {
+  var i, text, code, codes = el.getElementsByTagName('code');
+  for (i = 0; i < codes.length;) {
+    code = codes[i];
+    if (code.parentNode.tagName !== 'PRE' && code.childElementCount === 0) {
+      text = code.textContent;
+      if (/^\\\((.|\s)+\\\)$/.test(text) || /^\\\[(.|\s)+\\\]$/.test(text) ||
+          /^\$\$(.|\s)+\$\$$/.test(text) ||
+          /^\\begin\{([^}]+)\}(.|\s)+\\end\{[^}]+\}$/.test(text)) {
+        code.outerHTML = code.innerHTML;  // remove <code></code>
+        continue;
+      }
+    }
+    i++;
+  }
+};
+slideshow._releaseMath(document);
+</script>
+<!-- dynamically load mathjax for compatibility with self-contained -->
+<script>
+(function () {
+  var script = document.createElement('script');
+  script.type = 'text/javascript';
+  script.src  = 'https://mathjax.rstudio.com/latest/MathJax.js?config=TeX-MML-AM_CHTML';
+  if (location.protocol !== 'file:' && /^https?:/.test(script.src))
+    script.src  = script.src.replace(/^https?:/, '');
+  document.getElementsByTagName('head')[0].appendChild(script);
+})();
+</script>
+  </body>
+</html>

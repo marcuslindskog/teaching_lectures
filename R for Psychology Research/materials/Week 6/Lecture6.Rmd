@@ -1,0 +1,347 @@
+--- 
+title: "Common plots for Psychology using `ggplot2`" 
+subtitle: R for Psychology Research 
+author: "Marcus Lindskog, Docent"
+date: "2019-10-09"
+output:
+  xaringan::moon_reader:
+    lib_dir: libs
+    css: ["rutgers", "marcus_uu.css"]
+    nature:
+      highlightStyle: github
+      highlightLines: true
+      countIncrementalSlides: false
+      beforeInit: "../templates/macros.js"
+--- 
+```{r setup, include=FALSE}
+options(htmltools.dir.version = FALSE)
+knitr::opts_chunk$set(fig.dim=c(6, 6))
+library(tidyverse)
+library(knitr)
+library(DT)
+```
+
+# Overview 
+1. Graph for t-tests.
+1. Graph for correlations.
+1. Graph for ANOVA-like designs.
+1. Graph for multiple regressions.
+---
+class: inverted, middle, center 
+# Graphs for t-tests 
+---
+class: inverted, middle, center 
+# Single sample t-tests 
+---
+# We need some data 
+```{r} 
+# code chunk here 
+t_test_data <- rnorm(100, .6, .3)
+data_df <- tibble(dat = t_test_data) 
+```
+---
+# Test the data against .5 
+```{r, eval = FALSE}
+ggplot(data = data_df, aes(x = 1, y = dat)) +
+  geom_jitter(aes(x= 1.02), width = .01,
+              alpha = .7) +
+  stat_summary(fun.data = "mean_cl_boot",
+               size = .5, colour = "red") +
+  ylim(c(-.3,1.4))+
+  xlim(c(0.8,1.2))+
+  geom_hline(yintercept = .5, linetype =
+"dashed") +
+  theme_bw() +
+  labs(y = "Proportion", x = "") +
+  theme(axis.text.x = element_blank(),
+        panel.grid = element_blank(),
+        panel.border = element_blank(),
+        axis.ticks.x = element_blank())
+``` 
+---
+#  Test the data against .5 
+```{r, echo = FALSE}
+ggplot(data = data_df, aes(x = 1, y = dat)) +
+  geom_jitter(aes(x= 1.02), width = .01,
+              alpha = .7) +
+  stat_summary(fun.data = "mean_cl_boot",
+               size = .5, colour = "red") +
+  ylim(c(-.3,1.4))+
+  xlim(c(0.8,1.2))+
+  geom_hline(yintercept = .5, linetype =
+"dashed") +
+  theme_bw() +
+  labs(y = "Proportion", x = "") +
+  theme(axis.text.x = element_blank(),
+        panel.grid = element_blank(),
+        panel.border = element_blank(),
+        axis.ticks.x = element_blank())
+``` 
+---
+class: inverted, middle, center 
+# What did that code do?
+---
+class: inverted, middle, center 
+# Two group t-tests 
+---
+#  We need some data 
+```{r} 
+group_1 <- rnorm(50, 100, 10) 
+group_2 <- rnorm(50, 120, 20)
+groups <- rep(c(1,2), each = 50) 
+data_groups <- tibble(IQ = c(group_1, group_2),
+group = groups) 
+``` 
+---
+# Compare two groups 
+```{r, eval = FALSE}
+ggplot(data_groups,
+       aes(x = factor(groups),
+           y = IQ)) + 
+  geom_jitter(width = .01, alpha = .7) +
+  stat_summary(fun.data = "mean_cl_boot",
+               size = .5, colour = "red")+
+  ylim(c(50,175)) +
+  theme_bw() +
+  labs(y = "Proportion", x = "Group") +
+  theme(panel.grid = element_blank(),
+        panel.border = element_blank(),
+        axis.ticks.x = element_blank()) 
+``` 
+---
+# Compare two groups 
+```{r, echo = FALSE}
+ggplot(data_groups,
+       aes(x = factor(groups),
+           y = IQ)) + 
+  geom_jitter(width = .01, alpha = .7) +
+  stat_summary(fun.data = "mean_cl_boot",
+               size = .5, colour = "red")+
+  ylim(c(50,175)) +
+  theme_bw() +
+  labs(y = "Proportion", x = "Group") +
+  theme(panel.grid = element_blank(),
+        panel.border = element_blank(),
+        axis.ticks.x = element_blank()) 
+``` 
+
+---
+class: inverted, middle, center 
+# What did that code do? 
+---
+class: inverted, middle, center
+# Bi-variate correlations 
+---
+# We need some data 
+```{r}
+x <- rnorm(100, 100, 10) 
+y <- rnorm(100, 100,14) 
+
+corr_data <- tibble(x = x, y = y) 
+```
+---
+# Bi-variate correlation 
+```{r, eval = FALSE} 
+ggplot(corr_data, aes(x = x, y = y)) +
+  geom_point()+ 
+  geom_smooth(method = "lm",
+              se = FALSE)+
+  ylim(c(55,135))+
+  xlim(c(55,135))+
+  theme_bw() +
+  labs(y = "Y", x = "X") +
+  theme(panel.grid = element_blank(),
+        panel.border = element_blank())
+```
+---
+# Bi-variate correlation 
+```{r, echo = FALSE} 
+ggplot(corr_data, aes(x = x, y = y)) +
+  geom_point()+ 
+  geom_smooth(method = "lm",
+              se = FALSE)+
+  ylim(c(55,135))+
+  xlim(c(55,135))+
+  theme_bw() +
+  labs(y = "Y", x = "X") +
+  theme(panel.grid = element_blank(),
+        panel.border = element_blank())
+```
+---
+class: inverted, middle, center
+# What did that code do?
+---
+class: inverted, middle, center 
+# ANOVA (like) designs 
+---
+# We need some data
+```{r}
+a_data <- rnorm(100, 100, 10) 
+b_data <- rnorm(100, 110, 10) 
+c_data <- rnorm(100, 120, 10) 
+d_data <- rnorm(100, 130, 10) 
+aov_data <- tibble(dat = 
+                     c(a_data, b_data,
+                       c_data, d_data),
+                   group = factor(rep(c("A", "B",
+                                        "C", "D") ,
+                                      each = 100)))
+```
+---
+# One factor ANOVA
+```{r, eval = FALSE}
+
+aov_data %>% 
+  group_by(group) %>%
+  summarise(mean = mean(dat, na.rm = TRUE),
+            se = sd(dat)/sqrt(sum(!is.na(dat)))) %>%
+  ggplot(aes(x = group, y = mean,
+             color = group)) +
+  geom_point() +
+  geom_errorbar(aes(ymin = mean - 1.96*se,
+                    ymax = mean + 1.96*se),
+                width = .4) +
+  ylim(c(90,140)) +
+  theme_bw() +
+  labs(y = "IQ", x = "Group") +
+  theme(panel.grid = element_blank(),
+        panel.border = element_blank()) +
+  guides(color = "none") 
+```
+---
+# One factor ANOVA
+```{r, echo = FALSE}
+
+aov_data %>% 
+  group_by(group) %>%
+  summarise(mean = mean(dat, na.rm = TRUE),
+            se = sd(dat)/sqrt(sum(!is.na(dat)))) %>%
+  ggplot(aes(x = group, y = mean,
+             color = group)) +
+  geom_point() +
+  geom_errorbar(aes(ymin = mean - 1.96*se,
+                    ymax = mean + 1.96*se),
+                width = .4) +
+  ylim(c(90,140)) +
+  theme_bw() +
+  labs(y = "IQ", x = "Group") +
+  theme(panel.grid = element_blank(),
+        panel.border = element_blank()) +
+  guides(color = "none") 
+```
+
+---
+class: inverted, middle, center 
+# What did that code do? 
+---
+# We need some more data 
+
+```{r} 
+a_data <- rnorm(100, 100, 10)
+b_data <- rnorm(100, 110, 10)
+c_data <- rnorm(100, 120, 10)
+d_data <- rnorm(100, 130, 10)
+aov_data <- tibble(dat = c(a_data, b_data,
+                           c_data, d_data),
+                   group_1 = factor(rep(c("A", "B",
+                                          "C", "D"),
+                                        each = 100)),
+                   group_2 = factor(rep(rep(c("Alpha", "Beta"),
+                                            each = 50),4)))
+
+```
+---
+# Two factor ANOVA (like) design 
+
+```{r, eval = FALSE}
+aov_data %>% 
+  group_by(group_1, group_2) %>%
+  summarise(mean = mean(dat, 
+                        na.rm = TRUE),
+            se = sd(dat)/sqrt(sum(!is.na(dat)))) %>%
+  ggplot(aes(x = group_1, y = mean,
+             color = group_2)) +
+  geom_point(position = position_dodge(width = .3)) + 
+  geom_errorbar(aes(ymin = mean - 1.96*se,
+                    ymax = mean + 1.96*se), width = .4,
+                position = position_dodge(width = .3)) +
+  ylim(c(90,140))+
+  theme_bw() + 
+  labs(y = "IQ", x = "Group 1") + 
+  theme(panel.grid = element_blank(),
+        panel.border = element_blank(),
+        legend.position = "bottom") + 
+  scale_color_discrete(name = "Group 2")
+```
+---
+# Two factor ANOVA (like) design 
+```{r, echo = FALSE}
+aov_data %>% 
+  group_by(group_1, group_2) %>%
+  summarise(mean = mean(dat, 
+                        na.rm = TRUE),
+            se = sd(dat)/sqrt(sum(!is.na(dat)))) %>%
+  ggplot(aes(x = group_1, y = mean,
+             color = group_2)) +
+  geom_point(position = position_dodge(width = .3)) + 
+  geom_errorbar(aes(ymin = mean - 1.96*se,
+                    ymax = mean + 1.96*se), width = .4,
+                position = position_dodge(width = .3)) +
+  ylim(c(90,140))+
+  theme_bw() + 
+  labs(y = "IQ", x = "Group 1") + 
+  theme(panel.grid = element_blank(),
+        panel.border = element_blank(),
+        legend.position = "bottom") + 
+  scale_color_discrete(name = "Group 2")
+```
+---
+class: inverted, middle, center 
+# What did that code do?
+---
+class: inverted, middle, center
+# Graph for multiple regression
+---
+# The code
+```{r, eval = FALSE}
+library(dotwhisker)
+
+m1 <- lm(mpg ~ wt + cyl + disp + gear, data = mtcars)
+
+dwplot(m1) + 
+  theme_bw() + 
+  theme(panel.grid = element_blank(),
+        panel.border = element_blank(),
+        legend.position = "none") +
+  geom_vline(xintercept = 0, color = "grey", linetype = "dashed")
+  
+```
+---
+# The graph
+```{r, echo = FALSE, warnings = FALSE}
+library(dotwhisker)
+
+m1 <- lm(mpg ~ wt + cyl + disp + gear, data = mtcars)
+
+dwplot(m1) + 
+  theme_bw() + 
+  theme(panel.grid = element_blank(),
+        panel.border = element_blank(),
+        legend.position = "none") +
+  geom_vline(xintercept = 0, color = "grey", linetype = "dashed")
+  
+```
+---
+# Examination
+
+* The examination for this week is optional. 
+
+1. Choose two graphs from published papers.
+1. Recreate the graphs as closely as possible using `ggplot2`. The exercise is most fun if you chose graphs that are not so good.
+1. Improve the graphs by removing elements and/or highlighting data to make them more clear.
+
+* If you need to extract data from published graphs you can use the free web tool **WebPlotDigitizer**, which is available at: https://automeris.io/WebPlotDigitizer/
+
+---
+class: inverted, middle, center
+# That's all folks!

@@ -1,0 +1,78 @@
+@import url(https://fonts.googleapis.com/css?family=Lato);
+@import url(https://fonts.googleapis.com/css?family=Droid+Mono);
+
+body {
+  font-family: Lato, 'Palatino Linotype', 'Book Antiqua', Palatino, 'Microsoft YaHei', 'Songti SC', serif;
+}
+
+h1, h2, h3 {
+  font-family: Lato;
+  font-weight: normal;
+}
+
+div.remark-slide-container h1  {
+  font-size: 42px
+}
+div.remark-slide-container h2  {
+  font-size: 36px
+}
+
+.mid_page {
+  position: fixed; /* or absolute */
+  top: 30%;
+}
+
+.center_page {
+  position: fixed; /* or absolute */
+  left: 20%;
+}
+
+.title-slide {
+  background-image: url(uu_png.png), url(UCBL_Logo.jpg);
+  background-position: left 70px top 40px, right 70px top 60px;
+	background-size: 15%, 30%;
+}
+
+.title-slide-final{
+  background-image: url(uu.pdf), url(UCBL_Logo.jpg);
+  background-position: left 70px top 40px, right 70px top 60px;
+	background-size: 15%, 30%;
+	background-color: #fff;
+  padding-left: 100px;
+  text-align: center;
+  text-shadow: 0 0 20px #333;
+}
+
+
+.title-slide-final h1 {
+  color: #cc0033;
+}
+
+.title-slide h2{
+	font-size: 32px
+}
+
+.title-slide h3 {
+	font-size: 18px;
+}
+
+.title-slide .remark-slide-number {
+  display: none;
+}
+
+.tiny{font-size: 60%}
+
+div.remark-slide-container .fullscale {
+    color: #d6d6d6;
+    text-shadow: 0 0 20px #333;
+}
+
+div.remark-slide-container .fullscale h1 {
+	color: #fff;
+
+}
+
+div.remark-slide-container .fullscale p {
+	color: #000;
+
+}

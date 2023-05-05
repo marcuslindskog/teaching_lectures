@@ -1,0 +1,383 @@
+--- 
+title: "Statistics for Psychology 1" 
+subtitle: R for Psychology Research 
+author: "Marcus Lindskog, Docent"
+date: "2019-10-14"
+output:
+  xaringan::moon_reader:
+    lib_dir: libs
+    css: ["rutgers", "marcus_uu.css"]
+    nature:
+      highlightStyle: github
+      highlightLines: true
+      countIncrementalSlides: false
+      beforeInit: "../templates/macros.js"
+--- 
+```{r setup, include=FALSE}
+options(htmltools.dir.version = FALSE)
+knitr::opts_chunk$set(fig.dim=c(6, 6))
+library(tidyverse)
+library(knitr)
+library(DT)
+library(kableExtra)
+library(psych)
+```
+
+# Overview 
+1. Descriptive statistics
+1. Testing one mean and one proportion.
+1. Testing two means.
+1. Test of Independence
+1. Correlations
+---
+class: inverted, middle, center 
+# Descriptive statistics
+---
+# Descriptive statistics in R.
+
+* There are many ways to do descriptive statistics in R.
+--
+
+* The most simple is to use functions from Base R to calculate `mean()`, `sd()`.
+
+--
+
+* Another is to use the `summary()`-function in Base R to get basic descriptive statistics on all variables in a data frame.
+
+--
+* One way that gives you a comprehensive overview is `describe()` from the `psych` package
+
+--
+
+* If you want to customize, then go with `summarise()` in `dplyr`
+
+---
+
+```{r, eval = FALSE} 
+# code chunk here 
+library(psych)
+test_data <- bfi
+describe(test_data)
+```
+
+```{r, echo = FALSE} 
+# code chunk here 
+test_data <- bfi
+summary_statistics <- describe(test_data)
+
+kable(head(round(summary_statistics,2), 28), format='html')%>%
+  kable_styling(full_width = F,font_size =8) %>%
+  column_spec(1:13, width = "2em")
+```
+---
+
+# Grouping is also possible
+
+```{r, eval = FALSE} 
+# code chunk here 
+library(psych)
+test_data <- bfi
+by_group_summary <- describeBy(test_data,test_data$gender)
+by_group_summary[[1]]
+```
+
+```{r, echo = FALSE} 
+# code chunk here 
+by_group_summary <- describeBy(test_data, test_data$gender)
+
+kable(round(by_group_summary[[1]], 2), format='html')%>%
+  kable_styling(full_width = F,font_size =8) %>%
+  column_spec(1:13, width = "2em")
+```
+---
+class: inverted, middle, center 
+# Testing one mean and one proportion
+---
+# Single sample t-test
+* Single sample t-test is available in Base R.
+
+```{r, eval = FALSE} 
+t.test(x, y = NULL,
+       alternative = c("two.sided", "less", "greater"),
+       mu = 0, paired = FALSE, var.equal = FALSE,
+       conf.level = 0.95, ...)
+
+
+```
+--
+
+```{r} 
+t_test_data <- rnorm(100, mean = .6, sd =.2)
+
+critical_mu <- .5
+
+test_statistics <- t.test(t_test_data, mu = .5, 
+                          alternative = "greater")
+```
+---
+# T-test output
+
+```{r} 
+print(test_statistics)
+
+```
+
+---
+# Access parameters
+```{r} 
+#t-value
+test_statistics$statistic
+
+```
+--
+```{r} 
+#p-value
+test_statistics$p.value
+
+```
+
+--
+```{r} 
+#p-value
+test_statistics$conf.int
+```
+---
+# Testing proportions - Binomial test
+```{r} 
+binomial_data <- sample(c(0,1), 100, replace = TRUE)
+mean(binomial_data)
+```
+--
+```{r, eval = FALSE}
+binom.test(x,n,p=0.5,alternative=c("two.sided","less","greater"),
+    conf.level=0.95)
+```
+---
+# Binomial test
+```{r}
+binom_test <- binom.test(sum(binomial_data),
+                         length(binomial_data),p=0.5)
+print(binom_test)
+```
+--
+```{r}
+binom_test$estimate
+```
+---
+class: inverted, middle, center 
+# Testing two means
+---
+# Independent t-test
+```{r} 
+two_mean_data_g1 <- rnorm(100, 100, 10)
+two_mean_data_g2 <- rnorm(100, 110, 10)
+two_mean_data_groups <- rep(c(1,2), each = 100)
+two_mean_data <- tibble(Group = two_mean_data_groups,
+                        IQ = c(two_mean_data_g1, 
+                               two_mean_data_g2))
+```
+--
+```{r, echo = FALSE} 
+
+kable(head(two_mean_data, 10), 'html')
+```
+---
+# Independent t-test
+```{r, eval = FALSE} 
+t.test(x, y = NULL,
+       alternative = c("two.sided", "less", "greater"),
+       mu = 0, 
+       paired = FALSE, 
+       var.equal = FALSE,
+       conf.level = 0.95, ...)
+
+
+```
+---
+# Unequal variance
+```{r, eval = FALSE} 
+t.test(two_mean_data$IQ~two_mean_data$Group)
+
+```
+--
+```{r, echo = FALSE} 
+t.test(two_mean_data$IQ~two_mean_data$Group)
+
+```
+---
+# Equal variance
+```{r} 
+t.test(two_mean_data$IQ~two_mean_data$Group, var.equal = TRUE)
+
+```
+---
+# Paired t-test
+```{r, eval = FALSE} 
+t.test(x, y = NULL,
+       alternative = c("two.sided", "less", "greater"),
+       mu = 0, 
+       paired = FALSE,#<<
+       var.equal = FALSE,
+       conf.level = 0.95, ...)
+
+
+```
+---
+# Paired t-test
+```{r, eval = FALSE} 
+paired_t_test_statistics <- t.test(two_mean_data$IQ~
+                                     two_mean_data$Group,
+                                   paired = TRUE)
+
+paired_t_test_statistics
+
+```
+--
+```{r, echo = FALSE} 
+t.test(two_mean_data$IQ~two_mean_data$Group,
+       paired = TRUE)
+paired_t_test_statistics <- t.test(two_mean_data$IQ~
+                                     two_mean_data$Group,
+                                   paired = TRUE)
+
+```
+--
+```{r} 
+paired_t_test_statistics$stderr
+
+```
+---
+class: inverted, middle, center 
+# Non-parametric
+---
+# Mann-Whitney U-test
+* Aka. Wilcoxon rank-sum test,
+
+```{r, eval = FALSE} 
+wilcox.test(x, y = NULL,
+            alternative = c("two.sided", "less", "greater"),
+            mu = 0, paired = FALSE, exact = NULL, correct = TRUE,
+            conf.int = FALSE, conf.level = 0.95, ...)
+```
+--
+```{r} 
+wilcox.test(two_mean_data$IQ~two_mean_data$Group)
+```
+---
+# Wilcoxon signed-rank test
+```{r} 
+wilcox.test(two_mean_data$IQ~two_mean_data$Group,
+            paired = TRUE)
+```
+
+---
+class: inverted, middle, center 
+# Test of Independence
+---
+# $\chi^2$ - test of Independence
+
+```{r} 
+var_1 <- sample(c(1:4), 200, replace = TRUE)
+var_2 <- sample(c(1:4), 200, replace = TRUE)
+var_1 <- factor(var_1, levels = c(1,2,3,4), 
+                labels = c("very small", "small",
+                           "medium", "large" ))
+var_2 <- factor(var_2, levels = c(1,2,3,4), 
+                labels = c("very low", "low", 
+                           "high", "very high"))
+table_of_data <- table(var_1, var_2)
+table_of_data
+```
+
+---
+# $\chi^2$ - test of Independence
+```{r} 
+chi_sq_res <- chisq.test(table_of_data)
+chi_sq_res
+```
+---
+# Access the test statistics
+```{r} 
+chi_sq_res$observed
+```
+--
+```{r} 
+chi_sq_res$expected
+```
+
+---
+# Access the test statistics
+```{r} 
+chi_sq_res$statistic
+```
+--
+```{r} 
+chi_sq_res$p.value
+```
+---
+class: inverted, middle, center 
+# Correlations
+---
+# Pearson correlation
+```{r, eval=FALSE} 
+cor(x, y = NULL, use = "everything",
+    method = c("pearson", "kendall", "spearman"))
+```
+
+--
+```{r} 
+x <- rnorm(100)
+y <- rnorm(100)
+cor(x, y, method = "pearson")
+```
+--
+```{r, eval = FALSE} 
+cor.test(x, y,
+         alternative = c("two.sided", "less", "greater"),
+         method = c("pearson", "kendall", "spearman"),
+         exact = NULL, conf.level = 0.95, continuity = FALSE, ...)
+```
+---
+# Pearson correlation
+```{r} 
+pearson_results <- cor.test(x, y, method = "pearson")
+pearson_results
+```
+--
+```{r} 
+pearson_results$p.value
+```
+---
+# Kendaull's tau
+```{r} 
+cor.test(x, y, method = "kendall")
+```
+---
+# Spearman's rho
+```{r} 
+cor.test(x, y, method = "spearman")
+```
+---
+# Adjusted correlations
+```{r} 
+library(psych)
+
+psych_corr_test <- corr.test(bfi[1:5])
+```
+--
+```{r} 
+psych_corr_test$r
+```
+---
+# Adjusted correlations
+```{r} 
+psych_corr_test$n
+```
+--
+```{r} 
+psych_corr_test$p
+```
+
+---
+class: inverted, middle, center
+# That's all folks!

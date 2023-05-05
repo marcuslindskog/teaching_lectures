@@ -1,0 +1,1707 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml" lang="" xml:lang="">
+  <head>
+    <title>Statistics for Psychology 1</title>
+    <meta charset="utf-8" />
+    <meta name="author" content="Marcus Lindskog, Docent" />
+    <meta name="date" content="2019-10-14" />
+    <link href="libs/remark-css/rutgers.css" rel="stylesheet" />
+    <script src="libs/kePrint/kePrint.js"></script>
+    <link rel="stylesheet" href="marcus_uu.css" type="text/css" />
+  </head>
+  <body>
+    <textarea id="source">
+class: center, middle, inverse, title-slide
+
+# Statistics for Psychology 1
+## R for Psychology Research
+### Marcus Lindskog, Docent
+### 2019-10-14
+
+---
+
+
+
+# Overview 
+1. Descriptive statistics
+1. Testing one mean and one proportion.
+1. Testing two means.
+1. Test of Independence
+1. Correlations
+---
+class: inverted, middle, center 
+# Descriptive statistics
+---
+# Descriptive statistics in R.
+
+* There are many ways to do descriptive statistics in R.
+--
+
+* The most simple is to use functions from Base R to calculate `mean()`, `sd()`.
+
+--
+
+* Another is to use the `summary()`-function in Base R to get basic descriptive statistics on all variables in a data frame.
+
+--
+* One way that gives you a comprehensive overview is `describe()` from the `psych` package
+
+--
+
+* If you want to customize, then go with `summarise()` in `dplyr`
+
+---
+
+
+```r
+# code chunk here 
+library(psych)
+test_data &lt;- bfi
+describe(test_data)
+```
+
+&lt;table class="table" style="font-size: 8px; width: auto !important; margin-left: auto; margin-right: auto;"&gt;
+ &lt;thead&gt;
+  &lt;tr&gt;
+   &lt;th style="text-align:left;"&gt;   &lt;/th&gt;
+   &lt;th style="text-align:right;"&gt; vars &lt;/th&gt;
+   &lt;th style="text-align:right;"&gt; n &lt;/th&gt;
+   &lt;th style="text-align:right;"&gt; mean &lt;/th&gt;
+   &lt;th style="text-align:right;"&gt; sd &lt;/th&gt;
+   &lt;th style="text-align:right;"&gt; median &lt;/th&gt;
+   &lt;th style="text-align:right;"&gt; trimmed &lt;/th&gt;
+   &lt;th style="text-align:right;"&gt; mad &lt;/th&gt;
+   &lt;th style="text-align:right;"&gt; min &lt;/th&gt;
+   &lt;th style="text-align:right;"&gt; max &lt;/th&gt;
+   &lt;th style="text-align:right;"&gt; range &lt;/th&gt;
+   &lt;th style="text-align:right;"&gt; skew &lt;/th&gt;
+   &lt;th style="text-align:right;"&gt; kurtosis &lt;/th&gt;
+   &lt;th style="text-align:right;"&gt; se &lt;/th&gt;
+  &lt;/tr&gt;
+ &lt;/thead&gt;
+&lt;tbody&gt;
+  &lt;tr&gt;
+   &lt;td style="text-align:left;width: 2em; "&gt; A1 &lt;/td&gt;
+   &lt;td style="text-align:right;width: 2em; "&gt; 1 &lt;/td&gt;
+   &lt;td style="text-align:right;width: 2em; "&gt; 2784 &lt;/td&gt;
+   &lt;td style="text-align:right;width: 2em; "&gt; 2.41 &lt;/td&gt;
+   &lt;td style="text-align:right;width: 2em; "&gt; 1.41 &lt;/td&gt;
+   &lt;td style="text-align:right;width: 2em; "&gt; 2 &lt;/td&gt;
+   &lt;td style="text-align:right;width: 2em; "&gt; 2.23 &lt;/td&gt;
+   &lt;td style="text-align:right;width: 2em; "&gt; 1.48 &lt;/td&gt;
+   &lt;td style="text-align:right;width: 2em; "&gt; 1 &lt;/td&gt;
+   &lt;td style="text-align:right;width: 2em; "&gt; 6 &lt;/td&gt;
+   &lt;td style="text-align:right;width: 2em; "&gt; 5 &lt;/td&gt;
+   &lt;td style="text-align:right;width: 2em; "&gt; 0.83 &lt;/td&gt;
+   &lt;td style="text-align:right;width: 2em; "&gt; -0.31 &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 0.03 &lt;/td&gt;
+  &lt;/tr&gt;
+  &lt;tr&gt;
+   &lt;td style="text-align:left;width: 2em; "&gt; A2 &lt;/td&gt;
+   &lt;td style="text-align:right;width: 2em; "&gt; 2 &lt;/td&gt;
+   &lt;td style="text-align:right;width: 2em; "&gt; 2773 &lt;/td&gt;
+   &lt;td style="text-align:right;width: 2em; "&gt; 4.80 &lt;/td&gt;
+   &lt;td style="text-align:right;width: 2em; "&gt; 1.17 &lt;/td&gt;
+   &lt;td style="text-align:right;width: 2em; "&gt; 5 &lt;/td&gt;
+   &lt;td style="text-align:right;width: 2em; "&gt; 4.98 &lt;/td&gt;
+   &lt;td style="text-align:right;width: 2em; "&gt; 1.48 &lt;/td&gt;
+   &lt;td style="text-align:right;width: 2em; "&gt; 1 &lt;/td&gt;
+   &lt;td style="text-align:right;width: 2em; "&gt; 6 &lt;/td&gt;
+   &lt;td style="text-align:right;width: 2em; "&gt; 5 &lt;/td&gt;
+   &lt;td style="text-align:right;width: 2em; "&gt; -1.12 &lt;/td&gt;
+   &lt;td style="text-align:right;width: 2em; "&gt; 1.05 &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 0.02 &lt;/td&gt;
+  &lt;/tr&gt;
+  &lt;tr&gt;
+   &lt;td style="text-align:left;width: 2em; "&gt; A3 &lt;/td&gt;
+   &lt;td style="text-align:right;width: 2em; "&gt; 3 &lt;/td&gt;
+   &lt;td style="text-align:right;width: 2em; "&gt; 2774 &lt;/td&gt;
+   &lt;td style="text-align:right;width: 2em; "&gt; 4.60 &lt;/td&gt;
+   &lt;td style="text-align:right;width: 2em; "&gt; 1.30 &lt;/td&gt;
+   &lt;td style="text-align:right;width: 2em; "&gt; 5 &lt;/td&gt;
+   &lt;td style="text-align:right;width: 2em; "&gt; 4.79 &lt;/td&gt;
+   &lt;td style="text-align:right;width: 2em; "&gt; 1.48 &lt;/td&gt;
+   &lt;td style="text-align:right;width: 2em; "&gt; 1 &lt;/td&gt;
+   &lt;td style="text-align:right;width: 2em; "&gt; 6 &lt;/td&gt;
+   &lt;td style="text-align:right;width: 2em; "&gt; 5 &lt;/td&gt;
+   &lt;td style="text-align:right;width: 2em; "&gt; -1.00 &lt;/td&gt;
+   &lt;td style="text-align:right;width: 2em; "&gt; 0.44 &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 0.02 &lt;/td&gt;
+  &lt;/tr&gt;
+  &lt;tr&gt;
+   &lt;td style="text-align:left;width: 2em; "&gt; A4 &lt;/td&gt;
+   &lt;td style="text-align:right;width: 2em; "&gt; 4 &lt;/td&gt;
+   &lt;td style="text-align:right;width: 2em; "&gt; 2781 &lt;/td&gt;
+   &lt;td style="text-align:right;width: 2em; "&gt; 4.70 &lt;/td&gt;
+   &lt;td style="text-align:right;width: 2em; "&gt; 1.48 &lt;/td&gt;
+   &lt;td style="text-align:right;width: 2em; "&gt; 5 &lt;/td&gt;
+   &lt;td style="text-align:right;width: 2em; "&gt; 4.93 &lt;/td&gt;
+   &lt;td style="text-align:right;width: 2em; "&gt; 1.48 &lt;/td&gt;
+   &lt;td style="text-align:right;width: 2em; "&gt; 1 &lt;/td&gt;
+   &lt;td style="text-align:right;width: 2em; "&gt; 6 &lt;/td&gt;
+   &lt;td style="text-align:right;width: 2em; "&gt; 5 &lt;/td&gt;
+   &lt;td style="text-align:right;width: 2em; "&gt; -1.03 &lt;/td&gt;
+   &lt;td style="text-align:right;width: 2em; "&gt; 0.04 &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 0.03 &lt;/td&gt;
+  &lt;/tr&gt;
+  &lt;tr&gt;
+   &lt;td style="text-align:left;width: 2em; "&gt; A5 &lt;/td&gt;
+   &lt;td style="text-align:right;width: 2em; "&gt; 5 &lt;/td&gt;
+   &lt;td style="text-align:right;width: 2em; "&gt; 2784 &lt;/td&gt;
+   &lt;td style="text-align:right;width: 2em; "&gt; 4.56 &lt;/td&gt;
+   &lt;td style="text-align:right;width: 2em; "&gt; 1.26 &lt;/td&gt;
+   &lt;td style="text-align:right;width: 2em; "&gt; 5 &lt;/td&gt;
+   &lt;td style="text-align:right;width: 2em; "&gt; 4.71 &lt;/td&gt;
+   &lt;td style="text-align:right;width: 2em; "&gt; 1.48 &lt;/td&gt;
+   &lt;td style="text-align:right;width: 2em; "&gt; 1 &lt;/td&gt;
+   &lt;td style="text-align:right;width: 2em; "&gt; 6 &lt;/td&gt;
+   &lt;td style="text-align:right;width: 2em; "&gt; 5 &lt;/td&gt;
+   &lt;td style="text-align:right;width: 2em; "&gt; -0.85 &lt;/td&gt;
+   &lt;td style="text-align:right;width: 2em; "&gt; 0.16 &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 0.02 &lt;/td&gt;
+  &lt;/tr&gt;
+  &lt;tr&gt;
+   &lt;td style="text-align:left;width: 2em; "&gt; C1 &lt;/td&gt;
+   &lt;td style="text-align:right;width: 2em; "&gt; 6 &lt;/td&gt;
+   &lt;td style="text-align:right;width: 2em; "&gt; 2779 &lt;/td&gt;
+   &lt;td style="text-align:right;width: 2em; "&gt; 4.50 &lt;/td&gt;
+   &lt;td style="text-align:right;width: 2em; "&gt; 1.24 &lt;/td&gt;
+   &lt;td style="text-align:right;width: 2em; "&gt; 5 &lt;/td&gt;
+   &lt;td style="text-align:right;width: 2em; "&gt; 4.64 &lt;/td&gt;
+   &lt;td style="text-align:right;width: 2em; "&gt; 1.48 &lt;/td&gt;
+   &lt;td style="text-align:right;width: 2em; "&gt; 1 &lt;/td&gt;
+   &lt;td style="text-align:right;width: 2em; "&gt; 6 &lt;/td&gt;
+   &lt;td style="text-align:right;width: 2em; "&gt; 5 &lt;/td&gt;
+   &lt;td style="text-align:right;width: 2em; "&gt; -0.85 &lt;/td&gt;
+   &lt;td style="text-align:right;width: 2em; "&gt; 0.30 &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 0.02 &lt;/td&gt;
+  &lt;/tr&gt;
+  &lt;tr&gt;
+   &lt;td style="text-align:left;width: 2em; "&gt; C2 &lt;/td&gt;
+   &lt;td style="text-align:right;width: 2em; "&gt; 7 &lt;/td&gt;
+   &lt;td style="text-align:right;width: 2em; "&gt; 2776 &lt;/td&gt;
+   &lt;td style="text-align:right;width: 2em; "&gt; 4.37 &lt;/td&gt;
+   &lt;td style="text-align:right;width: 2em; "&gt; 1.32 &lt;/td&gt;
+   &lt;td style="text-align:right;width: 2em; "&gt; 5 &lt;/td&gt;
+   &lt;td style="text-align:right;width: 2em; "&gt; 4.50 &lt;/td&gt;
+   &lt;td style="text-align:right;width: 2em; "&gt; 1.48 &lt;/td&gt;
+   &lt;td style="text-align:right;width: 2em; "&gt; 1 &lt;/td&gt;
+   &lt;td style="text-align:right;width: 2em; "&gt; 6 &lt;/td&gt;
+   &lt;td style="text-align:right;width: 2em; "&gt; 5 &lt;/td&gt;
+   &lt;td style="text-align:right;width: 2em; "&gt; -0.74 &lt;/td&gt;
+   &lt;td style="text-align:right;width: 2em; "&gt; -0.14 &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 0.03 &lt;/td&gt;
+  &lt;/tr&gt;
+  &lt;tr&gt;
+   &lt;td style="text-align:left;width: 2em; "&gt; C3 &lt;/td&gt;
+   &lt;td style="text-align:right;width: 2em; "&gt; 8 &lt;/td&gt;
+   &lt;td style="text-align:right;width: 2em; "&gt; 2780 &lt;/td&gt;
+   &lt;td style="text-align:right;width: 2em; "&gt; 4.30 &lt;/td&gt;
+   &lt;td style="text-align:right;width: 2em; "&gt; 1.29 &lt;/td&gt;
+   &lt;td style="text-align:right;width: 2em; "&gt; 5 &lt;/td&gt;
+   &lt;td style="text-align:right;width: 2em; "&gt; 4.42 &lt;/td&gt;
+   &lt;td style="text-align:right;width: 2em; "&gt; 1.48 &lt;/td&gt;
+   &lt;td style="text-align:right;width: 2em; "&gt; 1 &lt;/td&gt;
+   &lt;td style="text-align:right;width: 2em; "&gt; 6 &lt;/td&gt;
+   &lt;td style="text-align:right;width: 2em; "&gt; 5 &lt;/td&gt;
+   &lt;td style="text-align:right;width: 2em; "&gt; -0.69 &lt;/td&gt;
+   &lt;td style="text-align:right;width: 2em; "&gt; -0.13 &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 0.02 &lt;/td&gt;
+  &lt;/tr&gt;
+  &lt;tr&gt;
+   &lt;td style="text-align:left;width: 2em; "&gt; C4 &lt;/td&gt;
+   &lt;td style="text-align:right;width: 2em; "&gt; 9 &lt;/td&gt;
+   &lt;td style="text-align:right;width: 2em; "&gt; 2774 &lt;/td&gt;
+   &lt;td style="text-align:right;width: 2em; "&gt; 2.55 &lt;/td&gt;
+   &lt;td style="text-align:right;width: 2em; "&gt; 1.38 &lt;/td&gt;
+   &lt;td style="text-align:right;width: 2em; "&gt; 2 &lt;/td&gt;
+   &lt;td style="text-align:right;width: 2em; "&gt; 2.41 &lt;/td&gt;
+   &lt;td style="text-align:right;width: 2em; "&gt; 1.48 &lt;/td&gt;
+   &lt;td style="text-align:right;width: 2em; "&gt; 1 &lt;/td&gt;
+   &lt;td style="text-align:right;width: 2em; "&gt; 6 &lt;/td&gt;
+   &lt;td style="text-align:right;width: 2em; "&gt; 5 &lt;/td&gt;
+   &lt;td style="text-align:right;width: 2em; "&gt; 0.60 &lt;/td&gt;
+   &lt;td style="text-align:right;width: 2em; "&gt; -0.62 &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 0.03 &lt;/td&gt;
+  &lt;/tr&gt;
+  &lt;tr&gt;
+   &lt;td style="text-align:left;width: 2em; "&gt; C5 &lt;/td&gt;
+   &lt;td style="text-align:right;width: 2em; "&gt; 10 &lt;/td&gt;
+   &lt;td style="text-align:right;width: 2em; "&gt; 2784 &lt;/td&gt;
+   &lt;td style="text-align:right;width: 2em; "&gt; 3.30 &lt;/td&gt;
+   &lt;td style="text-align:right;width: 2em; "&gt; 1.63 &lt;/td&gt;
+   &lt;td style="text-align:right;width: 2em; "&gt; 3 &lt;/td&gt;
+   &lt;td style="text-align:right;width: 2em; "&gt; 3.25 &lt;/td&gt;
+   &lt;td style="text-align:right;width: 2em; "&gt; 1.48 &lt;/td&gt;
+   &lt;td style="text-align:right;width: 2em; "&gt; 1 &lt;/td&gt;
+   &lt;td style="text-align:right;width: 2em; "&gt; 6 &lt;/td&gt;
+   &lt;td style="text-align:right;width: 2em; "&gt; 5 &lt;/td&gt;
+   &lt;td style="text-align:right;width: 2em; "&gt; 0.07 &lt;/td&gt;
+   &lt;td style="text-align:right;width: 2em; "&gt; -1.22 &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 0.03 &lt;/td&gt;
+  &lt;/tr&gt;
+  &lt;tr&gt;
+   &lt;td style="text-align:left;width: 2em; "&gt; E1 &lt;/td&gt;
+   &lt;td style="text-align:right;width: 2em; "&gt; 11 &lt;/td&gt;
+   &lt;td style="text-align:right;width: 2em; "&gt; 2777 &lt;/td&gt;
+   &lt;td style="text-align:right;width: 2em; "&gt; 2.97 &lt;/td&gt;
+   &lt;td style="text-align:right;width: 2em; "&gt; 1.63 &lt;/td&gt;
+   &lt;td style="text-align:right;width: 2em; "&gt; 3 &lt;/td&gt;
+   &lt;td style="text-align:right;width: 2em; "&gt; 2.86 &lt;/td&gt;
+   &lt;td style="text-align:right;width: 2em; "&gt; 1.48 &lt;/td&gt;
+   &lt;td style="text-align:right;width: 2em; "&gt; 1 &lt;/td&gt;
+   &lt;td style="text-align:right;width: 2em; "&gt; 6 &lt;/td&gt;
+   &lt;td style="text-align:right;width: 2em; "&gt; 5 &lt;/td&gt;
+   &lt;td style="text-align:right;width: 2em; "&gt; 0.37 &lt;/td&gt;
+   &lt;td style="text-align:right;width: 2em; "&gt; -1.09 &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 0.03 &lt;/td&gt;
+  &lt;/tr&gt;
+  &lt;tr&gt;
+   &lt;td style="text-align:left;width: 2em; "&gt; E2 &lt;/td&gt;
+   &lt;td style="text-align:right;width: 2em; "&gt; 12 &lt;/td&gt;
+   &lt;td style="text-align:right;width: 2em; "&gt; 2784 &lt;/td&gt;
+   &lt;td style="text-align:right;width: 2em; "&gt; 3.14 &lt;/td&gt;
+   &lt;td style="text-align:right;width: 2em; "&gt; 1.61 &lt;/td&gt;
+   &lt;td style="text-align:right;width: 2em; "&gt; 3 &lt;/td&gt;
+   &lt;td style="text-align:right;width: 2em; "&gt; 3.06 &lt;/td&gt;
+   &lt;td style="text-align:right;width: 2em; "&gt; 1.48 &lt;/td&gt;
+   &lt;td style="text-align:right;width: 2em; "&gt; 1 &lt;/td&gt;
+   &lt;td style="text-align:right;width: 2em; "&gt; 6 &lt;/td&gt;
+   &lt;td style="text-align:right;width: 2em; "&gt; 5 &lt;/td&gt;
+   &lt;td style="text-align:right;width: 2em; "&gt; 0.22 &lt;/td&gt;
+   &lt;td style="text-align:right;width: 2em; "&gt; -1.15 &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 0.03 &lt;/td&gt;
+  &lt;/tr&gt;
+  &lt;tr&gt;
+   &lt;td style="text-align:left;width: 2em; "&gt; E3 &lt;/td&gt;
+   &lt;td style="text-align:right;width: 2em; "&gt; 13 &lt;/td&gt;
+   &lt;td style="text-align:right;width: 2em; "&gt; 2775 &lt;/td&gt;
+   &lt;td style="text-align:right;width: 2em; "&gt; 4.00 &lt;/td&gt;
+   &lt;td style="text-align:right;width: 2em; "&gt; 1.35 &lt;/td&gt;
+   &lt;td style="text-align:right;width: 2em; "&gt; 4 &lt;/td&gt;
+   &lt;td style="text-align:right;width: 2em; "&gt; 4.07 &lt;/td&gt;
+   &lt;td style="text-align:right;width: 2em; "&gt; 1.48 &lt;/td&gt;
+   &lt;td style="text-align:right;width: 2em; "&gt; 1 &lt;/td&gt;
+   &lt;td style="text-align:right;width: 2em; "&gt; 6 &lt;/td&gt;
+   &lt;td style="text-align:right;width: 2em; "&gt; 5 &lt;/td&gt;
+   &lt;td style="text-align:right;width: 2em; "&gt; -0.47 &lt;/td&gt;
+   &lt;td style="text-align:right;width: 2em; "&gt; -0.47 &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 0.03 &lt;/td&gt;
+  &lt;/tr&gt;
+  &lt;tr&gt;
+   &lt;td style="text-align:left;width: 2em; "&gt; E4 &lt;/td&gt;
+   &lt;td style="text-align:right;width: 2em; "&gt; 14 &lt;/td&gt;
+   &lt;td style="text-align:right;width: 2em; "&gt; 2791 &lt;/td&gt;
+   &lt;td style="text-align:right;width: 2em; "&gt; 4.42 &lt;/td&gt;
+   &lt;td style="text-align:right;width: 2em; "&gt; 1.46 &lt;/td&gt;
+   &lt;td style="text-align:right;width: 2em; "&gt; 5 &lt;/td&gt;
+   &lt;td style="text-align:right;width: 2em; "&gt; 4.59 &lt;/td&gt;
+   &lt;td style="text-align:right;width: 2em; "&gt; 1.48 &lt;/td&gt;
+   &lt;td style="text-align:right;width: 2em; "&gt; 1 &lt;/td&gt;
+   &lt;td style="text-align:right;width: 2em; "&gt; 6 &lt;/td&gt;
+   &lt;td style="text-align:right;width: 2em; "&gt; 5 &lt;/td&gt;
+   &lt;td style="text-align:right;width: 2em; "&gt; -0.82 &lt;/td&gt;
+   &lt;td style="text-align:right;width: 2em; "&gt; -0.30 &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 0.03 &lt;/td&gt;
+  &lt;/tr&gt;
+  &lt;tr&gt;
+   &lt;td style="text-align:left;width: 2em; "&gt; E5 &lt;/td&gt;
+   &lt;td style="text-align:right;width: 2em; "&gt; 15 &lt;/td&gt;
+   &lt;td style="text-align:right;width: 2em; "&gt; 2779 &lt;/td&gt;
+   &lt;td style="text-align:right;width: 2em; "&gt; 4.42 &lt;/td&gt;
+   &lt;td style="text-align:right;width: 2em; "&gt; 1.33 &lt;/td&gt;
+   &lt;td style="text-align:right;width: 2em; "&gt; 5 &lt;/td&gt;
+   &lt;td style="text-align:right;width: 2em; "&gt; 4.56 &lt;/td&gt;
+   &lt;td style="text-align:right;width: 2em; "&gt; 1.48 &lt;/td&gt;
+   &lt;td style="text-align:right;width: 2em; "&gt; 1 &lt;/td&gt;
+   &lt;td style="text-align:right;width: 2em; "&gt; 6 &lt;/td&gt;
+   &lt;td style="text-align:right;width: 2em; "&gt; 5 &lt;/td&gt;
+   &lt;td style="text-align:right;width: 2em; "&gt; -0.78 &lt;/td&gt;
+   &lt;td style="text-align:right;width: 2em; "&gt; -0.09 &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 0.03 &lt;/td&gt;
+  &lt;/tr&gt;
+  &lt;tr&gt;
+   &lt;td style="text-align:left;width: 2em; "&gt; N1 &lt;/td&gt;
+   &lt;td style="text-align:right;width: 2em; "&gt; 16 &lt;/td&gt;
+   &lt;td style="text-align:right;width: 2em; "&gt; 2778 &lt;/td&gt;
+   &lt;td style="text-align:right;width: 2em; "&gt; 2.93 &lt;/td&gt;
+   &lt;td style="text-align:right;width: 2em; "&gt; 1.57 &lt;/td&gt;
+   &lt;td style="text-align:right;width: 2em; "&gt; 3 &lt;/td&gt;
+   &lt;td style="text-align:right;width: 2em; "&gt; 2.82 &lt;/td&gt;
+   &lt;td style="text-align:right;width: 2em; "&gt; 1.48 &lt;/td&gt;
+   &lt;td style="text-align:right;width: 2em; "&gt; 1 &lt;/td&gt;
+   &lt;td style="text-align:right;width: 2em; "&gt; 6 &lt;/td&gt;
+   &lt;td style="text-align:right;width: 2em; "&gt; 5 &lt;/td&gt;
+   &lt;td style="text-align:right;width: 2em; "&gt; 0.37 &lt;/td&gt;
+   &lt;td style="text-align:right;width: 2em; "&gt; -1.01 &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 0.03 &lt;/td&gt;
+  &lt;/tr&gt;
+  &lt;tr&gt;
+   &lt;td style="text-align:left;width: 2em; "&gt; N2 &lt;/td&gt;
+   &lt;td style="text-align:right;width: 2em; "&gt; 17 &lt;/td&gt;
+   &lt;td style="text-align:right;width: 2em; "&gt; 2779 &lt;/td&gt;
+   &lt;td style="text-align:right;width: 2em; "&gt; 3.51 &lt;/td&gt;
+   &lt;td style="text-align:right;width: 2em; "&gt; 1.53 &lt;/td&gt;
+   &lt;td style="text-align:right;width: 2em; "&gt; 4 &lt;/td&gt;
+   &lt;td style="text-align:right;width: 2em; "&gt; 3.51 &lt;/td&gt;
+   &lt;td style="text-align:right;width: 2em; "&gt; 1.48 &lt;/td&gt;
+   &lt;td style="text-align:right;width: 2em; "&gt; 1 &lt;/td&gt;
+   &lt;td style="text-align:right;width: 2em; "&gt; 6 &lt;/td&gt;
+   &lt;td style="text-align:right;width: 2em; "&gt; 5 &lt;/td&gt;
+   &lt;td style="text-align:right;width: 2em; "&gt; -0.08 &lt;/td&gt;
+   &lt;td style="text-align:right;width: 2em; "&gt; -1.05 &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 0.03 &lt;/td&gt;
+  &lt;/tr&gt;
+  &lt;tr&gt;
+   &lt;td style="text-align:left;width: 2em; "&gt; N3 &lt;/td&gt;
+   &lt;td style="text-align:right;width: 2em; "&gt; 18 &lt;/td&gt;
+   &lt;td style="text-align:right;width: 2em; "&gt; 2789 &lt;/td&gt;
+   &lt;td style="text-align:right;width: 2em; "&gt; 3.22 &lt;/td&gt;
+   &lt;td style="text-align:right;width: 2em; "&gt; 1.60 &lt;/td&gt;
+   &lt;td style="text-align:right;width: 2em; "&gt; 3 &lt;/td&gt;
+   &lt;td style="text-align:right;width: 2em; "&gt; 3.16 &lt;/td&gt;
+   &lt;td style="text-align:right;width: 2em; "&gt; 1.48 &lt;/td&gt;
+   &lt;td style="text-align:right;width: 2em; "&gt; 1 &lt;/td&gt;
+   &lt;td style="text-align:right;width: 2em; "&gt; 6 &lt;/td&gt;
+   &lt;td style="text-align:right;width: 2em; "&gt; 5 &lt;/td&gt;
+   &lt;td style="text-align:right;width: 2em; "&gt; 0.15 &lt;/td&gt;
+   &lt;td style="text-align:right;width: 2em; "&gt; -1.18 &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 0.03 &lt;/td&gt;
+  &lt;/tr&gt;
+  &lt;tr&gt;
+   &lt;td style="text-align:left;width: 2em; "&gt; N4 &lt;/td&gt;
+   &lt;td style="text-align:right;width: 2em; "&gt; 19 &lt;/td&gt;
+   &lt;td style="text-align:right;width: 2em; "&gt; 2764 &lt;/td&gt;
+   &lt;td style="text-align:right;width: 2em; "&gt; 3.19 &lt;/td&gt;
+   &lt;td style="text-align:right;width: 2em; "&gt; 1.57 &lt;/td&gt;
+   &lt;td style="text-align:right;width: 2em; "&gt; 3 &lt;/td&gt;
+   &lt;td style="text-align:right;width: 2em; "&gt; 3.12 &lt;/td&gt;
+   &lt;td style="text-align:right;width: 2em; "&gt; 1.48 &lt;/td&gt;
+   &lt;td style="text-align:right;width: 2em; "&gt; 1 &lt;/td&gt;
+   &lt;td style="text-align:right;width: 2em; "&gt; 6 &lt;/td&gt;
+   &lt;td style="text-align:right;width: 2em; "&gt; 5 &lt;/td&gt;
+   &lt;td style="text-align:right;width: 2em; "&gt; 0.20 &lt;/td&gt;
+   &lt;td style="text-align:right;width: 2em; "&gt; -1.09 &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 0.03 &lt;/td&gt;
+  &lt;/tr&gt;
+  &lt;tr&gt;
+   &lt;td style="text-align:left;width: 2em; "&gt; N5 &lt;/td&gt;
+   &lt;td style="text-align:right;width: 2em; "&gt; 20 &lt;/td&gt;
+   &lt;td style="text-align:right;width: 2em; "&gt; 2771 &lt;/td&gt;
+   &lt;td style="text-align:right;width: 2em; "&gt; 2.97 &lt;/td&gt;
+   &lt;td style="text-align:right;width: 2em; "&gt; 1.62 &lt;/td&gt;
+   &lt;td style="text-align:right;width: 2em; "&gt; 3 &lt;/td&gt;
+   &lt;td style="text-align:right;width: 2em; "&gt; 2.85 &lt;/td&gt;
+   &lt;td style="text-align:right;width: 2em; "&gt; 1.48 &lt;/td&gt;
+   &lt;td style="text-align:right;width: 2em; "&gt; 1 &lt;/td&gt;
+   &lt;td style="text-align:right;width: 2em; "&gt; 6 &lt;/td&gt;
+   &lt;td style="text-align:right;width: 2em; "&gt; 5 &lt;/td&gt;
+   &lt;td style="text-align:right;width: 2em; "&gt; 0.37 &lt;/td&gt;
+   &lt;td style="text-align:right;width: 2em; "&gt; -1.06 &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 0.03 &lt;/td&gt;
+  &lt;/tr&gt;
+  &lt;tr&gt;
+   &lt;td style="text-align:left;width: 2em; "&gt; O1 &lt;/td&gt;
+   &lt;td style="text-align:right;width: 2em; "&gt; 21 &lt;/td&gt;
+   &lt;td style="text-align:right;width: 2em; "&gt; 2778 &lt;/td&gt;
+   &lt;td style="text-align:right;width: 2em; "&gt; 4.82 &lt;/td&gt;
+   &lt;td style="text-align:right;width: 2em; "&gt; 1.13 &lt;/td&gt;
+   &lt;td style="text-align:right;width: 2em; "&gt; 5 &lt;/td&gt;
+   &lt;td style="text-align:right;width: 2em; "&gt; 4.96 &lt;/td&gt;
+   &lt;td style="text-align:right;width: 2em; "&gt; 1.48 &lt;/td&gt;
+   &lt;td style="text-align:right;width: 2em; "&gt; 1 &lt;/td&gt;
+   &lt;td style="text-align:right;width: 2em; "&gt; 6 &lt;/td&gt;
+   &lt;td style="text-align:right;width: 2em; "&gt; 5 &lt;/td&gt;
+   &lt;td style="text-align:right;width: 2em; "&gt; -0.90 &lt;/td&gt;
+   &lt;td style="text-align:right;width: 2em; "&gt; 0.43 &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 0.02 &lt;/td&gt;
+  &lt;/tr&gt;
+  &lt;tr&gt;
+   &lt;td style="text-align:left;width: 2em; "&gt; O2 &lt;/td&gt;
+   &lt;td style="text-align:right;width: 2em; "&gt; 22 &lt;/td&gt;
+   &lt;td style="text-align:right;width: 2em; "&gt; 2800 &lt;/td&gt;
+   &lt;td style="text-align:right;width: 2em; "&gt; 2.71 &lt;/td&gt;
+   &lt;td style="text-align:right;width: 2em; "&gt; 1.57 &lt;/td&gt;
+   &lt;td style="text-align:right;width: 2em; "&gt; 2 &lt;/td&gt;
+   &lt;td style="text-align:right;width: 2em; "&gt; 2.56 &lt;/td&gt;
+   &lt;td style="text-align:right;width: 2em; "&gt; 1.48 &lt;/td&gt;
+   &lt;td style="text-align:right;width: 2em; "&gt; 1 &lt;/td&gt;
+   &lt;td style="text-align:right;width: 2em; "&gt; 6 &lt;/td&gt;
+   &lt;td style="text-align:right;width: 2em; "&gt; 5 &lt;/td&gt;
+   &lt;td style="text-align:right;width: 2em; "&gt; 0.59 &lt;/td&gt;
+   &lt;td style="text-align:right;width: 2em; "&gt; -0.81 &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 0.03 &lt;/td&gt;
+  &lt;/tr&gt;
+  &lt;tr&gt;
+   &lt;td style="text-align:left;width: 2em; "&gt; O3 &lt;/td&gt;
+   &lt;td style="text-align:right;width: 2em; "&gt; 23 &lt;/td&gt;
+   &lt;td style="text-align:right;width: 2em; "&gt; 2772 &lt;/td&gt;
+   &lt;td style="text-align:right;width: 2em; "&gt; 4.44 &lt;/td&gt;
+   &lt;td style="text-align:right;width: 2em; "&gt; 1.22 &lt;/td&gt;
+   &lt;td style="text-align:right;width: 2em; "&gt; 5 &lt;/td&gt;
+   &lt;td style="text-align:right;width: 2em; "&gt; 4.56 &lt;/td&gt;
+   &lt;td style="text-align:right;width: 2em; "&gt; 1.48 &lt;/td&gt;
+   &lt;td style="text-align:right;width: 2em; "&gt; 1 &lt;/td&gt;
+   &lt;td style="text-align:right;width: 2em; "&gt; 6 &lt;/td&gt;
+   &lt;td style="text-align:right;width: 2em; "&gt; 5 &lt;/td&gt;
+   &lt;td style="text-align:right;width: 2em; "&gt; -0.77 &lt;/td&gt;
+   &lt;td style="text-align:right;width: 2em; "&gt; 0.30 &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 0.02 &lt;/td&gt;
+  &lt;/tr&gt;
+  &lt;tr&gt;
+   &lt;td style="text-align:left;width: 2em; "&gt; O4 &lt;/td&gt;
+   &lt;td style="text-align:right;width: 2em; "&gt; 24 &lt;/td&gt;
+   &lt;td style="text-align:right;width: 2em; "&gt; 2786 &lt;/td&gt;
+   &lt;td style="text-align:right;width: 2em; "&gt; 4.89 &lt;/td&gt;
+   &lt;td style="text-align:right;width: 2em; "&gt; 1.22 &lt;/td&gt;
+   &lt;td style="text-align:right;width: 2em; "&gt; 5 &lt;/td&gt;
+   &lt;td style="text-align:right;width: 2em; "&gt; 5.10 &lt;/td&gt;
+   &lt;td style="text-align:right;width: 2em; "&gt; 1.48 &lt;/td&gt;
+   &lt;td style="text-align:right;width: 2em; "&gt; 1 &lt;/td&gt;
+   &lt;td style="text-align:right;width: 2em; "&gt; 6 &lt;/td&gt;
+   &lt;td style="text-align:right;width: 2em; "&gt; 5 &lt;/td&gt;
+   &lt;td style="text-align:right;width: 2em; "&gt; -1.22 &lt;/td&gt;
+   &lt;td style="text-align:right;width: 2em; "&gt; 1.08 &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 0.02 &lt;/td&gt;
+  &lt;/tr&gt;
+  &lt;tr&gt;
+   &lt;td style="text-align:left;width: 2em; "&gt; O5 &lt;/td&gt;
+   &lt;td style="text-align:right;width: 2em; "&gt; 25 &lt;/td&gt;
+   &lt;td style="text-align:right;width: 2em; "&gt; 2780 &lt;/td&gt;
+   &lt;td style="text-align:right;width: 2em; "&gt; 2.49 &lt;/td&gt;
+   &lt;td style="text-align:right;width: 2em; "&gt; 1.33 &lt;/td&gt;
+   &lt;td style="text-align:right;width: 2em; "&gt; 2 &lt;/td&gt;
+   &lt;td style="text-align:right;width: 2em; "&gt; 2.34 &lt;/td&gt;
+   &lt;td style="text-align:right;width: 2em; "&gt; 1.48 &lt;/td&gt;
+   &lt;td style="text-align:right;width: 2em; "&gt; 1 &lt;/td&gt;
+   &lt;td style="text-align:right;width: 2em; "&gt; 6 &lt;/td&gt;
+   &lt;td style="text-align:right;width: 2em; "&gt; 5 &lt;/td&gt;
+   &lt;td style="text-align:right;width: 2em; "&gt; 0.74 &lt;/td&gt;
+   &lt;td style="text-align:right;width: 2em; "&gt; -0.24 &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 0.03 &lt;/td&gt;
+  &lt;/tr&gt;
+  &lt;tr&gt;
+   &lt;td style="text-align:left;width: 2em; "&gt; gender &lt;/td&gt;
+   &lt;td style="text-align:right;width: 2em; "&gt; 26 &lt;/td&gt;
+   &lt;td style="text-align:right;width: 2em; "&gt; 2800 &lt;/td&gt;
+   &lt;td style="text-align:right;width: 2em; "&gt; 1.67 &lt;/td&gt;
+   &lt;td style="text-align:right;width: 2em; "&gt; 0.47 &lt;/td&gt;
+   &lt;td style="text-align:right;width: 2em; "&gt; 2 &lt;/td&gt;
+   &lt;td style="text-align:right;width: 2em; "&gt; 1.71 &lt;/td&gt;
+   &lt;td style="text-align:right;width: 2em; "&gt; 0.00 &lt;/td&gt;
+   &lt;td style="text-align:right;width: 2em; "&gt; 1 &lt;/td&gt;
+   &lt;td style="text-align:right;width: 2em; "&gt; 2 &lt;/td&gt;
+   &lt;td style="text-align:right;width: 2em; "&gt; 1 &lt;/td&gt;
+   &lt;td style="text-align:right;width: 2em; "&gt; -0.73 &lt;/td&gt;
+   &lt;td style="text-align:right;width: 2em; "&gt; -1.47 &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 0.01 &lt;/td&gt;
+  &lt;/tr&gt;
+  &lt;tr&gt;
+   &lt;td style="text-align:left;width: 2em; "&gt; education &lt;/td&gt;
+   &lt;td style="text-align:right;width: 2em; "&gt; 27 &lt;/td&gt;
+   &lt;td style="text-align:right;width: 2em; "&gt; 2577 &lt;/td&gt;
+   &lt;td style="text-align:right;width: 2em; "&gt; 3.19 &lt;/td&gt;
+   &lt;td style="text-align:right;width: 2em; "&gt; 1.11 &lt;/td&gt;
+   &lt;td style="text-align:right;width: 2em; "&gt; 3 &lt;/td&gt;
+   &lt;td style="text-align:right;width: 2em; "&gt; 3.22 &lt;/td&gt;
+   &lt;td style="text-align:right;width: 2em; "&gt; 1.48 &lt;/td&gt;
+   &lt;td style="text-align:right;width: 2em; "&gt; 1 &lt;/td&gt;
+   &lt;td style="text-align:right;width: 2em; "&gt; 5 &lt;/td&gt;
+   &lt;td style="text-align:right;width: 2em; "&gt; 4 &lt;/td&gt;
+   &lt;td style="text-align:right;width: 2em; "&gt; -0.05 &lt;/td&gt;
+   &lt;td style="text-align:right;width: 2em; "&gt; -0.32 &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 0.02 &lt;/td&gt;
+  &lt;/tr&gt;
+  &lt;tr&gt;
+   &lt;td style="text-align:left;width: 2em; "&gt; age &lt;/td&gt;
+   &lt;td style="text-align:right;width: 2em; "&gt; 28 &lt;/td&gt;
+   &lt;td style="text-align:right;width: 2em; "&gt; 2800 &lt;/td&gt;
+   &lt;td style="text-align:right;width: 2em; "&gt; 28.78 &lt;/td&gt;
+   &lt;td style="text-align:right;width: 2em; "&gt; 11.13 &lt;/td&gt;
+   &lt;td style="text-align:right;width: 2em; "&gt; 26 &lt;/td&gt;
+   &lt;td style="text-align:right;width: 2em; "&gt; 27.43 &lt;/td&gt;
+   &lt;td style="text-align:right;width: 2em; "&gt; 10.38 &lt;/td&gt;
+   &lt;td style="text-align:right;width: 2em; "&gt; 3 &lt;/td&gt;
+   &lt;td style="text-align:right;width: 2em; "&gt; 86 &lt;/td&gt;
+   &lt;td style="text-align:right;width: 2em; "&gt; 83 &lt;/td&gt;
+   &lt;td style="text-align:right;width: 2em; "&gt; 1.02 &lt;/td&gt;
+   &lt;td style="text-align:right;width: 2em; "&gt; 0.56 &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 0.21 &lt;/td&gt;
+  &lt;/tr&gt;
+&lt;/tbody&gt;
+&lt;/table&gt;
+---
+
+# Grouping is also possible
+
+
+```r
+# code chunk here 
+library(psych)
+test_data &lt;- bfi
+by_group_summary &lt;- describeBy(test_data,test_data$gender)
+by_group_summary[[1]]
+```
+
+&lt;table class="table" style="font-size: 8px; width: auto !important; margin-left: auto; margin-right: auto;"&gt;
+ &lt;thead&gt;
+  &lt;tr&gt;
+   &lt;th style="text-align:left;"&gt;   &lt;/th&gt;
+   &lt;th style="text-align:right;"&gt; vars &lt;/th&gt;
+   &lt;th style="text-align:right;"&gt; n &lt;/th&gt;
+   &lt;th style="text-align:right;"&gt; mean &lt;/th&gt;
+   &lt;th style="text-align:right;"&gt; sd &lt;/th&gt;
+   &lt;th style="text-align:right;"&gt; median &lt;/th&gt;
+   &lt;th style="text-align:right;"&gt; trimmed &lt;/th&gt;
+   &lt;th style="text-align:right;"&gt; mad &lt;/th&gt;
+   &lt;th style="text-align:right;"&gt; min &lt;/th&gt;
+   &lt;th style="text-align:right;"&gt; max &lt;/th&gt;
+   &lt;th style="text-align:right;"&gt; range &lt;/th&gt;
+   &lt;th style="text-align:right;"&gt; skew &lt;/th&gt;
+   &lt;th style="text-align:right;"&gt; kurtosis &lt;/th&gt;
+   &lt;th style="text-align:right;"&gt; se &lt;/th&gt;
+  &lt;/tr&gt;
+ &lt;/thead&gt;
+&lt;tbody&gt;
+  &lt;tr&gt;
+   &lt;td style="text-align:left;width: 2em; "&gt; A1 &lt;/td&gt;
+   &lt;td style="text-align:right;width: 2em; "&gt; 1 &lt;/td&gt;
+   &lt;td style="text-align:right;width: 2em; "&gt; 918 &lt;/td&gt;
+   &lt;td style="text-align:right;width: 2em; "&gt; 2.73 &lt;/td&gt;
+   &lt;td style="text-align:right;width: 2em; "&gt; 1.43 &lt;/td&gt;
+   &lt;td style="text-align:right;width: 2em; "&gt; 2 &lt;/td&gt;
+   &lt;td style="text-align:right;width: 2em; "&gt; 2.62 &lt;/td&gt;
+   &lt;td style="text-align:right;width: 2em; "&gt; 1.48 &lt;/td&gt;
+   &lt;td style="text-align:right;width: 2em; "&gt; 1 &lt;/td&gt;
+   &lt;td style="text-align:right;width: 2em; "&gt; 6 &lt;/td&gt;
+   &lt;td style="text-align:right;width: 2em; "&gt; 5 &lt;/td&gt;
+   &lt;td style="text-align:right;width: 2em; "&gt; 0.56 &lt;/td&gt;
+   &lt;td style="text-align:right;width: 2em; "&gt; -0.69 &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 0.05 &lt;/td&gt;
+  &lt;/tr&gt;
+  &lt;tr&gt;
+   &lt;td style="text-align:left;width: 2em; "&gt; A2 &lt;/td&gt;
+   &lt;td style="text-align:right;width: 2em; "&gt; 2 &lt;/td&gt;
+   &lt;td style="text-align:right;width: 2em; "&gt; 908 &lt;/td&gt;
+   &lt;td style="text-align:right;width: 2em; "&gt; 4.50 &lt;/td&gt;
+   &lt;td style="text-align:right;width: 2em; "&gt; 1.26 &lt;/td&gt;
+   &lt;td style="text-align:right;width: 2em; "&gt; 5 &lt;/td&gt;
+   &lt;td style="text-align:right;width: 2em; "&gt; 4.65 &lt;/td&gt;
+   &lt;td style="text-align:right;width: 2em; "&gt; 1.48 &lt;/td&gt;
+   &lt;td style="text-align:right;width: 2em; "&gt; 1 &lt;/td&gt;
+   &lt;td style="text-align:right;width: 2em; "&gt; 6 &lt;/td&gt;
+   &lt;td style="text-align:right;width: 2em; "&gt; 5 &lt;/td&gt;
+   &lt;td style="text-align:right;width: 2em; "&gt; -0.89 &lt;/td&gt;
+   &lt;td style="text-align:right;width: 2em; "&gt; 0.34 &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 0.04 &lt;/td&gt;
+  &lt;/tr&gt;
+  &lt;tr&gt;
+   &lt;td style="text-align:left;width: 2em; "&gt; A3 &lt;/td&gt;
+   &lt;td style="text-align:right;width: 2em; "&gt; 3 &lt;/td&gt;
+   &lt;td style="text-align:right;width: 2em; "&gt; 912 &lt;/td&gt;
+   &lt;td style="text-align:right;width: 2em; "&gt; 4.34 &lt;/td&gt;
+   &lt;td style="text-align:right;width: 2em; "&gt; 1.33 &lt;/td&gt;
+   &lt;td style="text-align:right;width: 2em; "&gt; 5 &lt;/td&gt;
+   &lt;td style="text-align:right;width: 2em; "&gt; 4.47 &lt;/td&gt;
+   &lt;td style="text-align:right;width: 2em; "&gt; 1.48 &lt;/td&gt;
+   &lt;td style="text-align:right;width: 2em; "&gt; 1 &lt;/td&gt;
+   &lt;td style="text-align:right;width: 2em; "&gt; 6 &lt;/td&gt;
+   &lt;td style="text-align:right;width: 2em; "&gt; 5 &lt;/td&gt;
+   &lt;td style="text-align:right;width: 2em; "&gt; -0.75 &lt;/td&gt;
+   &lt;td style="text-align:right;width: 2em; "&gt; -0.11 &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 0.04 &lt;/td&gt;
+  &lt;/tr&gt;
+  &lt;tr&gt;
+   &lt;td style="text-align:left;width: 2em; "&gt; A4 &lt;/td&gt;
+   &lt;td style="text-align:right;width: 2em; "&gt; 4 &lt;/td&gt;
+   &lt;td style="text-align:right;width: 2em; "&gt; 916 &lt;/td&gt;
+   &lt;td style="text-align:right;width: 2em; "&gt; 4.43 &lt;/td&gt;
+   &lt;td style="text-align:right;width: 2em; "&gt; 1.48 &lt;/td&gt;
+   &lt;td style="text-align:right;width: 2em; "&gt; 5 &lt;/td&gt;
+   &lt;td style="text-align:right;width: 2em; "&gt; 4.60 &lt;/td&gt;
+   &lt;td style="text-align:right;width: 2em; "&gt; 1.48 &lt;/td&gt;
+   &lt;td style="text-align:right;width: 2em; "&gt; 1 &lt;/td&gt;
+   &lt;td style="text-align:right;width: 2em; "&gt; 6 &lt;/td&gt;
+   &lt;td style="text-align:right;width: 2em; "&gt; 5 &lt;/td&gt;
+   &lt;td style="text-align:right;width: 2em; "&gt; -0.76 &lt;/td&gt;
+   &lt;td style="text-align:right;width: 2em; "&gt; -0.39 &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 0.05 &lt;/td&gt;
+  &lt;/tr&gt;
+  &lt;tr&gt;
+   &lt;td style="text-align:left;width: 2em; "&gt; A5 &lt;/td&gt;
+   &lt;td style="text-align:right;width: 2em; "&gt; 5 &lt;/td&gt;
+   &lt;td style="text-align:right;width: 2em; "&gt; 915 &lt;/td&gt;
+   &lt;td style="text-align:right;width: 2em; "&gt; 4.38 &lt;/td&gt;
+   &lt;td style="text-align:right;width: 2em; "&gt; 1.32 &lt;/td&gt;
+   &lt;td style="text-align:right;width: 2em; "&gt; 5 &lt;/td&gt;
+   &lt;td style="text-align:right;width: 2em; "&gt; 4.51 &lt;/td&gt;
+   &lt;td style="text-align:right;width: 2em; "&gt; 1.48 &lt;/td&gt;
+   &lt;td style="text-align:right;width: 2em; "&gt; 1 &lt;/td&gt;
+   &lt;td style="text-align:right;width: 2em; "&gt; 6 &lt;/td&gt;
+   &lt;td style="text-align:right;width: 2em; "&gt; 5 &lt;/td&gt;
+   &lt;td style="text-align:right;width: 2em; "&gt; -0.72 &lt;/td&gt;
+   &lt;td style="text-align:right;width: 2em; "&gt; -0.20 &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 0.04 &lt;/td&gt;
+  &lt;/tr&gt;
+  &lt;tr&gt;
+   &lt;td style="text-align:left;width: 2em; "&gt; C1 &lt;/td&gt;
+   &lt;td style="text-align:right;width: 2em; "&gt; 6 &lt;/td&gt;
+   &lt;td style="text-align:right;width: 2em; "&gt; 913 &lt;/td&gt;
+   &lt;td style="text-align:right;width: 2em; "&gt; 4.48 &lt;/td&gt;
+   &lt;td style="text-align:right;width: 2em; "&gt; 1.24 &lt;/td&gt;
+   &lt;td style="text-align:right;width: 2em; "&gt; 5 &lt;/td&gt;
+   &lt;td style="text-align:right;width: 2em; "&gt; 4.61 &lt;/td&gt;
+   &lt;td style="text-align:right;width: 2em; "&gt; 1.48 &lt;/td&gt;
+   &lt;td style="text-align:right;width: 2em; "&gt; 1 &lt;/td&gt;
+   &lt;td style="text-align:right;width: 2em; "&gt; 6 &lt;/td&gt;
+   &lt;td style="text-align:right;width: 2em; "&gt; 5 &lt;/td&gt;
+   &lt;td style="text-align:right;width: 2em; "&gt; -0.80 &lt;/td&gt;
+   &lt;td style="text-align:right;width: 2em; "&gt; 0.17 &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 0.04 &lt;/td&gt;
+  &lt;/tr&gt;
+  &lt;tr&gt;
+   &lt;td style="text-align:left;width: 2em; "&gt; C2 &lt;/td&gt;
+   &lt;td style="text-align:right;width: 2em; "&gt; 7 &lt;/td&gt;
+   &lt;td style="text-align:right;width: 2em; "&gt; 913 &lt;/td&gt;
+   &lt;td style="text-align:right;width: 2em; "&gt; 4.24 &lt;/td&gt;
+   &lt;td style="text-align:right;width: 2em; "&gt; 1.34 &lt;/td&gt;
+   &lt;td style="text-align:right;width: 2em; "&gt; 5 &lt;/td&gt;
+   &lt;td style="text-align:right;width: 2em; "&gt; 4.34 &lt;/td&gt;
+   &lt;td style="text-align:right;width: 2em; "&gt; 1.48 &lt;/td&gt;
+   &lt;td style="text-align:right;width: 2em; "&gt; 1 &lt;/td&gt;
+   &lt;td style="text-align:right;width: 2em; "&gt; 6 &lt;/td&gt;
+   &lt;td style="text-align:right;width: 2em; "&gt; 5 &lt;/td&gt;
+   &lt;td style="text-align:right;width: 2em; "&gt; -0.61 &lt;/td&gt;
+   &lt;td style="text-align:right;width: 2em; "&gt; -0.42 &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 0.04 &lt;/td&gt;
+  &lt;/tr&gt;
+  &lt;tr&gt;
+   &lt;td style="text-align:left;width: 2em; "&gt; C3 &lt;/td&gt;
+   &lt;td style="text-align:right;width: 2em; "&gt; 8 &lt;/td&gt;
+   &lt;td style="text-align:right;width: 2em; "&gt; 910 &lt;/td&gt;
+   &lt;td style="text-align:right;width: 2em; "&gt; 4.20 &lt;/td&gt;
+   &lt;td style="text-align:right;width: 2em; "&gt; 1.32 &lt;/td&gt;
+   &lt;td style="text-align:right;width: 2em; "&gt; 4 &lt;/td&gt;
+   &lt;td style="text-align:right;width: 2em; "&gt; 4.30 &lt;/td&gt;
+   &lt;td style="text-align:right;width: 2em; "&gt; 1.48 &lt;/td&gt;
+   &lt;td style="text-align:right;width: 2em; "&gt; 1 &lt;/td&gt;
+   &lt;td style="text-align:right;width: 2em; "&gt; 6 &lt;/td&gt;
+   &lt;td style="text-align:right;width: 2em; "&gt; 5 &lt;/td&gt;
+   &lt;td style="text-align:right;width: 2em; "&gt; -0.63 &lt;/td&gt;
+   &lt;td style="text-align:right;width: 2em; "&gt; -0.35 &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 0.04 &lt;/td&gt;
+  &lt;/tr&gt;
+  &lt;tr&gt;
+   &lt;td style="text-align:left;width: 2em; "&gt; C4 &lt;/td&gt;
+   &lt;td style="text-align:right;width: 2em; "&gt; 9 &lt;/td&gt;
+   &lt;td style="text-align:right;width: 2em; "&gt; 911 &lt;/td&gt;
+   &lt;td style="text-align:right;width: 2em; "&gt; 2.72 &lt;/td&gt;
+   &lt;td style="text-align:right;width: 2em; "&gt; 1.41 &lt;/td&gt;
+   &lt;td style="text-align:right;width: 2em; "&gt; 2 &lt;/td&gt;
+   &lt;td style="text-align:right;width: 2em; "&gt; 2.61 &lt;/td&gt;
+   &lt;td style="text-align:right;width: 2em; "&gt; 1.48 &lt;/td&gt;
+   &lt;td style="text-align:right;width: 2em; "&gt; 1 &lt;/td&gt;
+   &lt;td style="text-align:right;width: 2em; "&gt; 6 &lt;/td&gt;
+   &lt;td style="text-align:right;width: 2em; "&gt; 5 &lt;/td&gt;
+   &lt;td style="text-align:right;width: 2em; "&gt; 0.41 &lt;/td&gt;
+   &lt;td style="text-align:right;width: 2em; "&gt; -0.86 &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 0.05 &lt;/td&gt;
+  &lt;/tr&gt;
+  &lt;tr&gt;
+   &lt;td style="text-align:left;width: 2em; "&gt; C5 &lt;/td&gt;
+   &lt;td style="text-align:right;width: 2em; "&gt; 10 &lt;/td&gt;
+   &lt;td style="text-align:right;width: 2em; "&gt; 914 &lt;/td&gt;
+   &lt;td style="text-align:right;width: 2em; "&gt; 3.51 &lt;/td&gt;
+   &lt;td style="text-align:right;width: 2em; "&gt; 1.65 &lt;/td&gt;
+   &lt;td style="text-align:right;width: 2em; "&gt; 4 &lt;/td&gt;
+   &lt;td style="text-align:right;width: 2em; "&gt; 3.52 &lt;/td&gt;
+   &lt;td style="text-align:right;width: 2em; "&gt; 1.48 &lt;/td&gt;
+   &lt;td style="text-align:right;width: 2em; "&gt; 1 &lt;/td&gt;
+   &lt;td style="text-align:right;width: 2em; "&gt; 6 &lt;/td&gt;
+   &lt;td style="text-align:right;width: 2em; "&gt; 5 &lt;/td&gt;
+   &lt;td style="text-align:right;width: 2em; "&gt; -0.13 &lt;/td&gt;
+   &lt;td style="text-align:right;width: 2em; "&gt; -1.23 &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 0.05 &lt;/td&gt;
+  &lt;/tr&gt;
+  &lt;tr&gt;
+   &lt;td style="text-align:left;width: 2em; "&gt; E1 &lt;/td&gt;
+   &lt;td style="text-align:right;width: 2em; "&gt; 11 &lt;/td&gt;
+   &lt;td style="text-align:right;width: 2em; "&gt; 913 &lt;/td&gt;
+   &lt;td style="text-align:right;width: 2em; "&gt; 3.27 &lt;/td&gt;
+   &lt;td style="text-align:right;width: 2em; "&gt; 1.66 &lt;/td&gt;
+   &lt;td style="text-align:right;width: 2em; "&gt; 3 &lt;/td&gt;
+   &lt;td style="text-align:right;width: 2em; "&gt; 3.21 &lt;/td&gt;
+   &lt;td style="text-align:right;width: 2em; "&gt; 1.48 &lt;/td&gt;
+   &lt;td style="text-align:right;width: 2em; "&gt; 1 &lt;/td&gt;
+   &lt;td style="text-align:right;width: 2em; "&gt; 6 &lt;/td&gt;
+   &lt;td style="text-align:right;width: 2em; "&gt; 5 &lt;/td&gt;
+   &lt;td style="text-align:right;width: 2em; "&gt; 0.15 &lt;/td&gt;
+   &lt;td style="text-align:right;width: 2em; "&gt; -1.24 &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 0.06 &lt;/td&gt;
+  &lt;/tr&gt;
+  &lt;tr&gt;
+   &lt;td style="text-align:left;width: 2em; "&gt; E2 &lt;/td&gt;
+   &lt;td style="text-align:right;width: 2em; "&gt; 12 &lt;/td&gt;
+   &lt;td style="text-align:right;width: 2em; "&gt; 913 &lt;/td&gt;
+   &lt;td style="text-align:right;width: 2em; "&gt; 3.27 &lt;/td&gt;
+   &lt;td style="text-align:right;width: 2em; "&gt; 1.61 &lt;/td&gt;
+   &lt;td style="text-align:right;width: 2em; "&gt; 3 &lt;/td&gt;
+   &lt;td style="text-align:right;width: 2em; "&gt; 3.21 &lt;/td&gt;
+   &lt;td style="text-align:right;width: 2em; "&gt; 1.48 &lt;/td&gt;
+   &lt;td style="text-align:right;width: 2em; "&gt; 1 &lt;/td&gt;
+   &lt;td style="text-align:right;width: 2em; "&gt; 6 &lt;/td&gt;
+   &lt;td style="text-align:right;width: 2em; "&gt; 5 &lt;/td&gt;
+   &lt;td style="text-align:right;width: 2em; "&gt; 0.12 &lt;/td&gt;
+   &lt;td style="text-align:right;width: 2em; "&gt; -1.18 &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 0.05 &lt;/td&gt;
+  &lt;/tr&gt;
+  &lt;tr&gt;
+   &lt;td style="text-align:left;width: 2em; "&gt; E3 &lt;/td&gt;
+   &lt;td style="text-align:right;width: 2em; "&gt; 13 &lt;/td&gt;
+   &lt;td style="text-align:right;width: 2em; "&gt; 908 &lt;/td&gt;
+   &lt;td style="text-align:right;width: 2em; "&gt; 3.91 &lt;/td&gt;
+   &lt;td style="text-align:right;width: 2em; "&gt; 1.40 &lt;/td&gt;
+   &lt;td style="text-align:right;width: 2em; "&gt; 4 &lt;/td&gt;
+   &lt;td style="text-align:right;width: 2em; "&gt; 3.97 &lt;/td&gt;
+   &lt;td style="text-align:right;width: 2em; "&gt; 1.48 &lt;/td&gt;
+   &lt;td style="text-align:right;width: 2em; "&gt; 1 &lt;/td&gt;
+   &lt;td style="text-align:right;width: 2em; "&gt; 6 &lt;/td&gt;
+   &lt;td style="text-align:right;width: 2em; "&gt; 5 &lt;/td&gt;
+   &lt;td style="text-align:right;width: 2em; "&gt; -0.41 &lt;/td&gt;
+   &lt;td style="text-align:right;width: 2em; "&gt; -0.63 &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 0.05 &lt;/td&gt;
+  &lt;/tr&gt;
+  &lt;tr&gt;
+   &lt;td style="text-align:left;width: 2em; "&gt; E4 &lt;/td&gt;
+   &lt;td style="text-align:right;width: 2em; "&gt; 14 &lt;/td&gt;
+   &lt;td style="text-align:right;width: 2em; "&gt; 915 &lt;/td&gt;
+   &lt;td style="text-align:right;width: 2em; "&gt; 4.27 &lt;/td&gt;
+   &lt;td style="text-align:right;width: 2em; "&gt; 1.50 &lt;/td&gt;
+   &lt;td style="text-align:right;width: 2em; "&gt; 5 &lt;/td&gt;
+   &lt;td style="text-align:right;width: 2em; "&gt; 4.41 &lt;/td&gt;
+   &lt;td style="text-align:right;width: 2em; "&gt; 1.48 &lt;/td&gt;
+   &lt;td style="text-align:right;width: 2em; "&gt; 1 &lt;/td&gt;
+   &lt;td style="text-align:right;width: 2em; "&gt; 6 &lt;/td&gt;
+   &lt;td style="text-align:right;width: 2em; "&gt; 5 &lt;/td&gt;
+   &lt;td style="text-align:right;width: 2em; "&gt; -0.70 &lt;/td&gt;
+   &lt;td style="text-align:right;width: 2em; "&gt; -0.58 &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 0.05 &lt;/td&gt;
+  &lt;/tr&gt;
+  &lt;tr&gt;
+   &lt;td style="text-align:left;width: 2em; "&gt; E5 &lt;/td&gt;
+   &lt;td style="text-align:right;width: 2em; "&gt; 15 &lt;/td&gt;
+   &lt;td style="text-align:right;width: 2em; "&gt; 915 &lt;/td&gt;
+   &lt;td style="text-align:right;width: 2em; "&gt; 4.29 &lt;/td&gt;
+   &lt;td style="text-align:right;width: 2em; "&gt; 1.37 &lt;/td&gt;
+   &lt;td style="text-align:right;width: 2em; "&gt; 5 &lt;/td&gt;
+   &lt;td style="text-align:right;width: 2em; "&gt; 4.40 &lt;/td&gt;
+   &lt;td style="text-align:right;width: 2em; "&gt; 1.48 &lt;/td&gt;
+   &lt;td style="text-align:right;width: 2em; "&gt; 1 &lt;/td&gt;
+   &lt;td style="text-align:right;width: 2em; "&gt; 6 &lt;/td&gt;
+   &lt;td style="text-align:right;width: 2em; "&gt; 5 &lt;/td&gt;
+   &lt;td style="text-align:right;width: 2em; "&gt; -0.64 &lt;/td&gt;
+   &lt;td style="text-align:right;width: 2em; "&gt; -0.36 &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 0.05 &lt;/td&gt;
+  &lt;/tr&gt;
+  &lt;tr&gt;
+   &lt;td style="text-align:left;width: 2em; "&gt; N1 &lt;/td&gt;
+   &lt;td style="text-align:right;width: 2em; "&gt; 16 &lt;/td&gt;
+   &lt;td style="text-align:right;width: 2em; "&gt; 910 &lt;/td&gt;
+   &lt;td style="text-align:right;width: 2em; "&gt; 2.83 &lt;/td&gt;
+   &lt;td style="text-align:right;width: 2em; "&gt; 1.56 &lt;/td&gt;
+   &lt;td style="text-align:right;width: 2em; "&gt; 3 &lt;/td&gt;
+   &lt;td style="text-align:right;width: 2em; "&gt; 2.73 &lt;/td&gt;
+   &lt;td style="text-align:right;width: 2em; "&gt; 1.48 &lt;/td&gt;
+   &lt;td style="text-align:right;width: 2em; "&gt; 1 &lt;/td&gt;
+   &lt;td style="text-align:right;width: 2em; "&gt; 6 &lt;/td&gt;
+   &lt;td style="text-align:right;width: 2em; "&gt; 5 &lt;/td&gt;
+   &lt;td style="text-align:right;width: 2em; "&gt; 0.40 &lt;/td&gt;
+   &lt;td style="text-align:right;width: 2em; "&gt; -1.04 &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 0.05 &lt;/td&gt;
+  &lt;/tr&gt;
+  &lt;tr&gt;
+   &lt;td style="text-align:left;width: 2em; "&gt; N2 &lt;/td&gt;
+   &lt;td style="text-align:right;width: 2em; "&gt; 17 &lt;/td&gt;
+   &lt;td style="text-align:right;width: 2em; "&gt; 915 &lt;/td&gt;
+   &lt;td style="text-align:right;width: 2em; "&gt; 3.30 &lt;/td&gt;
+   &lt;td style="text-align:right;width: 2em; "&gt; 1.52 &lt;/td&gt;
+   &lt;td style="text-align:right;width: 2em; "&gt; 3 &lt;/td&gt;
+   &lt;td style="text-align:right;width: 2em; "&gt; 3.27 &lt;/td&gt;
+   &lt;td style="text-align:right;width: 2em; "&gt; 1.48 &lt;/td&gt;
+   &lt;td style="text-align:right;width: 2em; "&gt; 1 &lt;/td&gt;
+   &lt;td style="text-align:right;width: 2em; "&gt; 6 &lt;/td&gt;
+   &lt;td style="text-align:right;width: 2em; "&gt; 5 &lt;/td&gt;
+   &lt;td style="text-align:right;width: 2em; "&gt; 0.04 &lt;/td&gt;
+   &lt;td style="text-align:right;width: 2em; "&gt; -1.07 &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 0.05 &lt;/td&gt;
+  &lt;/tr&gt;
+  &lt;tr&gt;
+   &lt;td style="text-align:left;width: 2em; "&gt; N3 &lt;/td&gt;
+   &lt;td style="text-align:right;width: 2em; "&gt; 18 &lt;/td&gt;
+   &lt;td style="text-align:right;width: 2em; "&gt; 917 &lt;/td&gt;
+   &lt;td style="text-align:right;width: 2em; "&gt; 2.94 &lt;/td&gt;
+   &lt;td style="text-align:right;width: 2em; "&gt; 1.54 &lt;/td&gt;
+   &lt;td style="text-align:right;width: 2em; "&gt; 3 &lt;/td&gt;
+   &lt;td style="text-align:right;width: 2em; "&gt; 2.86 &lt;/td&gt;
+   &lt;td style="text-align:right;width: 2em; "&gt; 1.48 &lt;/td&gt;
+   &lt;td style="text-align:right;width: 2em; "&gt; 1 &lt;/td&gt;
+   &lt;td style="text-align:right;width: 2em; "&gt; 6 &lt;/td&gt;
+   &lt;td style="text-align:right;width: 2em; "&gt; 5 &lt;/td&gt;
+   &lt;td style="text-align:right;width: 2em; "&gt; 0.31 &lt;/td&gt;
+   &lt;td style="text-align:right;width: 2em; "&gt; -1.08 &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 0.05 &lt;/td&gt;
+  &lt;/tr&gt;
+  &lt;tr&gt;
+   &lt;td style="text-align:left;width: 2em; "&gt; N4 &lt;/td&gt;
+   &lt;td style="text-align:right;width: 2em; "&gt; 19 &lt;/td&gt;
+   &lt;td style="text-align:right;width: 2em; "&gt; 910 &lt;/td&gt;
+   &lt;td style="text-align:right;width: 2em; "&gt; 3.19 &lt;/td&gt;
+   &lt;td style="text-align:right;width: 2em; "&gt; 1.59 &lt;/td&gt;
+   &lt;td style="text-align:right;width: 2em; "&gt; 3 &lt;/td&gt;
+   &lt;td style="text-align:right;width: 2em; "&gt; 3.13 &lt;/td&gt;
+   &lt;td style="text-align:right;width: 2em; "&gt; 1.48 &lt;/td&gt;
+   &lt;td style="text-align:right;width: 2em; "&gt; 1 &lt;/td&gt;
+   &lt;td style="text-align:right;width: 2em; "&gt; 6 &lt;/td&gt;
+   &lt;td style="text-align:right;width: 2em; "&gt; 5 &lt;/td&gt;
+   &lt;td style="text-align:right;width: 2em; "&gt; 0.15 &lt;/td&gt;
+   &lt;td style="text-align:right;width: 2em; "&gt; -1.14 &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 0.05 &lt;/td&gt;
+  &lt;/tr&gt;
+  &lt;tr&gt;
+   &lt;td style="text-align:left;width: 2em; "&gt; N5 &lt;/td&gt;
+   &lt;td style="text-align:right;width: 2em; "&gt; 20 &lt;/td&gt;
+   &lt;td style="text-align:right;width: 2em; "&gt; 909 &lt;/td&gt;
+   &lt;td style="text-align:right;width: 2em; "&gt; 2.48 &lt;/td&gt;
+   &lt;td style="text-align:right;width: 2em; "&gt; 1.49 &lt;/td&gt;
+   &lt;td style="text-align:right;width: 2em; "&gt; 2 &lt;/td&gt;
+   &lt;td style="text-align:right;width: 2em; "&gt; 2.30 &lt;/td&gt;
+   &lt;td style="text-align:right;width: 2em; "&gt; 1.48 &lt;/td&gt;
+   &lt;td style="text-align:right;width: 2em; "&gt; 1 &lt;/td&gt;
+   &lt;td style="text-align:right;width: 2em; "&gt; 6 &lt;/td&gt;
+   &lt;td style="text-align:right;width: 2em; "&gt; 5 &lt;/td&gt;
+   &lt;td style="text-align:right;width: 2em; "&gt; 0.76 &lt;/td&gt;
+   &lt;td style="text-align:right;width: 2em; "&gt; -0.54 &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 0.05 &lt;/td&gt;
+  &lt;/tr&gt;
+  &lt;tr&gt;
+   &lt;td style="text-align:left;width: 2em; "&gt; O1 &lt;/td&gt;
+   &lt;td style="text-align:right;width: 2em; "&gt; 21 &lt;/td&gt;
+   &lt;td style="text-align:right;width: 2em; "&gt; 913 &lt;/td&gt;
+   &lt;td style="text-align:right;width: 2em; "&gt; 4.98 &lt;/td&gt;
+   &lt;td style="text-align:right;width: 2em; "&gt; 1.08 &lt;/td&gt;
+   &lt;td style="text-align:right;width: 2em; "&gt; 5 &lt;/td&gt;
+   &lt;td style="text-align:right;width: 2em; "&gt; 5.15 &lt;/td&gt;
+   &lt;td style="text-align:right;width: 2em; "&gt; 1.48 &lt;/td&gt;
+   &lt;td style="text-align:right;width: 2em; "&gt; 1 &lt;/td&gt;
+   &lt;td style="text-align:right;width: 2em; "&gt; 6 &lt;/td&gt;
+   &lt;td style="text-align:right;width: 2em; "&gt; 5 &lt;/td&gt;
+   &lt;td style="text-align:right;width: 2em; "&gt; -1.15 &lt;/td&gt;
+   &lt;td style="text-align:right;width: 2em; "&gt; 1.22 &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 0.04 &lt;/td&gt;
+  &lt;/tr&gt;
+  &lt;tr&gt;
+   &lt;td style="text-align:left;width: 2em; "&gt; O2 &lt;/td&gt;
+   &lt;td style="text-align:right;width: 2em; "&gt; 22 &lt;/td&gt;
+   &lt;td style="text-align:right;width: 2em; "&gt; 919 &lt;/td&gt;
+   &lt;td style="text-align:right;width: 2em; "&gt; 2.65 &lt;/td&gt;
+   &lt;td style="text-align:right;width: 2em; "&gt; 1.56 &lt;/td&gt;
+   &lt;td style="text-align:right;width: 2em; "&gt; 2 &lt;/td&gt;
+   &lt;td style="text-align:right;width: 2em; "&gt; 2.48 &lt;/td&gt;
+   &lt;td style="text-align:right;width: 2em; "&gt; 1.48 &lt;/td&gt;
+   &lt;td style="text-align:right;width: 2em; "&gt; 1 &lt;/td&gt;
+   &lt;td style="text-align:right;width: 2em; "&gt; 6 &lt;/td&gt;
+   &lt;td style="text-align:right;width: 2em; "&gt; 5 &lt;/td&gt;
+   &lt;td style="text-align:right;width: 2em; "&gt; 0.66 &lt;/td&gt;
+   &lt;td style="text-align:right;width: 2em; "&gt; -0.70 &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 0.05 &lt;/td&gt;
+  &lt;/tr&gt;
+  &lt;tr&gt;
+   &lt;td style="text-align:left;width: 2em; "&gt; O3 &lt;/td&gt;
+   &lt;td style="text-align:right;width: 2em; "&gt; 23 &lt;/td&gt;
+   &lt;td style="text-align:right;width: 2em; "&gt; 915 &lt;/td&gt;
+   &lt;td style="text-align:right;width: 2em; "&gt; 4.50 &lt;/td&gt;
+   &lt;td style="text-align:right;width: 2em; "&gt; 1.22 &lt;/td&gt;
+   &lt;td style="text-align:right;width: 2em; "&gt; 5 &lt;/td&gt;
+   &lt;td style="text-align:right;width: 2em; "&gt; 4.63 &lt;/td&gt;
+   &lt;td style="text-align:right;width: 2em; "&gt; 1.48 &lt;/td&gt;
+   &lt;td style="text-align:right;width: 2em; "&gt; 1 &lt;/td&gt;
+   &lt;td style="text-align:right;width: 2em; "&gt; 6 &lt;/td&gt;
+   &lt;td style="text-align:right;width: 2em; "&gt; 5 &lt;/td&gt;
+   &lt;td style="text-align:right;width: 2em; "&gt; -0.87 &lt;/td&gt;
+   &lt;td style="text-align:right;width: 2em; "&gt; 0.56 &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 0.04 &lt;/td&gt;
+  &lt;/tr&gt;
+  &lt;tr&gt;
+   &lt;td style="text-align:left;width: 2em; "&gt; O4 &lt;/td&gt;
+   &lt;td style="text-align:right;width: 2em; "&gt; 24 &lt;/td&gt;
+   &lt;td style="text-align:right;width: 2em; "&gt; 913 &lt;/td&gt;
+   &lt;td style="text-align:right;width: 2em; "&gt; 4.90 &lt;/td&gt;
+   &lt;td style="text-align:right;width: 2em; "&gt; 1.24 &lt;/td&gt;
+   &lt;td style="text-align:right;width: 2em; "&gt; 5 &lt;/td&gt;
+   &lt;td style="text-align:right;width: 2em; "&gt; 5.11 &lt;/td&gt;
+   &lt;td style="text-align:right;width: 2em; "&gt; 1.48 &lt;/td&gt;
+   &lt;td style="text-align:right;width: 2em; "&gt; 1 &lt;/td&gt;
+   &lt;td style="text-align:right;width: 2em; "&gt; 6 &lt;/td&gt;
+   &lt;td style="text-align:right;width: 2em; "&gt; 5 &lt;/td&gt;
+   &lt;td style="text-align:right;width: 2em; "&gt; -1.21 &lt;/td&gt;
+   &lt;td style="text-align:right;width: 2em; "&gt; 0.97 &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 0.04 &lt;/td&gt;
+  &lt;/tr&gt;
+  &lt;tr&gt;
+   &lt;td style="text-align:left;width: 2em; "&gt; O5 &lt;/td&gt;
+   &lt;td style="text-align:right;width: 2em; "&gt; 25 &lt;/td&gt;
+   &lt;td style="text-align:right;width: 2em; "&gt; 915 &lt;/td&gt;
+   &lt;td style="text-align:right;width: 2em; "&gt; 2.45 &lt;/td&gt;
+   &lt;td style="text-align:right;width: 2em; "&gt; 1.37 &lt;/td&gt;
+   &lt;td style="text-align:right;width: 2em; "&gt; 2 &lt;/td&gt;
+   &lt;td style="text-align:right;width: 2em; "&gt; 2.27 &lt;/td&gt;
+   &lt;td style="text-align:right;width: 2em; "&gt; 1.48 &lt;/td&gt;
+   &lt;td style="text-align:right;width: 2em; "&gt; 1 &lt;/td&gt;
+   &lt;td style="text-align:right;width: 2em; "&gt; 6 &lt;/td&gt;
+   &lt;td style="text-align:right;width: 2em; "&gt; 5 &lt;/td&gt;
+   &lt;td style="text-align:right;width: 2em; "&gt; 0.83 &lt;/td&gt;
+   &lt;td style="text-align:right;width: 2em; "&gt; -0.14 &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 0.05 &lt;/td&gt;
+  &lt;/tr&gt;
+  &lt;tr&gt;
+   &lt;td style="text-align:left;width: 2em; "&gt; gender &lt;/td&gt;
+   &lt;td style="text-align:right;width: 2em; "&gt; 26 &lt;/td&gt;
+   &lt;td style="text-align:right;width: 2em; "&gt; 919 &lt;/td&gt;
+   &lt;td style="text-align:right;width: 2em; "&gt; 1.00 &lt;/td&gt;
+   &lt;td style="text-align:right;width: 2em; "&gt; 0.00 &lt;/td&gt;
+   &lt;td style="text-align:right;width: 2em; "&gt; 1 &lt;/td&gt;
+   &lt;td style="text-align:right;width: 2em; "&gt; 1.00 &lt;/td&gt;
+   &lt;td style="text-align:right;width: 2em; "&gt; 0.00 &lt;/td&gt;
+   &lt;td style="text-align:right;width: 2em; "&gt; 1 &lt;/td&gt;
+   &lt;td style="text-align:right;width: 2em; "&gt; 1 &lt;/td&gt;
+   &lt;td style="text-align:right;width: 2em; "&gt; 0 &lt;/td&gt;
+   &lt;td style="text-align:right;width: 2em; "&gt; NaN &lt;/td&gt;
+   &lt;td style="text-align:right;width: 2em; "&gt; NaN &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 0.00 &lt;/td&gt;
+  &lt;/tr&gt;
+  &lt;tr&gt;
+   &lt;td style="text-align:left;width: 2em; "&gt; education &lt;/td&gt;
+   &lt;td style="text-align:right;width: 2em; "&gt; 27 &lt;/td&gt;
+   &lt;td style="text-align:right;width: 2em; "&gt; 838 &lt;/td&gt;
+   &lt;td style="text-align:right;width: 2em; "&gt; 3.18 &lt;/td&gt;
+   &lt;td style="text-align:right;width: 2em; "&gt; 1.19 &lt;/td&gt;
+   &lt;td style="text-align:right;width: 2em; "&gt; 3 &lt;/td&gt;
+   &lt;td style="text-align:right;width: 2em; "&gt; 3.22 &lt;/td&gt;
+   &lt;td style="text-align:right;width: 2em; "&gt; 1.48 &lt;/td&gt;
+   &lt;td style="text-align:right;width: 2em; "&gt; 1 &lt;/td&gt;
+   &lt;td style="text-align:right;width: 2em; "&gt; 5 &lt;/td&gt;
+   &lt;td style="text-align:right;width: 2em; "&gt; 4 &lt;/td&gt;
+   &lt;td style="text-align:right;width: 2em; "&gt; -0.10 &lt;/td&gt;
+   &lt;td style="text-align:right;width: 2em; "&gt; -0.62 &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 0.04 &lt;/td&gt;
+  &lt;/tr&gt;
+  &lt;tr&gt;
+   &lt;td style="text-align:left;width: 2em; "&gt; age &lt;/td&gt;
+   &lt;td style="text-align:right;width: 2em; "&gt; 28 &lt;/td&gt;
+   &lt;td style="text-align:right;width: 2em; "&gt; 919 &lt;/td&gt;
+   &lt;td style="text-align:right;width: 2em; "&gt; 28.02 &lt;/td&gt;
+   &lt;td style="text-align:right;width: 2em; "&gt; 11.03 &lt;/td&gt;
+   &lt;td style="text-align:right;width: 2em; "&gt; 25 &lt;/td&gt;
+   &lt;td style="text-align:right;width: 2em; "&gt; 26.49 &lt;/td&gt;
+   &lt;td style="text-align:right;width: 2em; "&gt; 8.90 &lt;/td&gt;
+   &lt;td style="text-align:right;width: 2em; "&gt; 3 &lt;/td&gt;
+   &lt;td style="text-align:right;width: 2em; "&gt; 74 &lt;/td&gt;
+   &lt;td style="text-align:right;width: 2em; "&gt; 71 &lt;/td&gt;
+   &lt;td style="text-align:right;width: 2em; "&gt; 1.23 &lt;/td&gt;
+   &lt;td style="text-align:right;width: 2em; "&gt; 1.22 &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 0.36 &lt;/td&gt;
+  &lt;/tr&gt;
+&lt;/tbody&gt;
+&lt;/table&gt;
+---
+class: inverted, middle, center 
+# Testing one mean and one proportion
+---
+# Single sample t-test
+* Single sample t-test is available in Base R.
+
+
+```r
+t.test(x, y = NULL,
+       alternative = c("two.sided", "less", "greater"),
+       mu = 0, paired = FALSE, var.equal = FALSE,
+       conf.level = 0.95, ...)
+```
+--
+
+
+```r
+t_test_data &lt;- rnorm(100, mean = .6, sd =.2)
+
+critical_mu &lt;- .5
+
+test_statistics &lt;- t.test(t_test_data, mu = .5, 
+                          alternative = "greater")
+```
+---
+# T-test output
+
+
+```r
+print(test_statistics)
+```
+
+```
+## 
+## 	One Sample t-test
+## 
+## data:  t_test_data
+## t = 5.44, df = 99, p-value = 1.929e-07
+## alternative hypothesis: true mean is greater than 0.5
+## 95 percent confidence interval:
+##  0.5759811       Inf
+## sample estimates:
+## mean of x 
+## 0.6093601
+```
+
+---
+# Access parameters
+
+```r
+#t-value
+test_statistics$statistic
+```
+
+```
+##        t 
+## 5.439952
+```
+--
+
+```r
+#p-value
+test_statistics$p.value
+```
+
+```
+## [1] 1.928896e-07
+```
+
+--
+
+```r
+#p-value
+test_statistics$conf.int
+```
+
+```
+## [1] 0.5759811       Inf
+## attr(,"conf.level")
+## [1] 0.95
+```
+---
+# Testing proportions - Binomial test
+
+```r
+binomial_data &lt;- sample(c(0,1), 100, replace = TRUE)
+mean(binomial_data)
+```
+
+```
+## [1] 0.48
+```
+--
+
+```r
+binom.test(x,n,p=0.5,alternative=c("two.sided","less","greater"),
+    conf.level=0.95)
+```
+---
+# Binomial test
+
+```r
+binom_test &lt;- binom.test(sum(binomial_data),
+                         length(binomial_data),p=0.5)
+print(binom_test)
+```
+
+```
+## 
+## 	Exact binomial test
+## 
+## data:  sum(binomial_data) and length(binomial_data)
+## number of successes = 48, number of trials = 100, p-value = 0.7644
+## alternative hypothesis: true probability of success is not equal to 0.5
+## 95 percent confidence interval:
+##  0.3790055 0.5822102
+## sample estimates:
+## probability of success 
+##                   0.48
+```
+--
+
+```r
+binom_test$estimate
+```
+
+```
+## probability of success 
+##                   0.48
+```
+---
+class: inverted, middle, center 
+# Testing two means
+---
+# Independent t-test
+
+```r
+two_mean_data_g1 &lt;- rnorm(100, 100, 10)
+two_mean_data_g2 &lt;- rnorm(100, 110, 10)
+two_mean_data_groups &lt;- rep(c(1,2), each = 100)
+two_mean_data &lt;- tibble(Group = two_mean_data_groups,
+                        IQ = c(two_mean_data_g1, 
+                               two_mean_data_g2))
+```
+--
+&lt;table&gt;
+ &lt;thead&gt;
+  &lt;tr&gt;
+   &lt;th style="text-align:right;"&gt; Group &lt;/th&gt;
+   &lt;th style="text-align:right;"&gt; IQ &lt;/th&gt;
+  &lt;/tr&gt;
+ &lt;/thead&gt;
+&lt;tbody&gt;
+  &lt;tr&gt;
+   &lt;td style="text-align:right;"&gt; 1 &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 105.09253 &lt;/td&gt;
+  &lt;/tr&gt;
+  &lt;tr&gt;
+   &lt;td style="text-align:right;"&gt; 1 &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 118.24950 &lt;/td&gt;
+  &lt;/tr&gt;
+  &lt;tr&gt;
+   &lt;td style="text-align:right;"&gt; 1 &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 85.98776 &lt;/td&gt;
+  &lt;/tr&gt;
+  &lt;tr&gt;
+   &lt;td style="text-align:right;"&gt; 1 &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 95.51200 &lt;/td&gt;
+  &lt;/tr&gt;
+  &lt;tr&gt;
+   &lt;td style="text-align:right;"&gt; 1 &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 91.91916 &lt;/td&gt;
+  &lt;/tr&gt;
+  &lt;tr&gt;
+   &lt;td style="text-align:right;"&gt; 1 &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 108.65098 &lt;/td&gt;
+  &lt;/tr&gt;
+  &lt;tr&gt;
+   &lt;td style="text-align:right;"&gt; 1 &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 112.88644 &lt;/td&gt;
+  &lt;/tr&gt;
+  &lt;tr&gt;
+   &lt;td style="text-align:right;"&gt; 1 &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 99.09051 &lt;/td&gt;
+  &lt;/tr&gt;
+  &lt;tr&gt;
+   &lt;td style="text-align:right;"&gt; 1 &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 85.06170 &lt;/td&gt;
+  &lt;/tr&gt;
+  &lt;tr&gt;
+   &lt;td style="text-align:right;"&gt; 1 &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 84.10629 &lt;/td&gt;
+  &lt;/tr&gt;
+&lt;/tbody&gt;
+&lt;/table&gt;
+---
+# Independent t-test
+
+```r
+t.test(x, y = NULL,
+       alternative = c("two.sided", "less", "greater"),
+       mu = 0, 
+       paired = FALSE, 
+       var.equal = FALSE,
+       conf.level = 0.95, ...)
+```
+---
+# Unequal variance
+
+```r
+t.test(two_mean_data$IQ~two_mean_data$Group)
+```
+--
+
+```
+## 
+## 	Welch Two Sample t-test
+## 
+## data:  two_mean_data$IQ by two_mean_data$Group
+## t = -8.8878, df = 197.61, p-value = 3.89e-16
+## alternative hypothesis: true difference in means is not equal to 0
+## 95 percent confidence interval:
+##  -15.426396  -9.823851
+## sample estimates:
+## mean in group 1 mean in group 2 
+##         97.8682        110.4933
+```
+---
+# Equal variance
+
+```r
+t.test(two_mean_data$IQ~two_mean_data$Group, var.equal = TRUE)
+```
+
+```
+## 
+## 	Two Sample t-test
+## 
+## data:  two_mean_data$IQ by two_mean_data$Group
+## t = -8.8878, df = 198, p-value = 3.851e-16
+## alternative hypothesis: true difference in means is not equal to 0
+## 95 percent confidence interval:
+##  -15.426363  -9.823885
+## sample estimates:
+## mean in group 1 mean in group 2 
+##         97.8682        110.4933
+```
+---
+# Paired t-test
+
+```r
+t.test(x, y = NULL,
+       alternative = c("two.sided", "less", "greater"),
+       mu = 0, 
+*      paired = FALSE,
+       var.equal = FALSE,
+       conf.level = 0.95, ...)
+```
+---
+# Paired t-test
+
+```r
+paired_t_test_statistics &lt;- t.test(two_mean_data$IQ~
+                                     two_mean_data$Group,
+                                   paired = TRUE)
+
+paired_t_test_statistics
+```
+--
+
+```
+## 
+## 	Paired t-test
+## 
+## data:  two_mean_data$IQ by two_mean_data$Group
+## t = -9.5156, df = 99, p-value = 1.247e-15
+## alternative hypothesis: true difference in means is not equal to 0
+## 95 percent confidence interval:
+##  -15.257739  -9.992509
+## sample estimates:
+## mean of the differences 
+##               -12.62512
+```
+--
+
+```r
+paired_t_test_statistics$stderr
+```
+
+```
+## NULL
+```
+---
+class: inverted, middle, center 
+# Non-parametric
+---
+# Mann-Whitney U-test
+* Aka. Wilcoxon rank-sum test,
+
+
+```r
+wilcox.test(x, y = NULL,
+            alternative = c("two.sided", "less", "greater"),
+            mu = 0, paired = FALSE, exact = NULL, correct = TRUE,
+            conf.int = FALSE, conf.level = 0.95, ...)
+```
+--
+
+```r
+wilcox.test(two_mean_data$IQ~two_mean_data$Group)
+```
+
+```
+## 
+## 	Wilcoxon rank sum test with continuity correction
+## 
+## data:  two_mean_data$IQ by two_mean_data$Group
+## W = 1870, p-value = 2.064e-14
+## alternative hypothesis: true location shift is not equal to 0
+```
+---
+# Wilcoxon signed-rank test
+
+```r
+wilcox.test(two_mean_data$IQ~two_mean_data$Group,
+            paired = TRUE)
+```
+
+```
+## 
+## 	Wilcoxon signed rank test with continuity correction
+## 
+## data:  two_mean_data$IQ by two_mean_data$Group
+## V = 408, p-value = 3.408e-13
+## alternative hypothesis: true location shift is not equal to 0
+```
+
+---
+class: inverted, middle, center 
+# Test of Independence
+---
+# `\(\chi^2\)` - test of Independence
+
+
+```r
+var_1 &lt;- sample(c(1:4), 200, replace = TRUE)
+var_2 &lt;- sample(c(1:4), 200, replace = TRUE)
+var_1 &lt;- factor(var_1, levels = c(1,2,3,4), 
+                labels = c("very small", "small",
+                           "medium", "large" ))
+var_2 &lt;- factor(var_2, levels = c(1,2,3,4), 
+                labels = c("very low", "low", 
+                           "high", "very high"))
+table_of_data &lt;- table(var_1, var_2)
+table_of_data
+```
+
+```
+##             var_2
+## var_1        very low low high very high
+##   very small       13   8   11        12
+##   small            16  10   17        16
+##   medium            9   9   18        18
+##   large             6  13   15         9
+```
+
+---
+# `\(\chi^2\)` - test of Independence
+
+```r
+chi_sq_res &lt;- chisq.test(table_of_data)
+chi_sq_res
+```
+
+```
+## 
+## 	Pearson's Chi-squared test
+## 
+## data:  table_of_data
+## X-squared = 8.955, df = 9, p-value = 0.4414
+```
+---
+# Access the test statistics
+
+```r
+chi_sq_res$observed
+```
+
+```
+##             var_2
+## var_1        very low low high very high
+##   very small       13   8   11        12
+##   small            16  10   17        16
+##   medium            9   9   18        18
+##   large             6  13   15         9
+```
+--
+
+```r
+chi_sq_res$expected
+```
+
+```
+##             var_2
+## var_1        very low  low   high very high
+##   very small     9.68  8.8 13.420    12.100
+##   small         12.98 11.8 17.995    16.225
+##   medium        11.88 10.8 16.470    14.850
+##   large          9.46  8.6 13.115    11.825
+```
+
+---
+# Access the test statistics
+
+```r
+chi_sq_res$statistic
+```
+
+```
+## X-squared 
+##  8.954965
+```
+--
+
+```r
+chi_sq_res$p.value
+```
+
+```
+## [1] 0.4414417
+```
+---
+class: inverted, middle, center 
+# Correlations
+---
+# Pearson correlation
+
+```r
+cor(x, y = NULL, use = "everything",
+    method = c("pearson", "kendall", "spearman"))
+```
+
+--
+
+```r
+x &lt;- rnorm(100)
+y &lt;- rnorm(100)
+cor(x, y, method = "pearson")
+```
+
+```
+## [1] -0.1001111
+```
+--
+
+```r
+cor.test(x, y,
+         alternative = c("two.sided", "less", "greater"),
+         method = c("pearson", "kendall", "spearman"),
+         exact = NULL, conf.level = 0.95, continuity = FALSE, ...)
+```
+---
+# Pearson correlation
+
+```r
+pearson_results &lt;- cor.test(x, y, method = "pearson")
+pearson_results
+```
+
+```
+## 
+## 	Pearson's product-moment correlation
+## 
+## data:  x and y
+## t = -0.99605, df = 98, p-value = 0.3217
+## alternative hypothesis: true correlation is not equal to 0
+## 95 percent confidence interval:
+##  -0.29081084  0.09823872
+## sample estimates:
+##        cor 
+## -0.1001111
+```
+--
+
+```r
+pearson_results$p.value
+```
+
+```
+## [1] 0.3216772
+```
+---
+# Kendaull's tau
+
+```r
+cor.test(x, y, method = "kendall")
+```
+
+```
+## 
+## 	Kendall's rank correlation tau
+## 
+## data:  x and y
+## z = -1.0781, p-value = 0.281
+## alternative hypothesis: true tau is not equal to 0
+## sample estimates:
+##         tau 
+## -0.07313131
+```
+---
+# Spearman's rho
+
+```r
+cor.test(x, y, method = "spearman")
+```
+
+```
+## 
+## 	Spearman's rank correlation rho
+## 
+## data:  x and y
+## S = 184320, p-value = 0.2932
+## alternative hypothesis: true rho is not equal to 0
+## sample estimates:
+##        rho 
+## -0.1060306
+```
+---
+# Adjusted correlations
+
+```r
+library(psych)
+
+psych_corr_test &lt;- corr.test(bfi[1:5])
+```
+--
+
+```r
+psych_corr_test$r
+```
+
+```
+##            A1         A2         A3         A4         A5
+## A1  1.0000000 -0.3401932 -0.2652471 -0.1464245 -0.1814383
+## A2 -0.3401932  1.0000000  0.4850980  0.3350872  0.3900836
+## A3 -0.2652471  0.4850980  1.0000000  0.3604283  0.5041411
+## A4 -0.1464245  0.3350872  0.3604283  1.0000000  0.3075373
+## A5 -0.1814383  0.3900836  0.5041411  0.3075373  1.0000000
+```
+---
+# Adjusted correlations
+
+```r
+psych_corr_test$n
+```
+
+```
+##      A1   A2   A3   A4   A5
+## A1 2784 2757 2759 2767 2769
+## A2 2757 2773 2751 2758 2757
+## A3 2759 2751 2774 2759 2758
+## A4 2767 2758 2759 2781 2765
+## A5 2769 2757 2758 2765 2784
+```
+--
+
+```r
+psych_corr_test$p
+```
+
+```
+##              A1            A2            A3           A4            A5
+## A1 0.000000e+00  7.027155e-75  3.611010e-45 9.899828e-15  1.276542e-21
+## A2 1.171192e-75  0.000000e+00 1.963460e-161 1.192214e-72 5.516048e-100
+## A3 1.203670e-45 2.181622e-162  0.000000e+00 1.442527e-84 9.679490e-177
+## A4 9.899828e-15  2.384428e-73  2.060752e-85 0.000000e+00  4.817510e-61
+## A5 6.382709e-22 6.895059e-101 9.679490e-178 1.204378e-61  0.000000e+00
+```
+
+---
+class: inverted, middle, center
+# That's all folks!
+    </textarea>
+<style data-target="print-only">@media screen {.remark-slide-container{display:block;}.remark-slide-scaler{box-shadow:none;}}</style>
+<script src="https://remarkjs.com/downloads/remark-latest.min.js"></script>
+<script src="../templates/macros.js"></script>
+<script>var slideshow = remark.create({
+"highlightStyle": "github",
+"highlightLines": true,
+"countIncrementalSlides": false
+});
+if (window.HTMLWidgets) slideshow.on('afterShowSlide', function (slide) {
+  window.dispatchEvent(new Event('resize'));
+});
+(function(d) {
+  var s = d.createElement("style"), r = d.querySelector(".remark-slide-scaler");
+  if (!r) return;
+  s.type = "text/css"; s.innerHTML = "@page {size: " + r.style.width + " " + r.style.height +"; }";
+  d.head.appendChild(s);
+})(document);
+
+(function(d) {
+  var el = d.getElementsByClassName("remark-slides-area");
+  if (!el) return;
+  var slide, slides = slideshow.getSlides(), els = el[0].children;
+  for (var i = 1; i < slides.length; i++) {
+    slide = slides[i];
+    if (slide.properties.continued === "true" || slide.properties.count === "false") {
+      els[i - 1].className += ' has-continuation';
+    }
+  }
+  var s = d.createElement("style");
+  s.type = "text/css"; s.innerHTML = "@media print { .has-continuation { display: none; } }";
+  d.head.appendChild(s);
+})(document);
+// delete the temporary CSS (for displaying all slides initially) when the user
+// starts to view slides
+(function() {
+  var deleted = false;
+  slideshow.on('beforeShowSlide', function(slide) {
+    if (deleted) return;
+    var sheets = document.styleSheets, node;
+    for (var i = 0; i < sheets.length; i++) {
+      node = sheets[i].ownerNode;
+      if (node.dataset["target"] !== "print-only") continue;
+      node.parentNode.removeChild(node);
+    }
+    deleted = true;
+  });
+})();
+// adds .remark-code-has-line-highlighted class to <pre> parent elements
+// of code chunks containing highlighted lines with class .remark-code-line-highlighted
+(function(d) {
+  const hlines = d.querySelectorAll('.remark-code-line-highlighted');
+  const preParents = [];
+  const findPreParent = function(line, p = 0) {
+    if (p > 1) return null; // traverse up no further than grandparent
+    const el = line.parentElement;
+    return el.tagName === "PRE" ? el : findPreParent(el, ++p);
+  };
+
+  for (let line of hlines) {
+    let pre = findPreParent(line);
+    if (pre && !preParents.includes(pre)) preParents.push(pre);
+  }
+  preParents.forEach(p => p.classList.add("remark-code-has-line-highlighted"));
+})(document);</script>
+
+<script>
+(function() {
+  var links = document.getElementsByTagName('a');
+  for (var i = 0; i < links.length; i++) {
+    if (/^(https?:)?\/\//.test(links[i].getAttribute('href'))) {
+      links[i].target = '_blank';
+    }
+  }
+})();
+</script>
+
+<script>
+slideshow._releaseMath = function(el) {
+  var i, text, code, codes = el.getElementsByTagName('code');
+  for (i = 0; i < codes.length;) {
+    code = codes[i];
+    if (code.parentNode.tagName !== 'PRE' && code.childElementCount === 0) {
+      text = code.textContent;
+      if (/^\\\((.|\s)+\\\)$/.test(text) || /^\\\[(.|\s)+\\\]$/.test(text) ||
+          /^\$\$(.|\s)+\$\$$/.test(text) ||
+          /^\\begin\{([^}]+)\}(.|\s)+\\end\{[^}]+\}$/.test(text)) {
+        code.outerHTML = code.innerHTML;  // remove <code></code>
+        continue;
+      }
+    }
+    i++;
+  }
+};
+slideshow._releaseMath(document);
+</script>
+<!-- dynamically load mathjax for compatibility with self-contained -->
+<script>
+(function () {
+  var script = document.createElement('script');
+  script.type = 'text/javascript';
+  script.src  = 'https://mathjax.rstudio.com/latest/MathJax.js?config=TeX-MML-AM_CHTML';
+  if (location.protocol !== 'file:' && /^https?:/.test(script.src))
+    script.src  = script.src.replace(/^https?:/, '');
+  document.getElementsByTagName('head')[0].appendChild(script);
+})();
+</script>
+  </body>
+</html>

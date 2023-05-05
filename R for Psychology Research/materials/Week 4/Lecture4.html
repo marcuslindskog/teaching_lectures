@@ -1,0 +1,771 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml" lang="" xml:lang="">
+  <head>
+    <title>Data Wrangling - Importing and preparing data for analyses</title>
+    <meta charset="utf-8" />
+    <meta name="author" content="Marcus Lindskog, Docent" />
+    <meta name="date" content="2019-09-23" />
+    <link href="libs/remark-css/rutgers.css" rel="stylesheet" />
+    <link rel="stylesheet" href="marcus_uu.css" type="text/css" />
+  </head>
+  <body>
+    <textarea id="source">
+class: center, middle, inverse, title-slide
+
+# Data Wrangling - Importing and preparing data for analyses
+## R for Psychology Research
+### Marcus Lindskog, Docent
+### 2019-09-23
+
+---
+
+
+
+# Overview
+1. Keep data in a `tibble`
+
+1. Import data with `readr`.
+
+1. Data transformations with `dplyr`
+
+1. Data tranformation with `tidyr`
+
+---
+# What is data wrangling?
+
+* Data wrangling is the process of getting your raw data into a format that can be used for analyses.
+--
+
+* Today we will work with a collection of packages from the `tidyverse` to do that.
+--
+
+* It is important to acknowledge that this is not the only way to do things.
+--
+
+* However, using the `tidyverse` gives you an integrated framework that helps you solve these tasks quite easy.
+---
+class: inverted, middle, center
+# Keep your data in a `tibble`
+---
+
+# What is a `tibble`?
+
+* The `tibble` packages introduces a new data structure into R, the **tibble**.
+
+--
+
+* A tibble is a modern take on the data frame.
+
+--
+
+* It makes it easier and more consistent to work with tidy data in R.
+
+---
+# Creating a `tibble`
+
+* A regular `data.frame` can be coerced to tibble with:
+--
+
+
+```r
+library(psych)
+library(tibble)
+
+*as_tibble(bfi)
+```
+
+
+---
+# Create a `tibble` from individual vectors
+
+* A `tibble` can be created from individual vectors with:
+
+
+```r
+tibble( 
+  x = 1:5,
+  y = 1,
+  z = x^2 + y+1,
+  w = letters[1:5]
+  )
+```
+
+---
+# Subsetting a `tibble`
+
+* A `tibble` can be subsetted by name or position. But it works a bit different than for `data.frame`
+
+
+```r
+my_data &lt;- tibble( 
+  x = 1:20,
+  y = 1,
+  z = x^2 + y+1,
+  w = letters[1:20]
+  )
+
+# Extract by name (1)
+my_data$w
+
+# Extract by name (2)
+my_data[["w"]]
+```
+---
+# Subsetting a `tibble`
+
+
+
+```r
+# Extract by position 
+
+my_data[[4]]
+```
+
+---
+class: inverted, middle, center
+# Import data with `readr`
+---
+# `readr`.
+
+* `readr` is a packages that turns flat files with rectangular data into data frames (`tibble`).
+--
+
+* The same functionality can be found in base R, but `readr` functions generally:
+  * Are much faster.
+  * Produce `tibble`s and don't make to many assumptions about your data (e.g., turns strings into factors).
+  * Are more reproducible.
+  
+
+---
+## Functions in `readr`
+
+* `read_csv` - reads comma-delimited files
+--
+
+* `read_csv2()`: reads semicolon-separated files
+--
+
+* `read_tsv()`: reads tab-delimited files
+--
+
+* `read_delim()`: reads in files with any (user specified) delimiter.
+
+---
+## Functions in `readr`
+
+* **`read_csv` - reads comma-delimited files**
+
+* `read_csv2()`: reads semicolon-separated file
+
+* `read_tsv()`: reads tab-delimited files
+
+* `read_delim()`: reads in files with any (user specified) delimiter.
+
+---
+# A note on the working directory
+
+* When reading a file you need to know where it is (i.e., provide a path)
+--
+
+* But it is hard to give a path if you don't know where you are.
+--
+
+* You are in you're **working directory**, which can be found with:
+
+
+```r
+getwd()
+```
+
+```
+## [1] "/Volumes/ipb-users-1/marli361/@Undervisning/@Kurser/FoU - R for Psychology Research/materials/Week 4"
+```
+
+--
+
+* You can change your working directory with:
+
+
+```r
+setwd("path")
+```
+
+* Or you can click **More** under the **Files** tab in RStudio.
+---
+# Reading that .csv-file!
+
+
+```r
+# read_csv("path")
+
+heights_data &lt;- read_csv("heights_data.csv")
+
+bfi_data &lt;- read_csv("heights_data.csv")
+```
+
+---
+# A bit more specific parsing
+* `read_csv()` assumes that the first row contains column names. It also reads all lines, if noting else is specified. We can change that behavior.
+
+
+```r
+#To skip one or more lines
+
+bfi_data &lt;- read_csv("bfi_data.csv",
+*                    skip = 3)
+
+# To skip lines that begin with a specific character (i.e., comments)
+bfi_data &lt;- read_csv("bfi_data.csv",
+*                    comment = "#")
+
+#If the data don't have column names in the first row
+bfi_data &lt;- read_csv("bfi_data.csv",
+*                    col_names = FALSE)
+
+#To provide your own colnames if they are missing
+height_data &lt;- read_csv("height_data.csv",
+*                    col_names = c("A", "B"))
+```
+---
+# It is guess work.
+* When you read a file with `readr` it tries to guess what data types are in your columns.
+--
+
+* This is good because it makes the function fast, but it can sometimes be problematic.
+
+--
+
+* If you know what you have in your columns, you can specify that directly in the `read_`- functions.
+
+
+```r
+#To skip one or more lines
+
+bfi_data &lt;- read_csv("heights_data.csv",
+                     col_types = col(
+                       height = col_integer(),
+                       cubit = col_character()
+                     )
+```
+---
+# Other file formats.
+* There are of course a lot of different file formats you might want to get into R.
+--
+
+* We can't cover them all. However, have a look at the following packages to solve some of your importing needs.
+--
+
+* `haven`: reads SPSS, STATA, and SAS files.
+* `readxl`: reads Excel files (both .xls and .xlsx).
+* `DBI` along with a database-specific backend (`RMySQL`, `RSQLite`, `RPostgreSQL`) to run queries against database.
+
+---
+class: inverted, middle, center
+# Data transformation with `dplyr`
+---
+# Functions from `dplyr`: 
+
+* Select, filter and arrange your data:
+  * `select()`: Select columns from your dataset
+  * `filter()`: Filter out certain rows that meet your criteria(s)
+  * `arrange()`: Arrange your column data
+--
+
+* Create new variables:
+  * `mutate()`: Create new columns by preserving the existing variables
+--
+
+* Summarize that data:
+  * `group_by()`: Group different observations together. 
+  * `summarise()`: Summarise any of the above functions
+--
+
+* Join data with other data frames
+  * *`join()`: Perform left, right, full, and inner joins in R*
+
+---
+# `filter()`
+
+* The `filter()` function subsets a data frame based on a series of criterion
+
+
+```r
+heights_data &lt;- read_csv("heights_data.csv")
+
+#filter(data_frame, expression_to_filter_1, expression_to_filter_2,...)
+
+filter(heights_data, height == 71)
+
+filter(heights_data, height == 68, height == 71)
+
+filter(heights_data, !(height ==68 | height == 71))
+
+filter(heights_data, height %in% c(68, 70, 71))
+```
+* `filter()` returns a tibble and the input is left unchanged.
+
+---
+# Piping that filter
+
+* If you are running a large number of manipulations on the same data frame it is clunky to save each intermediate step in a new variable.
+--
+
+* To help you overcome this problem we have the pipe operator `%&gt;%` from the ``magrittr`
+
+--
+
+
+```r
+heights_data &lt;- read_csv("heights_data.csv")
+
+#filter(data_frame, expression_to_filter_1, expression_to_filter_2,...)
+
+filtered_heights_data &lt;- heights_data %&gt;% 
+  filter(height == 71)
+```
+
+---
+# `arrange()`
+* The `arrange()` function changes the order of the rows in a data frame
+--
+
+
+```r
+bfi_data &lt;- read_csv("bfi_data.csv")
+
+#arrange(data_frame, column_to_arrange_1, column_to_arrange_2,...)
+
+arrange(bfi_data, A1, A2)
+
+#Use descending order instead
+
+arrange(bfi_data, desc(A1), A2)
+```
+--
+* Of course, filter and arrange can be combined
+
+```r
+bfi_data &lt;- read_csv("bfi_data.csv")
+
+new_filtered_arranged_data &lt;- bfi_data %&gt;% 
+  filter(A1 %in% c(1,2,3)) %&gt;%
+  arrange(desc(A1), A2)
+```
+
+---
+# `select()`
+* `select()` helps select a subset of columns from a data frame.
+
+
+```r
+bfi_data &lt;- read_csv("bfi_data.csv")
+
+#select(data_frame, column_1, column_2,...)
+
+#select by name
+select(bfi_data, A1, A2, C5)
+
+#select an interval
+select(bfi_data, A1:C5)
+
+#select all but specificed columns
+select(bfi_data, -A1, -A2, -C5)
+select(bfi_data, -(A1:C5))
+```
+
+---
+# `select()`'s little helpers
+
+* `starts_with("arn")` matches columns begining with "abc".
+* `ends_with("klm")` matches columns ending  with "klm".
+* `contains("una")` matches names containing "una".
+
+--
+
+
+```r
+bfi_data &lt;- read_csv("bfi_data.csv")
+
+select(bfi_data, starts_with("A"))
+
+#select an interval
+select(bfi_data, ends_with("4"))
+```
+
+---
+# Rename a variable
+
+* `rename()` is a useful tool to rename columns.
+
+```r
+bfi_data &lt;- read_csv("bfi_data.csv")
+
+rename(bfi_data, A_1 = A1)
+```
+
+---
+# Let's combine
+
+```r
+bfi_data &lt;- read_csv("bfi_data.csv")
+
+new_changed_data_frame &lt;- bfi_data %&gt;%
+  select(starts_with("A")) %&gt;%
+  rename(A_1 = A1, A_4 = A4) %&gt;%
+  filter(A_4 %in% c(3,4,5)) %&gt;%
+  arrange(A_1, desc(A3))
+```
+---
+# `mutate()` 
+
+* It is **very** often the case that we need to create (add) new variables that are some combination of existing variables or add some new information.
+
+--
+
+* This is can be done smoothly with `mutate()` and `transmute()` 
+
+```r
+bfi_data &lt;- read_csv("bfi_data.csv")
+
+#mutate(data_frame, new_var_1, new_var_2,...)
+# mutate adds a new variable, and keeps all the old ones.
+mutate(bfi_data,
+  A = A1+A2+A3+A4,
+  C = (C1*C2)/(C3*C4)
+)
+
+# transmute only keeps the new variables
+transmute(bfi_data,
+  A = A1+A2+A3+A4,
+  C = (C1*C2)/(C3*C4),
+  D = as_factor(rep(c("A", "B", "C", "D"), each = n()/4))
+)
+```
+
+---
+# `mutate()`'s little helpers.
+
+* Read p. 56-58 for some functions that can be very helpful when using `mutate` and `transmute`.
+--
+
+* Other useful versions of `mutate` is `mutate_all`, `mutate_if`, and `mutate_at`. Google them to find out exctly how they work.
+
+---
+# Let's combine
+
+
+```r
+bfi_data &lt;- read_csv("bfi_data.csv")
+
+new_changed_data_frame &lt;- bfi_data %&gt;%
+  select(starts_with("A")) %&gt;%
+  rename(A_1 = A1, A_4 = A4) %&gt;%
+  filter(A_4 %in% c(3,4,5)) %&gt;%
+  mutate(K = (A_1 + A_4)/A3) %&gt;%
+  arrange(K)
+```
+---
+# `summarize()` and `group_by()`
+
+* We often want to create summaries of our data.
+--
+
+* `summarize()` collapses data into a single row.
+
+```r
+bfi_data &lt;- read_csv("bfi_data.csv")
+
+#summarize(data_frame, summary)
+summarize(bfi_data, 
+          a1_mean = mean(A1, na.rm = TRUE),
+          count = n(),
+          c1_na = sum(is.na(C1))
+          )
+```
+
+---
+# Grouped summaries
+
+* To get grouped summaries, first use `group_by()`
+
+* `summarize()` collapses data into a single row.
+
+```r
+bfi_data &lt;- read_csv("bfi_data.csv")
+
+group_by(bfi_data, A1) %&gt;%
+summarize(a2_mean = mean(A2, na.rm = TRUE),
+          count = n(),
+          c1_na = sum(is.na(C1))
+          )
+```
+---
+# Let's combine
+
+
+```r
+bfi_data &lt;- read_csv("bfi_data.csv")
+
+new_changed_data_frame &lt;- bfi_data %&gt;%
+  select(starts_with("A")) %&gt;%
+  rename(A_1 = A1, A_4 = A4) %&gt;%
+  filter(A_4 %in% c(3,4,5)) %&gt;%
+  mutate(K = (A_1 + A_4)/A3) %&gt;%
+  arrange(K) %&gt;%
+  group_by(A2, A3) %&gt;%
+  summarize(mean_k = mean(K, na.rm = TRUE),
+            count = n(),
+            se_age = sd(age, na.rm = TRUE)/sqrt(sum(!is.na(K))))
+```
+---
+class: inverted, middle, center
+# Data tranformation with `tidyr`
+---
+# `tidyr` 
+* `tidyr` has the functions we need to rearrange data into different formats.
+--
+
+* It was originally designed to get data into a **tidy** format, but you can of course use it to get your data into any format you need.
+
+---
+background-image: url(figs/tidy_data.png)
+background-position: 50% 50%
+background-size: 100%
+class: center, bottom, fullscale
+---
+# Important functions in   `tidyr`
+* `gather()`: Gathers multiple columns and converts them into key-value pairs.
+--
+
+* `spread()`: Takes two columns and spreads them into multiple columns.
+--
+
+* `separate()`: Helps in separating or splitting a single column into numerous columns
+--
+
+* `unite()`: Works opposite to the separate() function. Combines two or more columns into one
+
+---
+# Gathering
+
+
+```r
+head(table4a,3)
+```
+
+```
+## # A tibble: 3 x 3
+##   country     `1999` `2000`
+##   &lt;chr&gt;        &lt;int&gt;  &lt;int&gt;
+## 1 Afghanistan    745   2666
+## 2 Brazil       37737  80488
+## 3 China       212258 213766
+```
+
+
+* Here we have a data frame with *values* (1999, 2000) in variable names.
+
+---
+# `gather()`
+
+* We can collect them into a variable by using `gather()`
+
+
+```r
+table4a %&gt;%
+  gather(2:3, key = "year", value = "population")
+
+table4a %&gt;%
+  gather(c("1999", "2000"), key = "year", value = "population")
+
+table4a %&gt;%
+  gather("1999", "2000", key = "year", value = "population")
+```
+---
+# Spreading
+* `spread()` does the opposite of `gather()`
+--
+
+* It takes observations that are scattered into multiple rows, and puts them in columns
+--
+
+* What is the problem with this data frame?
+
+
+```r
+head(table2, 6)
+```
+
+```
+## # A tibble: 6 x 4
+##   country      year type           count
+##   &lt;chr&gt;       &lt;int&gt; &lt;chr&gt;          &lt;int&gt;
+## 1 Afghanistan  1999 cases            745
+## 2 Afghanistan  1999 population  19987071
+## 3 Afghanistan  2000 cases           2666
+## 4 Afghanistan  2000 population  20595360
+## 5 Brazil       1999 cases          37737
+## 6 Brazil       1999 population 172006362
+```
+--
+
+```r
+table2 %&gt;%
+  spread(key = type, value = count)
+```
+---
+# `separate()`
+
+* `separate()` pulls apart one column into multiple columns.
+
+
+```r
+table3
+```
+
+```
+## # A tibble: 6 x 3
+##   country      year rate             
+## * &lt;chr&gt;       &lt;int&gt; &lt;chr&gt;            
+## 1 Afghanistan  1999 745/19987071     
+## 2 Afghanistan  2000 2666/20595360    
+## 3 Brazil       1999 37737/172006362  
+## 4 Brazil       2000 80488/174504898  
+## 5 China        1999 212258/1272915272
+## 6 China        2000 213766/1280428583
+```
+---
+
+```r
+table3 %&gt;%
+  separate(rate, c("cases", "population"), sep = "/")
+```
+
+```
+## # A tibble: 6 x 4
+##   country      year cases  population
+##   &lt;chr&gt;       &lt;int&gt; &lt;chr&gt;  &lt;chr&gt;     
+## 1 Afghanistan  1999 745    19987071  
+## 2 Afghanistan  2000 2666   20595360  
+## 3 Brazil       1999 37737  172006362 
+## 4 Brazil       2000 80488  174504898 
+## 5 China        1999 212258 1272915272
+## 6 China        2000 213766 1280428583
+```
+---
+# `unite()`
+* `unite()` is the inverse of `separate()`
+
+```r
+table3 %&gt;%
+  separate(rate, c("cases", "population"), sep = "/") %&gt;%
+  unite(rate, cases, population, sep = "-")
+```
+
+```
+## # A tibble: 6 x 3
+##   country      year rate             
+##   &lt;chr&gt;       &lt;int&gt; &lt;chr&gt;            
+## 1 Afghanistan  1999 745-19987071     
+## 2 Afghanistan  2000 2666-20595360    
+## 3 Brazil       1999 37737-172006362  
+## 4 Brazil       2000 80488-174504898  
+## 5 China        1999 212258-1272915272
+## 6 China        2000 213766-1280428583
+```
+
+---
+class: inverted, middle, center
+# That's all folks!
+    </textarea>
+<style data-target="print-only">@media screen {.remark-slide-container{display:block;}.remark-slide-scaler{box-shadow:none;}}</style>
+<script src="https://remarkjs.com/downloads/remark-latest.min.js"></script>
+<script src="../templates/macros.js"></script>
+<script>var slideshow = remark.create({
+"highlightStyle": "github",
+"highlightLines": true,
+"countIncrementalSlides": false
+});
+if (window.HTMLWidgets) slideshow.on('afterShowSlide', function (slide) {
+  window.dispatchEvent(new Event('resize'));
+});
+(function(d) {
+  var s = d.createElement("style"), r = d.querySelector(".remark-slide-scaler");
+  if (!r) return;
+  s.type = "text/css"; s.innerHTML = "@page {size: " + r.style.width + " " + r.style.height +"; }";
+  d.head.appendChild(s);
+})(document);
+
+(function(d) {
+  var el = d.getElementsByClassName("remark-slides-area");
+  if (!el) return;
+  var slide, slides = slideshow.getSlides(), els = el[0].children;
+  for (var i = 1; i < slides.length; i++) {
+    slide = slides[i];
+    if (slide.properties.continued === "true" || slide.properties.count === "false") {
+      els[i - 1].className += ' has-continuation';
+    }
+  }
+  var s = d.createElement("style");
+  s.type = "text/css"; s.innerHTML = "@media print { .has-continuation { display: none; } }";
+  d.head.appendChild(s);
+})(document);
+// delete the temporary CSS (for displaying all slides initially) when the user
+// starts to view slides
+(function() {
+  var deleted = false;
+  slideshow.on('beforeShowSlide', function(slide) {
+    if (deleted) return;
+    var sheets = document.styleSheets, node;
+    for (var i = 0; i < sheets.length; i++) {
+      node = sheets[i].ownerNode;
+      if (node.dataset["target"] !== "print-only") continue;
+      node.parentNode.removeChild(node);
+    }
+    deleted = true;
+  });
+})();</script>
+
+<script>
+(function() {
+  var links = document.getElementsByTagName('a');
+  for (var i = 0; i < links.length; i++) {
+    if (/^(https?:)?\/\//.test(links[i].getAttribute('href'))) {
+      links[i].target = '_blank';
+    }
+  }
+})();
+</script>
+
+<script>
+slideshow._releaseMath = function(el) {
+  var i, text, code, codes = el.getElementsByTagName('code');
+  for (i = 0; i < codes.length;) {
+    code = codes[i];
+    if (code.parentNode.tagName !== 'PRE' && code.childElementCount === 0) {
+      text = code.textContent;
+      if (/^\\\((.|\s)+\\\)$/.test(text) || /^\\\[(.|\s)+\\\]$/.test(text) ||
+          /^\$\$(.|\s)+\$\$$/.test(text) ||
+          /^\\begin\{([^}]+)\}(.|\s)+\\end\{[^}]+\}$/.test(text)) {
+        code.outerHTML = code.innerHTML;  // remove <code></code>
+        continue;
+      }
+    }
+    i++;
+  }
+};
+slideshow._releaseMath(document);
+</script>
+<!-- dynamically load mathjax for compatibility with self-contained -->
+<script>
+(function () {
+  var script = document.createElement('script');
+  script.type = 'text/javascript';
+  script.src  = 'https://mathjax.rstudio.com/latest/MathJax.js?config=TeX-MML-AM_CHTML';
+  if (location.protocol !== 'file:' && /^https?:/.test(script.src))
+    script.src  = script.src.replace(/^https?:/, '');
+  document.getElementsByTagName('head')[0].appendChild(script);
+})();
+</script>
+  </body>
+</html>

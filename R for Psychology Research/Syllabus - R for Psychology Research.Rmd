@@ -1,0 +1,31 @@
+---
+title: "R for Psychology Research"
+subtitle: Syllabus
+author: "Marcus Lindskog"
+date: '2019-04-24'
+output: word_document
+---
+
+## Goal
+
+After completing this course, the student is expected to have gained sufficient knowledge of the R language to be able to use it solve statistical problems relevant to psychology research.
+
+## Content
+This is a PhD course with approximately 400 pages literature, lectures, homework assignments and labs. The course is aimed at students with no prior knowledge of R and no programming experience. The course teaches basic R skills and how standard statistical problems in psychology research can be solved using R. Thus, students are expected to have knowledge about standard statistical techniques such as descriptive statistics, t-test, correlation, ANOVA, multiple regression and similar. The subjects taught in the course include:
+
+* Variables, operators, and data structures
+* Packages and package handling
+* Functions and iterations
+* Data wrangling
+* Data visualization
+* Implementation of statistical tests relevant to psychology research
+* Reproducible workflows
+
+## Teaching forms
+The course will consist of lectures and lab sessions. Each lecture includes assignments that implement important concepts from the lecture. During interactive lab sessions students will achieve additional training in R programming.
+
+## Examination
+The examination consists of two parts. First, students will solve a set of tasks for each lab session by writing their own R code, which will be submitted to the teacher.
+
+Second, as a final examination students will write a reproducible report, including statistical tests and visualizations of data, for a realistic data set, potentially from their own research.
+

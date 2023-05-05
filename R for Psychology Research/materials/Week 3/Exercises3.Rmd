@@ -1,0 +1,70 @@
+---
+title: "R for Psychology Research"
+subtitle: Week 3 - Exercises
+author: "Marcus Lindskog"
+output: pdf_document
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+```
+# 1. Packages, Package management and the `Tidyverse` 
+
+1. What are the R functions that installs and loads a R package?
+
+2. What is the R function that detaches/unloads a R package from your current session?
+
+3. You can install multiple packages in a single function call. Write a line of code with a single function call to install the packages `nlme`, `BayesFactor`, `psych`, and `broom`.
+
+4. Find and install two packages that can help you run *Linear Mixed-Effects Models*.
+
+5. For each package, find an example of how to fit a simple generic linear mixed-effects model, and include that example in your script.
+
+6. The package `psych` includes a lot of useful functions for psychologists. Install and load the package. What does the `alpha` and `rescale` functions of this package do?
+
+7. The `psych` package also includes several data sets, for example the `bfi` data set that we have explored previously. Have a look at the `iqitems` and `msq` data sets and give a short description of what they include. 
+
+8. What function call would you use to have access to a data set in a package in your work environment?
+
+9. Load the `iqitems` data set to your work environment and use the `alpha` function to calculate Cronbach's alpha for the four first variables.
+
+10. Find and install the package `BayesFactor` that can help you run *Bayesian t-tests*.
+
+11. Write a script that simulates 1000 experiments with 100 participants each that produce values on a single normally distributed variable `simdata` with mean .2 and standard deviation 1 (Hint: use the function `rnorm`). For each experiment, do a Bayesian t-test (`ttestBF`) and a classical t-test (`t.test`) and evaluate for how many experiments that the two types of tests come to the conclusion that $\mu_{simdata} > 0$. For this exercise, we will say that a Bayesian t-test comes to this conclusion if $bf > 1$ and that the classical t-test does so if $p < .05$. (Hint: To access the Bayes factor `bf` from an object called `BF_test` use `BF_test@bayesFactor$bf`. To access the p value `pvalue` from an object called `t_test` use `t_test$p.value`).
+
+<!-- bayes_factors <- vector("numeric", 1000)
+p_values <- vector("numeric", 1000)
+
+for(expr in 1:1000){
+  simdata <- rnorm(100, .2,1)
+  BF_test <- ttestBF(simdata, mu = 0)
+  t_test <- t.test(simdata, mu = 0)
+  bayes_factors[expr] <- BF_test@bayesFactor$bf
+  p_values[expr] <- t_test$p.value
+}
+
+prop_BF <- mean(bayes_factors > 1)
+prop_p_values <- mean(p_values < .05)
+-->
+
+
+# 2. Examination Exercises 
+The solution to the exercises in this section should be handed in as a part of the examination. Your solution should be contained in a single R-script that is emailed to `marcus.lindskog@psyk.uu.se`. Your code should be well commented and easy to follow. Answers to any questions below should be written as a comment in the R-script after the code that produces the answer.
+
+For this exercise you will write one (1) script that does all of the below described tasks.
+
+1. Load 5 (five) packages that are not a part of base R. Make sure to comment your code to give a short description of what each packages does.
+
+2. Give an example of the functionality of one (1) function each from your five loaded packages. Comment your code such that it is clear what the function does.
+
+3. Load the collection of packages called `Tidyverse`.
+
+4. Which packages are attached when you load the `Tidyverse`? What version of the `Tidyverse` and each separate package is loaded? 
+
+5. Install and load the package `plyr`. You get an error message that some objects are **masked**. What does that mean and what do you need to do i you want to use functions from both `plyr` and `dplyr`?
+
+6. What version of R are you currently running and on which platform? What packages, other than base packages, are attached to your current R session? Write a line of code that gives you this information.
+
+
+
+

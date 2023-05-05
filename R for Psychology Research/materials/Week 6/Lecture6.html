@@ -1,0 +1,358 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml" lang="" xml:lang="">
+  <head>
+    <title>Common plots for Psychology using ggplot2</title>
+    <meta charset="utf-8" />
+    <meta name="author" content="Marcus Lindskog, Docent" />
+    <meta name="date" content="2019-10-09" />
+    <link href="libs/remark-css/rutgers.css" rel="stylesheet" />
+    <link rel="stylesheet" href="marcus_uu.css" type="text/css" />
+  </head>
+  <body>
+    <textarea id="source">
+class: center, middle, inverse, title-slide
+
+# Common plots for Psychology using <code>ggplot2</code>
+## R for Psychology Research
+### Marcus Lindskog, Docent
+### 2019-10-09
+
+---
+
+
+
+# Overview 
+1. Graph for t-tests.
+1. Graph for correlations.
+1. Graph for ANOVA-like designs.
+1. Graph for multiple regressions.
+---
+class: inverted, middle, center 
+# Graphs for t-tests 
+---
+class: inverted, middle, center 
+# Single sample t-tests 
+---
+# We need some data 
+
+```r
+# code chunk here 
+t_test_data &lt;- rnorm(100, .6, .3)
+data_df &lt;- tibble(dat = t_test_data) 
+```
+---
+# Test the data against .5 
+
+```r
+ggplot(data = data_df, aes(x = 1, y = dat)) +
+  geom_jitter(aes(x= 1.02), width = .01,
+              alpha = .7) +
+  stat_summary(fun.data = "mean_cl_boot",
+               size = .5, colour = "red") +
+  ylim(c(-.3,1.4))+
+  xlim(c(0.8,1.2))+
+  geom_hline(yintercept = .5, linetype =
+"dashed") +
+  theme_bw() +
+  labs(y = "Proportion", x = "") +
+  theme(axis.text.x = element_blank(),
+        panel.grid = element_blank(),
+        panel.border = element_blank(),
+        axis.ticks.x = element_blank())
+```
+---
+#  Test the data against .5 
+![](Lecture6_files/figure-html/unnamed-chunk-3-1.png)&lt;!-- --&gt;
+---
+class: inverted, middle, center 
+# What did that code do?
+---
+class: inverted, middle, center 
+# Two group t-tests 
+---
+#  We need some data 
+
+```r
+group_1 &lt;- rnorm(50, 100, 10) 
+group_2 &lt;- rnorm(50, 120, 20)
+groups &lt;- rep(c(1,2), each = 50) 
+data_groups &lt;- tibble(IQ = c(group_1, group_2),
+group = groups) 
+```
+---
+# Compare two groups 
+
+```r
+ggplot(data_groups,
+       aes(x = factor(groups),
+           y = IQ)) + 
+  geom_jitter(width = .01, alpha = .7) +
+  stat_summary(fun.data = "mean_cl_boot",
+               size = .5, colour = "red")+
+  ylim(c(50,175)) +
+  theme_bw() +
+  labs(y = "Proportion", x = "Group") +
+  theme(panel.grid = element_blank(),
+        panel.border = element_blank(),
+        axis.ticks.x = element_blank()) 
+```
+---
+# Compare two groups 
+![](Lecture6_files/figure-html/unnamed-chunk-6-1.png)&lt;!-- --&gt;
+
+---
+class: inverted, middle, center 
+# What did that code do? 
+---
+class: inverted, middle, center
+# Bi-variate correlations 
+---
+# We need some data 
+
+```r
+x &lt;- rnorm(100, 100, 10) 
+y &lt;- rnorm(100, 100,14) 
+
+corr_data &lt;- tibble(x = x, y = y) 
+```
+---
+# Bi-variate correlation 
+
+```r
+ggplot(corr_data, aes(x = x, y = y)) +
+  geom_point()+ 
+  geom_smooth(method = "lm",
+              se = FALSE)+
+  ylim(c(55,135))+
+  xlim(c(55,135))+
+  theme_bw() +
+  labs(y = "Y", x = "X") +
+  theme(panel.grid = element_blank(),
+        panel.border = element_blank())
+```
+---
+# Bi-variate correlation 
+![](Lecture6_files/figure-html/unnamed-chunk-9-1.png)&lt;!-- --&gt;
+---
+class: inverted, middle, center
+# What did that code do?
+---
+class: inverted, middle, center 
+# ANOVA (like) designs 
+---
+# We need some data
+
+```r
+a_data &lt;- rnorm(100, 100, 10) 
+b_data &lt;- rnorm(100, 110, 10) 
+c_data &lt;- rnorm(100, 120, 10) 
+d_data &lt;- rnorm(100, 130, 10) 
+aov_data &lt;- tibble(dat = 
+                     c(a_data, b_data,
+                       c_data, d_data),
+                   group = factor(rep(c("A", "B",
+                                        "C", "D") ,
+                                      each = 100)))
+```
+---
+# One factor ANOVA
+
+```r
+aov_data %&gt;% 
+  group_by(group) %&gt;%
+  summarise(mean = mean(dat, na.rm = TRUE),
+            se = sd(dat)/sqrt(sum(!is.na(dat)))) %&gt;%
+  ggplot(aes(x = group, y = mean,
+             color = group)) +
+  geom_point() +
+  geom_errorbar(aes(ymin = mean - 1.96*se,
+                    ymax = mean + 1.96*se),
+                width = .4) +
+  ylim(c(90,140)) +
+  theme_bw() +
+  labs(y = "IQ", x = "Group") +
+  theme(panel.grid = element_blank(),
+        panel.border = element_blank()) +
+  guides(color = "none") 
+```
+---
+# One factor ANOVA
+![](Lecture6_files/figure-html/unnamed-chunk-12-1.png)&lt;!-- --&gt;
+
+---
+class: inverted, middle, center 
+# What did that code do? 
+---
+# We need some more data 
+
+
+```r
+a_data &lt;- rnorm(100, 100, 10)
+b_data &lt;- rnorm(100, 110, 10)
+c_data &lt;- rnorm(100, 120, 10)
+d_data &lt;- rnorm(100, 130, 10)
+aov_data &lt;- tibble(dat = c(a_data, b_data,
+                           c_data, d_data),
+                   group_1 = factor(rep(c("A", "B",
+                                          "C", "D"),
+                                        each = 100)),
+                   group_2 = factor(rep(rep(c("Alpha", "Beta"),
+                                            each = 50),4)))
+```
+---
+# Two factor ANOVA (like) design 
+
+
+```r
+aov_data %&gt;% 
+  group_by(group_1, group_2) %&gt;%
+  summarise(mean = mean(dat, 
+                        na.rm = TRUE),
+            se = sd(dat)/sqrt(sum(!is.na(dat)))) %&gt;%
+  ggplot(aes(x = group_1, y = mean,
+             color = group_2)) +
+  geom_point(position = position_dodge(width = .3)) + 
+  geom_errorbar(aes(ymin = mean - 1.96*se,
+                    ymax = mean + 1.96*se), width = .4,
+                position = position_dodge(width = .3)) +
+  ylim(c(90,140))+
+  theme_bw() + 
+  labs(y = "IQ", x = "Group 1") + 
+  theme(panel.grid = element_blank(),
+        panel.border = element_blank(),
+        legend.position = "bottom") + 
+  scale_color_discrete(name = "Group 2")
+```
+---
+# Two factor ANOVA (like) design 
+![](Lecture6_files/figure-html/unnamed-chunk-15-1.png)&lt;!-- --&gt;
+---
+class: inverted, middle, center 
+# What did that code do?
+---
+class: inverted, middle, center
+# Graph for multiple regression
+---
+# The code
+
+```r
+library(dotwhisker)
+
+m1 &lt;- lm(mpg ~ wt + cyl + disp + gear, data = mtcars)
+
+dwplot(m1) + 
+  theme_bw() + 
+  theme(panel.grid = element_blank(),
+        panel.border = element_blank(),
+        legend.position = "none") +
+  geom_vline(xintercept = 0, color = "grey", linetype = "dashed")
+```
+---
+# The graph
+![](Lecture6_files/figure-html/unnamed-chunk-17-1.png)&lt;!-- --&gt;
+---
+# Examination
+
+* The examination for this week is optional. 
+
+1. Choose two graphs from published papers.
+1. Recreate the graphs as closely as possible using `ggplot2`. The exercise is most fun if you chose graphs that are not so good.
+1. Improve the graphs by removing elements and/or highlighting data to make them more clear.
+
+* If you need to extract data from published graphs you can use the free web tool **WebPlotDigitizer**, which is available at: https://automeris.io/WebPlotDigitizer/
+
+---
+class: inverted, middle, center
+# That's all folks!
+    </textarea>
+<style data-target="print-only">@media screen {.remark-slide-container{display:block;}.remark-slide-scaler{box-shadow:none;}}</style>
+<script src="https://remarkjs.com/downloads/remark-latest.min.js"></script>
+<script src="../templates/macros.js"></script>
+<script>var slideshow = remark.create({
+"highlightStyle": "github",
+"highlightLines": true,
+"countIncrementalSlides": false
+});
+if (window.HTMLWidgets) slideshow.on('afterShowSlide', function (slide) {
+  window.dispatchEvent(new Event('resize'));
+});
+(function(d) {
+  var s = d.createElement("style"), r = d.querySelector(".remark-slide-scaler");
+  if (!r) return;
+  s.type = "text/css"; s.innerHTML = "@page {size: " + r.style.width + " " + r.style.height +"; }";
+  d.head.appendChild(s);
+})(document);
+
+(function(d) {
+  var el = d.getElementsByClassName("remark-slides-area");
+  if (!el) return;
+  var slide, slides = slideshow.getSlides(), els = el[0].children;
+  for (var i = 1; i < slides.length; i++) {
+    slide = slides[i];
+    if (slide.properties.continued === "true" || slide.properties.count === "false") {
+      els[i - 1].className += ' has-continuation';
+    }
+  }
+  var s = d.createElement("style");
+  s.type = "text/css"; s.innerHTML = "@media print { .has-continuation { display: none; } }";
+  d.head.appendChild(s);
+})(document);
+// delete the temporary CSS (for displaying all slides initially) when the user
+// starts to view slides
+(function() {
+  var deleted = false;
+  slideshow.on('beforeShowSlide', function(slide) {
+    if (deleted) return;
+    var sheets = document.styleSheets, node;
+    for (var i = 0; i < sheets.length; i++) {
+      node = sheets[i].ownerNode;
+      if (node.dataset["target"] !== "print-only") continue;
+      node.parentNode.removeChild(node);
+    }
+    deleted = true;
+  });
+})();</script>
+
+<script>
+(function() {
+  var links = document.getElementsByTagName('a');
+  for (var i = 0; i < links.length; i++) {
+    if (/^(https?:)?\/\//.test(links[i].getAttribute('href'))) {
+      links[i].target = '_blank';
+    }
+  }
+})();
+</script>
+
+<script>
+slideshow._releaseMath = function(el) {
+  var i, text, code, codes = el.getElementsByTagName('code');
+  for (i = 0; i < codes.length;) {
+    code = codes[i];
+    if (code.parentNode.tagName !== 'PRE' && code.childElementCount === 0) {
+      text = code.textContent;
+      if (/^\\\((.|\s)+\\\)$/.test(text) || /^\\\[(.|\s)+\\\]$/.test(text) ||
+          /^\$\$(.|\s)+\$\$$/.test(text) ||
+          /^\\begin\{([^}]+)\}(.|\s)+\\end\{[^}]+\}$/.test(text)) {
+        code.outerHTML = code.innerHTML;  // remove <code></code>
+        continue;
+      }
+    }
+    i++;
+  }
+};
+slideshow._releaseMath(document);
+</script>
+<!-- dynamically load mathjax for compatibility with self-contained -->
+<script>
+(function () {
+  var script = document.createElement('script');
+  script.type = 'text/javascript';
+  script.src  = 'https://mathjax.rstudio.com/latest/MathJax.js?config=TeX-MML-AM_CHTML';
+  if (location.protocol !== 'file:' && /^https?:/.test(script.src))
+    script.src  = script.src.replace(/^https?:/, '');
+  document.getElementsByTagName('head')[0].appendChild(script);
+})();
+</script>
+  </body>
+</html>

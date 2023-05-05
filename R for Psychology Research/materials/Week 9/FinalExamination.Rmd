@@ -1,0 +1,27 @@
+---
+title: "R for Psychology Research"
+subtitle: Final Examination
+author: "Marcus Lindskog"
+output: pdf_document
+---
+
+This document describes the final examination of *R for Psychology*. The intent of the exam is that you should integrate all the knowledge aquired during the course in one single document.
+
+To do this, you're task is to produce a *Reproducible Report* for a data set of your choice. Your solution should consist of a single `.Rmd` file, a `.csv` file (or similar) containing your data and (optional) a `.bib` file with any references that you want to cite in the report. 
+
+I will grade both your `.Rmd` file, and the code you have produced in it, and the resulting `.pdf` file that can be produced by knitting the `.Rmd` file. *Note*: I will not grade any `.pdf` file that you submit. Instead, your `.Rmd` file should be able to produce the `.pdf` on my system. It is okay to include any packages you want, I'll install those I do not already have. But be careful with adding any dependencies that I cannot reproduce.
+
+The report should consist of two sections. First, a *Methods* section that gives a brief overview and description of the data set you are analyzing. This does not have to be detailed, but from the description a reader should be able to understand the rest of the report. Also, this section should include a short sub-section describing the deomgraphics (Age, sex distribution, etc.) of your sample.
+
+Second, the report should included a results section where you analyze your data and report the results. The code included in your `.Rmd` file should produce all required steps from reading the data, tranforming the data, analyzing the data, and producing graphs and tables. This section must include the following:
+
+* Both descriptive and inferential statistics. You should conduct and report at least three (3) different types of statistical tests.
+* Statistical parameters reported in the text, should be reported using inline `r` code. Hence, you are not allowed to copy and paste data from the output of tests directly into the text.
+* A function that you have written yourself and that calculates some interesting property of the data. This property should be reported in the text.
+* At least two tables displaying some aspect/s of your data.
+* At least two figures depicting some aspect/s of your data.
+
+
+
+
+Your solution should be emailed to `marcus.lindskog@psyk.uu.se`. Your code should be well commented and easy to follow.
